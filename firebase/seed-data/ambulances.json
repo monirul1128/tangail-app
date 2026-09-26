@@ -1,0 +1,122 @@
+[
+  {
+    "name": "আবীর অ্যাম্বুলেন্স সার্ভিস",
+    "ownerName": "মো. আবীর হোসেন",
+    "phone": "01711200001",
+    "alternatePhone": "01711200002",
+    "upazilaId": "tangail_sadar",
+    "type": "ac",
+    "isAvailable": true,
+    "isAvailable24Hours": true,
+    "rentalCostPerKm": 25,
+    "isVerified": true
+  },
+  {
+    "name": "মামুন অ্যাম্বুলেন্স সার্ভিস",
+    "ownerName": "মো. মামুন",
+    "phone": "01711200003",
+    "alternatePhone": "01711200004",
+    "upazilaId": "tangail_sadar",
+    "type": "freezer",
+    "isAvailable": true,
+    "isAvailable24Hours": true,
+    "rentalCostPerKm": 30,
+    "isVerified": true
+  },
+  {
+    "name": "রহমান অ্যাম্বুলেন্স সার্ভিস",
+    "ownerName": "মো. রহমান",
+    "phone": "01711200005",
+    "alternatePhone": "",
+    "upazilaId": "tangail_sadar",
+    "type": "non_ac",
+    "isAvailable": true,
+    "isAvailable24Hours": true,
+    "rentalCostPerKm": 15,
+    "isVerified": true
+  },
+  {
+    "name": "কুমুদিনী হাসপাতাল অ্যাম্বুলেন্স",
+    "ownerName": "কুমুদিনী ট্রাস্ট",
+    "phone": "01711200006",
+    "alternatePhone": "0921-75100",
+    "upazilaId": "mirzapur",
+    "type": "icu",
+    "isAvailable": true,
+    "isAvailable24Hours": true,
+    "rentalCostPerKm": 40,
+    "isVerified": true
+  },
+  {
+    "name": "শেখ হাসিনা মেডিকেল অ্যাম্বুলেন্স",
+    "ownerName": "শেখ হাসিনা মেডিকেল কলেজ",
+    "phone": "0921-62500",
+    "alternatePhone": "01711200007",
+    "upazilaId": "tangail_sadar",
+    "type": "icu",
+    "isAvailable": true,
+    "isAvailable24Hours": true,
+    "rentalCostPerKm": 35,
+    "isVerified": true
+  },
+  {
+    "name": "করিম অ্যাম্বুলেন্স সার্ভিস",
+    "ownerName": "মো. আবদুল করিম",
+    "phone": "01711200008",
+    "alternatePhone": "",
+    "upazilaId": "madhupur",
+    "type": "ac",
+    "isAvailable": true,
+    "isAvailable24Hours": true,
+    "rentalCostPerKm": 25,
+    "isVerified": false
+  },
+  {
+    "name": "জনসেবা অ্যাম্বুলেন্স সার্ভিস",
+    "ownerName": "মো. সালাম",
+    "phone": "01711200009",
+    "alternatePhone": "01711200010",
+    "upazilaId": "ghatail",
+    "type": "non_ac",
+    "isAvailable": true,
+    "isAvailable24Hours": false,
+    "rentalCostPerKm": 15,
+    "isVerified": false
+  },
+  {
+    "name": "আল-হেলাল অ্যাম্বুলেন্স সার্ভিস",
+    "ownerName": "মো. হেলাল উদ্দিন",
+    "phone": "01711200011",
+    "alternatePhone": "",
+    "upazilaId": "kalihati",
+    "type": "ac",
+    "isAvailable": true,
+    "isAvailable24Hours": true,
+    "rentalCostPerKm": 25,
+    "isVerified": false
+  },
+  {
+    "name": "মির্জাপুর অ্যাম্বুলেন্স সার্ভিস",
+    "ownerName": "মো. সিদ্দিক",
+    "phone": "01711200012",
+    "alternatePhone": "",
+    "upazilaId": "mirzapur",
+    "type": "non_ac",
+    "isAvailable": true,
+    "isAvailable24Hours": true,
+    "rentalCostPerKm": 15,
+    "isVerified": false
+  },
+  {
+    "name": "সিটি অ্যাম্বুলেন্স সার্ভিস",
+    "ownerName": "মো. রিপন",
+    "phone": "01711200013",
+    "alternatePhone": "01711200014",
+    "upazilaId": "tangail_sadar",
+    "type": "ac",
+    "isAvailable": true,
+    "isAvailable24Hours": true,
+    "rentalCostPerKm": 20,
+    "isVerified": true
+  }
+]
