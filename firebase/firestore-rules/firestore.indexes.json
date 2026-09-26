@@ -1,65 +1,28 @@
 {
   "indexes": [
-    {
-      "collectionGroup": "hospitals",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "upazilaId", "order": "ASCENDING" },
-        { "fieldPath": "isVerified", "order": "ASCENDING" },
-        { "fieldPath": "name", "order": "ASCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "doctors",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "specialty", "order": "ASCENDING" },
-        { "fieldPath": "upazilaId", "order": "ASCENDING" },
-        { "fieldPath": "name", "order": "ASCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "doctors",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "hospitalId", "order": "ASCENDING" },
-        { "fieldPath": "name", "order": "ASCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "blood_donors",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "bloodGroup", "order": "ASCENDING" },
-        { "fieldPath": "upazilaId", "order": "ASCENDING" },
-        { "fieldPath": "isAvailable", "order": "ASCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "ambulances",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "upazilaId", "order": "ASCENDING" },
-        { "fieldPath": "isAvailable", "order": "ASCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "news",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "category", "order": "ASCENDING" },
-        { "fieldPath": "publishedAt", "order": "DESCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "businesses",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "category", "order": "ASCENDING" },
-        { "fieldPath": "upazilaId", "order": "ASCENDING" },
-        { "fieldPath": "isVerified", "order": "ASCENDING" }
-      ]
-    }
+    { "collectionGroup": "hospitals",    "queryScope": "COLLECTION", "fields": [{ "fieldPath": "upazilaId", "order": "ASCENDING" }, { "fieldPath": "rating", "order": "DESCENDING" }] },
+    { "collectionGroup": "hospitals",    "queryScope": "COLLECTION", "fields": [{ "fieldPath": "type",      "order": "ASCENDING" }, { "fieldPath": "rating", "order": "DESCENDING" }] },
+    { "collectionGroup": "doctors",      "queryScope": "COLLECTION", "fields": [{ "fieldPath": "specialty", "order": "ASCENDING" }, { "fieldPath": "rating", "order": "DESCENDING" }] },
+    { "collectionGroup": "doctors",      "queryScope": "COLLECTION", "fields": [{ "fieldPath": "upazilaId", "order": "ASCENDING" }, { "fieldPath": "rating", "order": "DESCENDING" }] },
+    { "collectionGroup": "blood_donors", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "isAvailable", "order": "ASCENDING" }, { "fieldPath": "bloodGroup", "order": "ASCENDING" }, { "fieldPath": "upazilaId", "order": "ASCENDING" }] },
+    { "collectionGroup": "ambulances",   "queryScope": "COLLECTION", "fields": [{ "fieldPath": "isAvailable", "order": "ASCENDING" }, { "fieldPath": "upazilaId", "order": "ASCENDING" }] },
+    { "collectionGroup": "news",         "queryScope": "COLLECTION", "fields": [{ "fieldPath": "category",   "order": "ASCENDING" }, { "fieldPath": "publishedAt", "order": "DESCENDING" }] },
+    { "collectionGroup": "news",         "queryScope": "COLLECTION", "fields": [{ "fieldPath": "isNotice",   "order": "ASCENDING" }, { "fieldPath": "publishedAt", "order": "DESCENDING" }] },
+    { "collectionGroup": "pharmacies",   "queryScope": "COLLECTION", "fields": [{ "fieldPath": "upazilaId", "order": "ASCENDING" }, { "fieldPath": "name", "order": "ASCENDING" }] },
+    { "collectionGroup": "education",    "queryScope": "COLLECTION", "fields": [{ "fieldPath": "type",      "order": "ASCENDING" }, { "fieldPath": "name", "order": "ASCENDING" }] },
+    { "collectionGroup": "education",    "queryScope": "COLLECTION", "fields": [{ "fieldPath": "upazilaId", "order": "ASCENDING" }, { "fieldPath": "name", "order": "ASCENDING" }] },
+    { "collectionGroup": "businesses",   "queryScope": "COLLECTION", "fields": [{ "fieldPath": "isVerified", "order": "ASCENDING" }, { "fieldPath": "category", "order": "ASCENDING" }, { "fieldPath": "rating", "order": "DESCENDING" }] },
+    { "collectionGroup": "businesses",   "queryScope": "COLLECTION", "fields": [{ "fieldPath": "isVerified", "order": "ASCENDING" }, { "fieldPath": "upazilaId", "order": "ASCENDING" }, { "fieldPath": "rating", "order": "DESCENDING" }] },
+    { "collectionGroup": "transport",    "queryScope": "COLLECTION", "fields": [{ "fieldPath": "type",      "order": "ASCENDING" }, { "fieldPath": "name", "order": "ASCENDING" }] },
+    { "collectionGroup": "finance",      "queryScope": "COLLECTION", "fields": [{ "fieldPath": "type",      "order": "ASCENDING" }, { "fieldPath": "name", "order": "ASCENDING" }] },
+    { "collectionGroup": "professionals","queryScope": "COLLECTION", "fields": [{ "fieldPath": "type",      "order": "ASCENDING" }, { "fieldPath": "name", "order": "ASCENDING" }] },
+    { "collectionGroup": "organizations","queryScope": "COLLECTION", "fields": [{ "fieldPath": "type",      "order": "ASCENDING" }, { "fieldPath": "name", "order": "ASCENDING" }] },
+    { "collectionGroup": "jobs",         "queryScope": "COLLECTION", "fields": [{ "fieldPath": "isActive",  "order": "ASCENDING" }, { "fieldPath": "type", "order": "ASCENDING" }, { "fieldPath": "publishedAt", "order": "DESCENDING" }] },
+    { "collectionGroup": "tourism",      "queryScope": "COLLECTION", "fields": [{ "fieldPath": "category",  "order": "ASCENDING" }, { "fieldPath": "name", "order": "ASCENDING" }] },
+    { "collectionGroup": "tourism",      "queryScope": "COLLECTION", "fields": [{ "fieldPath": "upazilaId", "order": "ASCENDING" }, { "fieldPath": "name", "order": "ASCENDING" }] },
+    { "collectionGroup": "gallery",      "queryScope": "COLLECTION", "fields": [{ "fieldPath": "isApproved","order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" }] },
+    { "collectionGroup": "gallery",      "queryScope": "COLLECTION", "fields": [{ "fieldPath": "isApproved","order": "ASCENDING" }, { "fieldPath": "category", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" }] },
+    { "collectionGroup": "notable_persons","queryScope": "COLLECTION","fields": [{ "fieldPath": "category", "order": "ASCENDING" }, { "fieldPath": "name", "order": "ASCENDING" }] }
   ],
   "fieldOverrides": []
 }
