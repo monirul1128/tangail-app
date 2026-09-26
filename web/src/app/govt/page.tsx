@@ -4,7 +4,22 @@ import ServicePageLayout from "@/components/ui/ServicePageLayout";
 import FilterChips from "@/components/ui/FilterChips";
 import { ArrowRight, ExternalLink } from "lucide-react";
 
-const services = [
+interface GovtItem {
+  name: string;
+  link: string;
+  type?: string;
+  note?: string;
+}
+
+interface GovtCategory {
+  cat: string;
+  emoji: string;
+  color: string;
+  titleColor: string;
+  items: GovtItem[];
+}
+
+const services: GovtCategory[] = [
   {
     cat: "জন্ম নিবন্ধন", emoji: "👶", color: "bg-blue-50 border-blue-100", titleColor: "text-blue-700",
     items: [
