@@ -1,0 +1,65 @@
+[
+  {
+    "title": "জাতীয় জরুরি সেবা",
+    "titleEn": "National Emergency",
+    "category": "hotline",
+    "phone": ["999"],
+    "upazilaId": null,
+    "isNational": true,
+    "sortOrder": 1
+  },
+  {
+    "title": "টাঙ্গাইল ফায়ার সার্ভিস",
+    "titleEn": "Tangail Fire Service",
+    "category": "fire",
+    "phone": ["199", "0921-62199"],
+    "upazilaId": "tangail_sadar",
+    "isNational": false,
+    "sortOrder": 2
+  },
+  {
+    "title": "টাঙ্গাইল সদর থানা",
+    "titleEn": "Tangail Sadar Police Station",
+    "category": "police",
+    "phone": ["0921-62100", "01713373641"],
+    "upazilaId": "tangail_sadar",
+    "isNational": false,
+    "sortOrder": 3
+  },
+  {
+    "title": "টাঙ্গাইল জেলা পুলিশ",
+    "titleEn": "Tangail District Police",
+    "category": "police",
+    "phone": ["0921-62101"],
+    "upazilaId": "tangail_sadar",
+    "isNational": false,
+    "sortOrder": 4
+  },
+  {
+    "title": "শেখ হাসিনা মেডিকেল - জরুরি বিভাগ",
+    "titleEn": "Sheikh Hasina Medical - Emergency",
+    "category": "hospital",
+    "phone": ["0921-62500"],
+    "upazilaId": "tangail_sadar",
+    "isNational": false,
+    "sortOrder": 5
+  },
+  {
+    "title": "অ্যাম্বুলেন্স সেবা (জেলা)",
+    "titleEn": "Ambulance Service (District)",
+    "category": "ambulance",
+    "phone": ["01711000010"],
+    "upazilaId": "tangail_sadar",
+    "isNational": false,
+    "sortOrder": 6
+  },
+  {
+    "title": "মহিলা ও শিশু নির্যাতন হেল্পলাইন",
+    "titleEn": "Women & Child Abuse Helpline",
+    "category": "hotline",
+    "phone": ["109"],
+    "upazilaId": null,
+    "isNational": true,
+    "sortOrder": 7
+  }
+]

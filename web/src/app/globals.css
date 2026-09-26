@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Hind Siliguri', sans-serif;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-[#f4f6f8] text-gray-900 antialiased;
+  }
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold;
+  }
+  .badge-verified {
+    @apply badge bg-green-50 text-green-700;
+  }
+  .badge-24h {
+    @apply badge bg-green-50 text-green-700;
+  }
+  .badge-govt {
+    @apply badge bg-blue-50 text-blue-700;
+  }
+  .badge-private {
+    @apply badge bg-purple-50 text-purple-700;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-semibold text-sm hover:bg-primary-600 transition-colors;
+  }
+  .btn-call {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg font-semibold text-sm hover:bg-green-700 transition-colors;
+  }
+  .chip {
+    @apply px-3 py-1 rounded-full text-sm border border-gray-200 cursor-pointer transition-colors hover:bg-primary-50 hover:border-primary-500 hover:text-primary;
+  }
+  .chip-active {
+    @apply px-3 py-1 rounded-full text-sm bg-primary-50 border border-primary-500 text-primary font-semibold cursor-pointer;
+  }
+  .section-title {
+    @apply text-lg font-bold text-gray-800 flex items-center gap-2;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

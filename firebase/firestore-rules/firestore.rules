@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Hospitals - public read, admin write only
+    match /hospitals/{hospitalId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+
+    // Doctors - public read, admin write only
+    match /doctors/{doctorId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+
+    // Ambulances - public read, admin write only
+    match /ambulances/{ambulanceId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+
+    // Blood donors - public read, authenticated write (self-register)
+    match /blood_donors/{donorId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null &&
+        (request.auth.uid == resource.data.userId || request.auth.token.admin == true);
+    }
+
+    // News & notices - public read, admin write only
+    match /news/{newsId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+
+    // Emergency contacts - public read, admin write only
+    match /emergency_contacts/{contactId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+
+    // Upazilas - public read, admin write only
+    match /upazilas/{upazilaId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+
+    // Business listings - public read, authenticated create, owner/admin update
+    match /businesses/{businessId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null &&
+        (request.auth.uid == resource.data.userId || request.auth.token.admin == true);
+    }
+
+    // Users - own profile only
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null && request.auth.token.admin == true;
+    }
+  }
+}

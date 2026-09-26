@@ -1,0 +1,65 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "hospitals",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "upazilaId", "order": "ASCENDING" },
+        { "fieldPath": "isVerified", "order": "ASCENDING" },
+        { "fieldPath": "name", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "doctors",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "specialty", "order": "ASCENDING" },
+        { "fieldPath": "upazilaId", "order": "ASCENDING" },
+        { "fieldPath": "name", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "doctors",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "hospitalId", "order": "ASCENDING" },
+        { "fieldPath": "name", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "blood_donors",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "bloodGroup", "order": "ASCENDING" },
+        { "fieldPath": "upazilaId", "order": "ASCENDING" },
+        { "fieldPath": "isAvailable", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "ambulances",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "upazilaId", "order": "ASCENDING" },
+        { "fieldPath": "isAvailable", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "news",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "category", "order": "ASCENDING" },
+        { "fieldPath": "publishedAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "businesses",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "category", "order": "ASCENDING" },
+        { "fieldPath": "upazilaId", "order": "ASCENDING" },
+        { "fieldPath": "isVerified", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

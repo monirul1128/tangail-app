@@ -1,0 +1,14 @@
+[
+  { "id": "tangail_sadar", "name": "টাঙ্গাইল সদর", "nameEn": "Tangail Sadar", "sortOrder": 1 },
+  { "id": "basail", "name": "বাসাইল", "nameEn": "Basail", "sortOrder": 2 },
+  { "id": "bhuapur", "name": "ভূয়াপুর", "nameEn": "Bhuapur", "sortOrder": 3 },
+  { "id": "delduar", "name": "দেলদুয়ার", "nameEn": "Delduar", "sortOrder": 4 },
+  { "id": "dhanbari", "name": "ধনবাড়ী", "nameEn": "Dhanbari", "sortOrder": 5 },
+  { "id": "ghatail", "name": "ঘাটাইল", "nameEn": "Ghatail", "sortOrder": 6 },
+  { "id": "gopalpur", "name": "গোপালপুর", "nameEn": "Gopalpur", "sortOrder": 7 },
+  { "id": "kalihati", "name": "কালিহাতী", "nameEn": "Kalihati", "sortOrder": 8 },
+  { "id": "madhupur", "name": "মধুপুর", "nameEn": "Madhupur", "sortOrder": 9 },
+  { "id": "mirzapur", "name": "মির্জাপুর", "nameEn": "Mirzapur", "sortOrder": 10 },
+  { "id": "nagarpur", "name": "নাগরপুর", "nameEn": "Nagarpur", "sortOrder": 11 },
+  { "id": "sakhipur", "name": "সখিপুর", "nameEn": "Sakhipur", "sortOrder": 12 }
+]
