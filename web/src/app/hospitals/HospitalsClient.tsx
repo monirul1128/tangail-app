@@ -49,10 +49,14 @@ export default function HospitalsClient({ hospitals }: Props) {
         />
       </div>
 
-      {/* Type filter */}
       <div className="mb-6">
         <FilterChips
-          options={Object.entries(HOSPITAL_TYPES).map(([id, label]) => ({ id, label }))}
+          options={[
+            {id:"government",label:"সরকারি"},
+            {id:"private",label:"বেসরকারি"},
+            {id:"clinic",label:"ক্লিনিক সেন্টার"},
+            {id:"diagnostic",label:"ডায়াগনস্টিক"},
+          ]}
           selected={selectedType}
           onChange={setSelectedType}
           allLabel="সব ধরন"

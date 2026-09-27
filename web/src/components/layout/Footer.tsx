@@ -14,7 +14,7 @@ export default function Footer() {
               </div>
               <div>
                 <div className="text-white font-bold text-lg leading-none">
-                  টাঙ্গাইল জেলা
+                  আমাদের টাঙ্গাইল
                 </div>
                 <div className="text-gray-400 text-xs">সেবা ও তথ্য পোর্টাল</div>
               </div>

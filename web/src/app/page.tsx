@@ -20,7 +20,7 @@ const quickServices = [
   { href: "/ambulance",   label: "অ্যাম্বুলেন্স",  emoji: "🚑", bg: "bg-red-600"    },
   { href: "/blood-donor", label: "রক্তদান",         emoji: "🩸", bg: "bg-rose-500"   },
   { href: "/emergency",   label: "ফায়ার সার্ভিস",  emoji: "🔥", bg: "bg-orange-500" },
-  { href: "/emergency",   label: "পুলিশ",           emoji: "👮", bg: "bg-blue-700"   },
+  { href: "/police",      label: "পুলিশ স্টেশন",   emoji: "👮", bg: "bg-blue-700"   },
   { href: "/hospitals",   label: "হাসপাতাল",        emoji: "🏥", bg: "bg-primary"    },
   { href: "/emergency",   label: "৯৯৯ হটলাইন",     emoji: "📞", bg: "bg-green-600"  },
 ];
@@ -49,9 +49,9 @@ const serviceCategories = [
     titleColor: "text-red-700",
     accent: "bg-red-500",
     items: [
-      { label: "পুলিশ",         emoji: "👮", href: "/emergency?cat=police"    },
-      { label: "ফায়ার সার্ভিস", emoji: "🚒", href: "/emergency?cat=fire"      },
-      { label: "এ্যাম্বুলেন্স", emoji: "🚑", href: "/ambulance"               },
+      { label: "পুলিশ স্টেশন",  emoji: "👮", href: "/police"               },
+      { label: "ফায়ার সার্ভিস", emoji: "🚒", href: "/emergency?cat=fire"   },
+      { label: "অ্যাম্বুলেন্স", emoji: "🚑", href: "/ambulance"            },
     ],
   },
   {
@@ -60,11 +60,12 @@ const serviceCategories = [
     titleColor: "text-green-700",
     accent: "bg-green-500",
     items: [
-      { label: "ডেন্টিস্ট",           emoji: "🦷", href: "/doctors?spec=dentistry"  },
-      { label: "ডাক্তার",              emoji: "👨‍⚕️", href: "/doctors"                },
-      { label: "হোমিওপ্যাথি",         emoji: "🌿", href: "/doctors?spec=homeo"      },
-      { label: "হাসপাতাল",            emoji: "🏥", href: "/hospitals"               },
-      { label: "ফার্মেসি",            emoji: "💊", href: "/pharmacy"                },
+      { label: "ডেন্টিস্ট",         emoji: "🦷", href: "/doctors?spec=dentistry"  },
+      { label: "ডাক্তার",            emoji: "👨‍⚕️", href: "/doctors"                },
+      { label: "হোমিওপ্যাথি",       emoji: "🌿", href: "/doctors?spec=homeo"      },
+      { label: "হাসপাতাল",          emoji: "🏥", href: "/hospitals"               },
+      { label: "ক্লিনিক সেন্টার",   emoji: "🏨", href: "/hospitals?type=clinic"  },
+      { label: "ফার্মেসি",          emoji: "💊", href: "/pharmacy"                },
     ],
   },
   {
@@ -73,13 +74,30 @@ const serviceCategories = [
     titleColor: "text-blue-700",
     accent: "bg-blue-500",
     items: [
-      { label: "স্কুল",          emoji: "🏫", href: "/education?type=school"      },
-      { label: "কলেজ",           emoji: "🏛️", href: "/education?type=college"     },
-      { label: "বিশ্ববিদ্যালয়", emoji: "🎓", href: "/education?type=university"  },
-      { label: "মাদ্রাসা",       emoji: "📖", href: "/education?type=madrasa"     },
-      { label: "টিউশন সেবা",     emoji: "✏️", href: "/education?type=tuition"     },
-      { label: "লাইব্রেরি",      emoji: "📚", href: "/education?type=library"     },
-      { label: "ট্রেনিং সেন্টার",emoji: "🖥️", href: "/education?type=training"   },
+      { label: "স্কুল",              emoji: "🏫", href: "/education?type=school"    },
+      { label: "কলেজ",               emoji: "🏛️", href: "/education?type=college"   },
+      { label: "বিশ্ববিদ্যালয়",    emoji: "🎓", href: "/education?type=university"},
+      { label: "মাদ্রাসা",           emoji: "📖", href: "/education?type=madrasa"   },
+      { label: "কোচিং সেন্টার",     emoji: "✏️", href: "/education?type=coaching"  },
+      { label: "শিক্ষক",            emoji: "👨‍🏫", href: "/education?type=teacher"   },
+      { label: "টিউশন সেবা",        emoji: "📝", href: "/education?type=tuition"   },
+      { label: "লাইব্রেরি",         emoji: "📚", href: "/education?type=library"   },
+      { label: "ট্রেনিং সেন্টার",   emoji: "🖥️", href: "/education?type=training"  },
+      { label: "রেজাল্ট",           emoji: "📊", href: "/education?type=result"    },
+    ],
+  },
+  {
+    title: "ইসলামিক সেবা",
+    color: "bg-emerald-50 border-emerald-100",
+    titleColor: "text-emerald-700",
+    accent: "bg-emerald-500",
+    items: [
+      { label: "মসজিদ",    emoji: "🕌", href: "/islamic?type=mosque"  },
+      { label: "মন্দির",   emoji: "🛕", href: "/islamic?type=temple"  },
+      { label: "নামাজ",    emoji: "🙏", href: "/islamic?type=namaz"   },
+      { label: "রোজা",     emoji: "🌙", href: "/islamic?type=roja"    },
+      { label: "হজ্জ",     emoji: "🕋", href: "/islamic?type=hajj"    },
+      { label: "জাকাত",    emoji: "💰", href: "/islamic?type=zakat"   },
     ],
   },
   {
@@ -88,12 +106,12 @@ const serviceCategories = [
     titleColor: "text-purple-700",
     accent: "bg-purple-500",
     items: [
-      { label: "জন্ম নিবন্ধন",  emoji: "📋", href: "/govt?type=birth"      },
-      { label: "ই-নামজারি",     emoji: "🏡", href: "/govt?type=land"       },
-      { label: "ভোটার সেবা",    emoji: "🗳️", href: "/govt?type=voter"      },
-      { label: "বিদ্যুৎ অফিস",  emoji: "⚡", href: "/govt?type=electricity"},
-      { label: "আদালত",         emoji: "⚖️", href: "/govt?type=court"      },
-      { label: "চাকরির বিজ্ঞাপন",emoji: "💼", href: "/jobs"                },
+      { label: "জন্ম নিবন্ধন",     emoji: "📋", href: "/govt?type=birth"       },
+      { label: "ই-নামজারি",         emoji: "🏡", href: "/govt?type=land"        },
+      { label: "ভোটার সেবা",        emoji: "🗳️", href: "/govt?type=voter"       },
+      { label: "বিদ্যুৎ অফিস",     emoji: "⚡", href: "/govt?type=electricity" },
+      { label: "আদালত",             emoji: "⚖️", href: "/govt?type=court"       },
+      { label: "চাকরির বিজ্ঞাপন",  emoji: "💼", href: "/jobs"                  },
     ],
   },
   {
@@ -102,12 +120,12 @@ const serviceCategories = [
     titleColor: "text-amber-700",
     accent: "bg-amber-500",
     items: [
-      { label: "বাস কাউন্টার",  emoji: "🚌", href: "/transport?type=bus"     },
-      { label: "ট্রেন সার্ভিস", emoji: "🚂", href: "/transport?type=train"   },
-      { label: "রেন্ট এ কার",   emoji: "🚗", href: "/transport?type=rentcar" },
-      { label: "সিএনজি স্টেশন", emoji: "⛽", href: "/transport?type=cng"     },
-      { label: "ফুয়েল স্টেশন", emoji: "🛢️", href: "/transport?type=fuel"    },
-      { label: "কুরিয়ার সার্ভিস",emoji: "📦", href: "/transport?type=courier"},
+      { label: "বাস কাউন্টার",     emoji: "🚌", href: "/transport?type=bus"     },
+      { label: "ট্রেন সার্ভিস",    emoji: "🚂", href: "/transport?type=train"   },
+      { label: "রেন্ট এ কার",      emoji: "🚗", href: "/transport?type=rentcar" },
+      { label: "সিএনজি স্টেশন",   emoji: "⛽", href: "/transport?type=cng"     },
+      { label: "ফুয়েল স্টেশন",    emoji: "🛢️", href: "/transport?type=fuel"    },
+      { label: "কুরিয়ার সার্ভিস", emoji: "📦", href: "/transport?type=courier" },
     ],
   },
   {
@@ -116,9 +134,9 @@ const serviceCategories = [
     titleColor: "text-teal-700",
     accent: "bg-teal-500",
     items: [
-      { label: "ব্যাংক",   emoji: "🏦", href: "/finance?type=bank" },
-      { label: "এটিএম",    emoji: "💳", href: "/finance?type=atm"  },
-      { label: "ক্রয়-বিক্রয়",emoji: "🛒", href: "/finance?type=market" },
+      { label: "ব্যাংক",       emoji: "🏦", href: "/finance?type=bank"   },
+      { label: "এটিএম",        emoji: "💳", href: "/finance?type=atm"    },
+      { label: "ক্রয়-বিক্রয়", emoji: "🛒", href: "/finance?type=market" },
     ],
   },
   {
@@ -127,12 +145,12 @@ const serviceCategories = [
     titleColor: "text-orange-700",
     accent: "bg-orange-500",
     items: [
-      { label: "দোকান/শো-রুম",   emoji: "🏪", href: "/business?type=shop"      },
-      { label: "হোটেল (আবাসিক)", emoji: "🏨", href: "/business?type=hotel"     },
-      { label: "রেস্টুরেন্ট",    emoji: "🍽️", href: "/business?type=restaurant"},
-      { label: "বিউটি পার্লার",  emoji: "💅", href: "/business?type=beauty"    },
-      { label: "নার্সারি",        emoji: "🌱", href: "/business?type=nursery"   },
-      { label: "কৃষি সেবা",      emoji: "🌾", href: "/business?type=agri"      },
+      { label: "দোকান/শো-রুম",    emoji: "🏪", href: "/business?type=shop"       },
+      { label: "হোটেল (আবাসিক)", emoji: "🏨", href: "/business?type=hotel"      },
+      { label: "রেস্টুরেন্ট",     emoji: "🍽️", href: "/business?type=restaurant" },
+      { label: "বিউটি পার্লার",   emoji: "💅", href: "/business?type=beauty"     },
+      { label: "নার্সারি",         emoji: "🌱", href: "/business?type=nursery"    },
+      { label: "কৃষি সেবা",       emoji: "🌾", href: "/business?type=agri"       },
     ],
   },
   {
@@ -148,15 +166,15 @@ const serviceCategories = [
     ],
   },
   {
-    title: "সংগঠন ও সম্প্রদায়",
+    title: "অন্যান্য",
     color: "bg-pink-50 border-pink-100",
     titleColor: "text-pink-700",
     accent: "bg-pink-500",
     items: [
-      { label: "সংগঠন",    emoji: "🤝", href: "/organizations"          },
-      { label: "গুণিজন",   emoji: "🏅", href: "/notable-persons"        },
-      { label: "পর্যটন",   emoji: "🏞️", href: "/tourism"                },
-      { label: "সর্বশেষ নোটিশ",emoji: "📋",href: "/news?category=notice"},
+      { label: "সংগঠন",          emoji: "🤝", href: "/organizations"           },
+      { label: "গুণিজন",         emoji: "🏅", href: "/notable-persons"         },
+      { label: "পর্যটন",         emoji: "🏞️", href: "/tourism"                 },
+      { label: "সর্বশেষ নোটিশ", emoji: "📋", href: "/news?category=notice"    },
     ],
   },
 ];
@@ -338,7 +356,7 @@ export default async function HomePage() {
             {/* Header */}
             <div className="bg-gradient-to-r from-primary to-primary-600 px-5 py-4">
               <h3 className="font-black text-white text-base flex items-center gap-2">
-                🗺️ এক নজরে টাঙ্গাইল জেলা
+                🗺️ একনজরে টাঙ্গাইল
               </h3>
               <p className="text-white/70 text-xs mt-0.5">সংক্ষিপ্ত পরিচিতি ও সীমানা</p>
             </div>
@@ -368,12 +386,12 @@ export default async function HomePage() {
                   {/* Quick stats grid */}
                   <div className="grid grid-cols-2 gap-2">
                     {[
-                      { label: "আয়তন",         value: "৩,৪১৪ বর্গকিমি", icon: "📐" },
-                      { label: "জনসংখ্যা",      value: "৩৫ লক্ষ+",       icon: "👥" },
-                      { label: "উপজেলা",        value: "১২টি",            icon: "🗺️" },
-                      { label: "ইউনিয়ন",        value: "১২১টি",           icon: "🏘️" },
-                      { label: "গ্রাম",          value: "৩,৩৯৯টি",        icon: "🌾" },
-                      { label: "পৌরসভা",        value: "৮টি",             icon: "🏙️" },
+                      { label: "আয়তন",         value: "৩,৪১৪ বর্গকিমি",  icon: "📐" },
+                      { label: "জনসংখ্যা",      value: "৩৮ লক্ষ+",         icon: "👥" },
+                      { label: "উপজেলা",        value: "১২টি",              icon: "🗺️" },
+                      { label: "ইউনিয়ন",        value: "১২১টি",             icon: "🏘️" },
+                      { label: "গ্রাম",          value: "১,৬৮৩টি",          icon: "🌾" },
+                      { label: "পৌরসভা",        value: "৮টি",               icon: "🏙️" },
                     ].map((s) => (
                       <div key={s.label} className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
                         <span className="text-base">{s.icon}</span>

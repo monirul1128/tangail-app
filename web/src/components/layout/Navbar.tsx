@@ -61,7 +61,7 @@ export default function Navbar() {
               <span className="text-white font-black text-xl">ট</span>
             </div>
             <div>
-              <div className="font-black text-primary text-lg leading-none">টাঙ্গাইল জেলা</div>
+              <div className="font-black text-primary text-lg leading-none">আমাদের টাঙ্গাইল</div>
               <div className="text-gray-400 text-[10px]">সেবা ও তথ্য পোর্টাল</div>
             </div>
           </Link>
