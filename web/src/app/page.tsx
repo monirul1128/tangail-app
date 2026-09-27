@@ -311,7 +311,7 @@ export default async function HomePage() {
               <span className="w-1 h-6 bg-primary rounded-full inline-block" />
               উপজেলা সমূহ
             </h2>
-            <span className="text-sm text-gray-400 font-medium">{toBanglaNum(12)}টি উপজেলা</span>
+            <span className="text-sm font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">১২টি উপজেলা</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
             {upazilas.map((u) => (
@@ -319,38 +319,99 @@ export default async function HomePage() {
                 className="bg-white rounded-2xl p-4 flex flex-col items-center gap-2 shadow-sm border border-gray-100 hover:border-primary hover:shadow-md hover:-translate-y-0.5 transition-all group">
                 <span className="text-3xl group-hover:scale-110 transition-transform">{u.icon}</span>
                 <span className="font-bold text-gray-800 text-sm text-center">{u.name}</span>
-                <div className="w-full pt-2 border-t border-gray-50 space-y-0.5">
-                  <div className="flex items-center justify-between text-[10px] text-gray-400">
+                <div className="w-full pt-2 border-t border-gray-100 space-y-1">
+                  <div className="flex items-center justify-between text-xs text-gray-500">
                     <span>ইউনিয়ন</span>
-                    <span className="font-semibold text-gray-600">{toBanglaNum(u.unions)}টি</span>
+                    <span className="font-bold text-gray-700 text-xs">{u.unions}টি</span>
                   </div>
-                  <div className="flex items-center justify-between text-[10px] text-gray-400">
+                  <div className="flex items-center justify-between text-xs text-gray-500">
                     <span>আয়তন</span>
-                    <span className="font-semibold text-gray-600">{u.area}</span>
+                    <span className="font-bold text-gray-700 text-[11px]">{u.area}</span>
                   </div>
                 </div>
               </Link>
             ))}
           </div>
 
-          {/* Tangail district info strip */}
-          <div className="mt-4 bg-primary/5 border border-primary/15 rounded-2xl p-4">
-            <h3 className="font-bold text-primary text-sm mb-3 flex items-center gap-2">
-              🏛️ টাঙ্গাইল জেলার সংক্ষিপ্ত তথ্য
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {[
-                { label: "মোট আয়তন",     value: "৩,৪১৪ বর্গকিমি", icon: "📐" },
-                { label: "মোট জনসংখ্যা",  value: "৩৫ লক্ষ+",       icon: "👥" },
-                { label: "উপজেলা",        value: "১২টি",            icon: "🗺️" },
-                { label: "ইউনিয়ন",        value: "১২১টি",           icon: "🏘️" },
-              ].map((stat) => (
-                <div key={stat.label} className="bg-white rounded-xl p-3 text-center shadow-sm">
-                  <div className="text-2xl mb-1">{stat.icon}</div>
-                  <div className="font-black text-primary text-base">{stat.value}</div>
-                  <div className="text-[11px] text-gray-500 mt-0.5">{stat.label}</div>
+          {/* Tangail district full info */}
+          <div className="mt-5 bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-primary to-primary-600 px-5 py-4">
+              <h3 className="font-black text-white text-base flex items-center gap-2">
+                🗺️ এক নজরে টাঙ্গাইল জেলা
+              </h3>
+              <p className="text-white/70 text-xs mt-0.5">সংক্ষিপ্ত পরিচিতি ও সীমানা</p>
+            </div>
+
+            <div className="p-4">
+              {/* Map placeholder + description */}
+              <div className="flex flex-col md:flex-row gap-4 mb-4">
+                {/* Map */}
+                <div className="md:w-48 flex-shrink-0">
+                  <div className="bg-primary/5 border border-primary/15 rounded-xl aspect-square flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-6xl mb-2">🗺️</div>
+                      <p className="text-xs text-primary font-semibold">টাঙ্গাইল জেলার মানচিত্র</p>
+                      <p className="text-[10px] text-gray-400 mt-1">ঢাকা বিভাগ</p>
+                    </div>
+                  </div>
                 </div>
-              ))}
+
+                {/* Description */}
+                <div className="flex-1">
+                  <p className="text-sm text-gray-600 leading-relaxed mb-3">
+                    টাঙ্গাইল জেলা বাংলাদেশের মধ্যভাগে ঢাকা বিভাগের অন্তর্গত একটি গুরুত্বপূর্ণ জেলা। 
+                    যমুনা ও ধলেশ্বরী নদীর তীরে অবস্থিত এই জেলাটি শিল্প, কৃষি ও ঐতিহ্যে সমৃদ্ধ।
+                    টাঙ্গাইলের তাঁতের শাড়ি সারাবিশ্বে বিখ্যাত।
+                  </p>
+
+                  {/* Quick stats grid */}
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { label: "আয়তন",         value: "৩,৪১৪ বর্গকিমি", icon: "📐" },
+                      { label: "জনসংখ্যা",      value: "৩৫ লক্ষ+",       icon: "👥" },
+                      { label: "উপজেলা",        value: "১২টি",            icon: "🗺️" },
+                      { label: "ইউনিয়ন",        value: "১২১টি",           icon: "🏘️" },
+                      { label: "গ্রাম",          value: "৩,৩৯৯টি",        icon: "🌾" },
+                      { label: "পৌরসভা",        value: "৮টি",             icon: "🏙️" },
+                    ].map((s) => (
+                      <div key={s.label} className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
+                        <span className="text-base">{s.icon}</span>
+                        <div>
+                          <div className="text-[10px] text-gray-400">{s.label}</div>
+                          <div className="font-bold text-gray-800 text-xs">{s.value}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Boundaries */}
+              <div className="bg-primary/5 border border-primary/15 rounded-xl p-3">
+                <p className="text-xs font-bold text-primary mb-2">📍 চার পাশের জেলার সীমানা</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { dir: "উত্তরে",  districts: "জামালপুর ও ময়মনসিংহ" },
+                    { dir: "দক্ষিণে", districts: "ঢাকা ও মানিকগঞ্জ" },
+                    { dir: "পূর্বে",  districts: "ময়মনসিংহ ও গাজীপুর" },
+                    { dir: "পশ্চিমে", districts: "সিরাজগঞ্জ ও পাবনা" },
+                  ].map((b) => (
+                    <div key={b.dir} className="flex items-start gap-2">
+                      <span className="text-primary font-bold text-xs w-12 flex-shrink-0">{b.dir}</span>
+                      <span className="text-xs text-gray-600">{b.districts}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Coordinates & admin */}
+              <div className="mt-3 flex flex-wrap gap-2 text-[11px] text-gray-500">
+                <span className="bg-gray-100 rounded-full px-3 py-1">📌 ২৪°১৫' উত্তর অক্ষাংশ</span>
+                <span className="bg-gray-100 rounded-full px-3 py-1">📌 ৮৯°৫৫' পূর্ব দ্রাঘিমাংশ</span>
+                <span className="bg-gray-100 rounded-full px-3 py-1">🏛️ ঢাকা বিভাগ</span>
+                <span className="bg-gray-100 rounded-full px-3 py-1">📅 জেলা প্রতিষ্ঠা: ১৯৬৯</span>
+              </div>
             </div>
           </div>
         </section>
@@ -398,11 +459,10 @@ export default async function HomePage() {
               সব দেখুন <ArrowRight size={14} />
             </Link>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {[
               { label: "জাতীয় জরুরি",    number: "999", bg: "bg-red-600",    emoji: "🆘" },
               { label: "ফায়ার সার্ভিস",   number: "199", bg: "bg-orange-500", emoji: "🚒" },
-              { label: "পুলিশ",           number: "999", bg: "bg-blue-700",   emoji: "👮" },
               { label: "মহিলা হেল্পলাইন", number: "109", bg: "bg-pink-600",   emoji: "📞" },
             ].map((e) => (
               <a key={e.label} href={`tel:${e.number}`}
