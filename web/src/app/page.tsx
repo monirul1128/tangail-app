@@ -362,17 +362,19 @@ export default async function HomePage() {
             </div>
 
             <div className="p-4">
-              {/* Map placeholder + description */}
+              {/* Map + description */}
               <div className="flex flex-col md:flex-row gap-4 mb-4">
-                {/* Map */}
-                <div className="md:w-48 flex-shrink-0">
-                  <div className="bg-primary/5 border border-primary/15 rounded-xl aspect-square flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-6xl mb-2">🗺️</div>
-                      <p className="text-xs text-primary font-semibold">টাঙ্গাইল জেলার মানচিত্র</p>
-                      <p className="text-[10px] text-gray-400 mt-1">ঢাকা বিভাগ</p>
-                    </div>
+                {/* Real SVG Map */}
+                <div className="md:w-52 flex-shrink-0">
+                  <div className="border border-primary/20 rounded-xl overflow-hidden shadow-sm bg-white">
+                    <img
+                      src="/images/tangail-map.svg"
+                      alt="টাঙ্গাইল জেলার মানচিত্র"
+                      className="w-full h-auto"
+                      loading="lazy"
+                    />
                   </div>
+                  <p className="text-[10px] text-center text-gray-400 mt-1">টাঙ্গাইল জেলার ১২টি উপজেলা</p>
                 </div>
 
                 {/* Description */}

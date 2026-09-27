@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 700" width="500" height="700">
+  <defs>
+    <style>
+      text { font-family: 'Hind Siliguri', sans-serif; }
+      .label { font-size: 16px; font-weight: 600; fill: #1a1a2e; }
+      .dot-red    { fill: #e53935; }
+      .dot-green  { fill: #2e7d32; }
+      .dot-blue   { fill: #1565c0; }
+      .dot-purple { fill: #6a1b9a; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="500" height="700" fill="#f5f5dc" rx="8"/>
+
+  <!-- ── Upazila shapes ── -->
+
+  <!-- ধনবাড়ী (top-left, orange/peach) -->
+  <path d="M140,30 L210,30 L225,55 L220,95 L195,110 L165,110 L145,90 L135,65 Z"
+        fill="#ffcc80" stroke="white" stroke-width="2"/>
+  <text x="167" y="78" class="label" text-anchor="middle">ধনবাড়ী</text>
+  <circle cx="175" cy="55" r="6" class="dot-green"/>
+
+  <!-- মধুপুর (top-right, light purple) -->
+  <path d="M225,25 L310,25 L325,55 L320,100 L295,115 L260,115 L225,95 L220,55 Z"
+        fill="#ce93d8" stroke="white" stroke-width="2"/>
+  <text x="273" y="72" class="label" text-anchor="middle">মধুপুর</text>
+  <circle cx="275" cy="88" r="6" class="dot-purple"/>
+
+  <!-- গোপালপুর (left-center, pink/salmon) -->
+  <path d="M90,105 L165,105 L195,110 L200,155 L175,185 L140,195 L100,175 L80,145 Z"
+        fill="#ef9a9a" stroke="white" stroke-width="2"/>
+  <text x="140" y="155" class="label" text-anchor="middle">গোপালপুর</text>
+  <circle cx="145" cy="140" r="7" class="dot-red"/>
+
+  <!-- ঘাটাইল (center-top, green) -->
+  <path d="M195,110 L295,115 L310,145 L295,185 L260,200 L220,195 L195,170 L190,140 Z"
+        fill="#a5d6a7" stroke="white" stroke-width="2"/>
+  <text x="250" y="160" class="label" text-anchor="middle">ঘাটাইল</text>
+  <circle cx="245" cy="148" r="6" class="dot-green"/>
+
+  <!-- সখিপুর (right, pink) -->
+  <path d="M310,100 L380,95 L400,130 L395,195 L360,220 L320,210 L295,185 L310,145 Z"
+        fill="#f48fb1" stroke="white" stroke-width="2"/>
+  <text x="348" y="168" class="label" text-anchor="middle">সখিপুর</text>
+  <circle cx="355" cy="185" r="7" class="dot-red"/>
+
+  <!-- ভূয়াপুর (far left, light blue) -->
+  <path d="M40,150 L100,140 L140,160 L145,210 L120,245 L75,250 L45,220 Z"
+        fill="#90caf9" stroke="white" stroke-width="2"/>
+  <text x="90" y="205" class="label" text-anchor="middle">ভূয়াপুর</text>
+  <circle cx="82" cy="195" r="6" class="dot-blue"/>
+
+  <!-- কালিহাতী (center, lavender) -->
+  <path d="M140,195 L220,195 L260,200 L270,245 L250,285 L215,295 L175,285 L145,255 Z"
+        fill="#b39ddb" stroke="white" stroke-width="2"/>
+  <text x="205" y="252" class="label" text-anchor="middle">কালিহাতী</text>
+  <circle cx="208" cy="238" r="7" class="dot-purple"/>
+
+  <!-- টাঙ্গাইল সদর (center-left, light green) -->
+  <path d="M75,255 L145,255 L175,285 L170,340 L145,365 L100,360 L70,330 L60,290 Z"
+        fill="#c8e6c9" stroke="white" stroke-width="2"/>
+  <text x="113" y="305" class="label" text-anchor="middle">টাঙ্গাইল</text>
+  <text x="113" y="325" class="label" text-anchor="middle">সদর</text>
+  <rect x="120" y="315" width="12" height="12" fill="#1565c0"/>
+
+  <!-- বাসাইল (center-right, light green) -->
+  <path d="M250,285 L320,275 L355,305 L350,355 L315,375 L275,370 L250,340 L245,305 Z"
+        fill="#a5d6a7" stroke="white" stroke-width="2"/>
+  <text x="300" y="330" class="label" text-anchor="middle">বাসাইল</text>
+  <circle cx="302" cy="348" r="6" class="dot-green"/>
+
+  <!-- মির্জাপুর (bottom-right, light blue) -->
+  <path d="M315,375 L390,365 L415,400 L408,460 L375,485 L330,475 L305,445 L305,405 Z"
+        fill="#90caf9" stroke="white" stroke-width="2"/>
+  <text x="360" y="430" class="label" text-anchor="middle">মির্জাপুর</text>
+  <circle cx="358" cy="448" r="6" class="dot-blue"/>
+
+  <!-- দেলদুয়ার (bottom-center, pink) -->
+  <path d="M145,365 L220,360 L250,390 L245,445 L215,465 L175,460 L148,435 L140,400 Z"
+        fill="#ef9a9a" stroke="white" stroke-width="2"/>
+  <text x="193" y="418" class="label" text-anchor="middle">দেলদুয়ার</text>
+  <circle cx="198" cy="400" r="7" class="dot-red"/>
+
+  <!-- নাগরপুর (bottom-left, light green) -->
+  <path d="M70,390 L145,380 L175,415 L170,470 L140,500 L95,495 L65,460 L58,425 Z"
+        fill="#c8e6c9" stroke="white" stroke-width="2"/>
+  <text x="115" y="445" class="label" text-anchor="middle">নাগরপুর</text>
+  <circle cx="118" cy="430" r="6" class="dot-green"/>
+
+  <!-- ── Legend ── -->
+  <rect x="15" y="530" width="470" height="155" fill="white" rx="10" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="250" y="552" text-anchor="middle" font-size="13" font-weight="700" fill="#333">টাঙ্গাইল জেলার ১২টি উপজেলা</text>
+  <line x1="15" y1="560" x2="485" y2="560" stroke="#e0e0e0" stroke-width="1"/>
+
+  <!-- Legend items row 1 -->
+  <rect x="25" y="570" width="14" height="14" fill="#ef9a9a" rx="2"/>
+  <text x="44" y="582" font-size="11" fill="#555">গোপালপুর / দেলদুয়ার</text>
+  <rect x="165" y="570" width="14" height="14" fill="#ce93d8" rx="2"/>
+  <text x="184" y="582" font-size="11" fill="#555">মধুপুর</text>
+  <rect x="255" y="570" width="14" height="14" fill="#b39ddb" rx="2"/>
+  <text x="274" y="582" font-size="11" fill="#555">কালিহাতী</text>
+  <rect x="360" y="570" width="14" height="14" fill="#f48fb1" rx="2"/>
+  <text x="379" y="582" font-size="11" fill="#555">সখিপুর</text>
+
+  <!-- Legend items row 2 -->
+  <rect x="25" y="592" width="14" height="14" fill="#a5d6a7" rx="2"/>
+  <text x="44" y="604" font-size="11" fill="#555">ঘাটাইল / বাসাইল</text>
+  <rect x="165" y="592" width="14" height="14" fill="#c8e6c9" rx="2"/>
+  <text x="184" y="604" font-size="11" fill="#555">সদর / নাগরপুর</text>
+  <rect x="300" y="592" width="14" height="14" fill="#90caf9" rx="2"/>
+  <text x="319" y="604" font-size="11" fill="#555">ভূয়াপুর / মির্জাপুর</text>
+
+  <!-- Legend items row 3 -->
+  <rect x="25" y="614" width="14" height="14" fill="#ffcc80" rx="2"/>
+  <text x="44" y="626" font-size="11" fill="#555">ধনবাড়ী</text>
+
+  <!-- Dot legend -->
+  <line x1="25" y1="648" x2="485" y2="648" stroke="#f0f0f0" stroke-width="1"/>
+  <circle cx="32" cy="662" r="5" fill="#2e7d32"/>
+  <text x="42" y="666" font-size="10" fill="#555">উপজেলা সদর (সরকারি)</text>
+  <circle cx="195" cy="662" r="5" fill="#e53935"/>
+  <text x="205" y="666" font-size="10" fill="#555">প্রধান শহর</text>
+  <circle cx="300" cy="662" r="5" fill="#1565c0"/>
+  <text x="310" y="666" font-size="10" fill="#555">নদী তীরবর্তী</text>
+  <rect x="398" y="657" width="10" height="10" fill="#1565c0"/>
+  <text x="413" y="667" font-size="10" fill="#555">জেলা সদর</text>
+
+  <!-- Credit -->
+  <text x="250" y="688" text-anchor="middle" font-size="9" fill="#aaa">টাঙ্গাইল জেলা মানচিত্র — আমাদের টাঙ্গাইল</text>
+</svg>
