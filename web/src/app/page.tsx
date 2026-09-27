@@ -512,40 +512,6 @@ export default async function HomePage() {
         </section>
 
         {/* ══════════════════════════════════════════
-            অ্যাম্বুলেন্স সার্ভিস
-        ══════════════════════════════════════════ */}
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-black text-gray-800 flex items-center gap-2">
-              <span className="w-1 h-6 bg-amber-500 rounded-full inline-block" />
-              অ্যাম্বুলেন্স সার্ভিস
-            </h2>
-            <Link href="/ambulance" className="text-primary text-sm font-semibold flex items-center gap-1 hover:underline">
-              সব দেখুন <ArrowRight size={14} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[
-              { name: "আবীর অ্যাম্বুলেন্স সার্ভিস", tag: "২৪ ঘণ্টা সার্ভিস",  phone: "01711000020", type: "এসি" },
-              { name: "মামুন অ্যাম্বুলেন্স সার্ভিস", tag: "এসি ও ফ্রিজার ভ্যান",phone: "01711000030", type: "ফ্রিজার" },
-            ].map((a) => (
-              <div key={a.name} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">🚑</div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-bold text-gray-800 text-sm">{a.name}</div>
-                  <div className="text-xs text-amber-600 font-medium">{a.tag}</div>
-                  <span className="inline-block mt-1 text-[10px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-semibold">{a.type}</span>
-                </div>
-                <a href={`tel:${a.phone}`}
-                  className="flex-shrink-0 w-10 h-10 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center transition-colors shadow-sm">
-                  <Phone size={16} className="text-white" />
-                </a>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════════════
             ফটো গ্যালারি
         ══════════════════════════════════════════ */}
         <section>
