@@ -368,7 +368,7 @@ export default async function HomePage() {
                 <div className="md:w-52 flex-shrink-0">
                   <div className="border border-primary/20 rounded-xl overflow-hidden shadow-sm bg-white">
                     <img
-                      src="/images/tangail-map.svg"
+                      src="/images/tangail-map.jpg"
                       alt="টাঙ্গাইল জেলার মানচিত্র"
                       className="w-full h-auto"
                       loading="lazy"
