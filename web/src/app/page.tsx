@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Phone } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { getLatestNews } from "@/lib/firestore";
 import SearchBar from "@/components/ui/SearchBar";
 import type { NewsArticle } from "@/models/types";
@@ -467,37 +467,6 @@ export default async function HomePage() {
         </section>
 
         {/* ══════════════════════════════════════════
-            জরুরি সেবা নম্বর
-        ══════════════════════════════════════════ */}
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-black text-gray-800 flex items-center gap-2">
-              <span className="w-1 h-6 bg-red-500 rounded-full inline-block" />
-              জরুরি সেবা নম্বর
-            </h2>
-            <Link href="/emergency" className="text-primary text-sm font-semibold flex items-center gap-1 hover:underline">
-              সব দেখুন <ArrowRight size={14} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {[
-              { label: "জাতীয় জরুরি",    number: "999", bg: "bg-red-600",    emoji: "🆘" },
-              { label: "ফায়ার সার্ভিস",   number: "199", bg: "bg-orange-500", emoji: "🚒" },
-              { label: "মহিলা হেল্পলাইন", number: "109", bg: "bg-pink-600",   emoji: "📞" },
-            ].map((e) => (
-              <a key={e.label} href={`tel:${e.number}`}
-                className={`${e.bg} rounded-2xl p-4 flex flex-col items-center gap-2 text-white hover:opacity-90 hover:-translate-y-0.5 transition-all`}>
-                <span className="text-3xl">{e.emoji}</span>
-                <div className="text-center">
-                  <div className="text-xs opacity-80">{e.label}</div>
-                  <div className="font-black text-xl">{e.number}</div>
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════════════
             সর্বশেষ নোটিশ
         ══════════════════════════════════════════ */}
         <section>
@@ -648,22 +617,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* ══════════════════════════════════════════
-          EMERGENCY STRIP
-      ══════════════════════════════════════════ */}
-      <div className="bg-red-600 text-white py-3 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
-          <span className="font-semibold">জাতীয় জরুরি সেবা:</span>
-          <div className="flex items-center gap-4">
-            <a href="tel:999" className="flex items-center gap-1.5 font-black text-lg hover:text-red-200 transition-colors">
-              <Phone size={16} className="fill-white" /> ৯৯৯
-            </a>
-            <a href="tel:199" className="flex items-center gap-1.5 font-semibold hover:text-red-200 transition-colors">🚒 ১৯৯</a>
-            <a href="tel:109" className="flex items-center gap-1.5 font-semibold hover:text-red-200 transition-colors">📞 ১০৯</a>
-          </div>
-        </div>
-      </div>
 
     </div>
   );
