@@ -64,8 +64,14 @@ export default function AdminIslamicPage() {
 
   const load = useCallback(async () => {
     setLoading(true);
-    setData(await adminGetAll<ReligiousPlace>("islamic_places", "name"));
-    setLoading(false);
+    try {
+      setData(await adminGetAll<ReligiousPlace>("islamic_places", "name"));
+    } catch (e) {
+      console.warn("islamic_places load error", e);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => { load(); }, [load]);

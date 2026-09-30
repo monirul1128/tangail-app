@@ -56,8 +56,14 @@ export default function AdminElectricityPage() {
 
   const load = useCallback(async () => {
     setLoading(true);
-    setData(await adminGetAll<ElectricityOffice>("electricity_offices", "name"));
-    setLoading(false);
+    try {
+      setData(await adminGetAll<ElectricityOffice>("electricity_offices", "name"));
+    } catch (e) {
+      console.warn("electricity load error", e);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => { load(); }, [load]);
