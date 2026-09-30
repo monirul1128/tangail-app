@@ -27,7 +27,7 @@ const navItems = [
   { href: "/admin/professionals",  label: "পেশাদার সেবা",        icon: Wrench           },
   { href: "/admin/organizations",  label: "সংগঠন",               icon: Users            },
   { href: "/admin/business",       label: "ব্যবসা ও বাণিজ্য",   icon: Store            },
-  { href: "/admin/islamic",        label: "মসজিদ/মন্দির",        icon: Landmark         },
+  { href: "/admin/islamic",        label: "ধর্মীয় সেবা",         icon: Landmark         },
   { href: "/admin/tourism",        label: "পর্যটন",              icon: MapPin           },
   { href: "/admin/gallery",        label: "গ্যালারি",             icon: Image            },
   { href: "/admin/business-requests", label: "ব্যবসা আবেদন",    icon: ShoppingBag      },
@@ -64,9 +64,12 @@ export default function AdminSidebar({ open, onClose }: Props) {
       >
         {/* Brand */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
-          <div>
-            <div className="font-black text-lg text-white leading-none">আমাদের টাঙ্গাইল</div>
-            <div className="text-white/40 text-[10px] mt-0.5">Admin Panel</div>
+          <div className="flex items-center gap-2">
+            <img src="/images/logo.png" alt="logo" className="h-8 w-auto object-contain" />
+            <div>
+              <div className="font-black text-sm text-white leading-none">আমাদের টাঙ্গাইল</div>
+              <div className="text-white/40 text-[10px] mt-0.5">Admin Panel</div>
+            </div>
           </div>
           <button onClick={onClose} className="lg:hidden text-white/60 hover:text-white">
             <X size={18} />

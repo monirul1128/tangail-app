@@ -23,7 +23,7 @@ const pageTitles: Record<string, string> = {
   "/admin/professionals":      "পেশাদার সেবা",
   "/admin/organizations":      "সংগঠন",
   "/admin/business":           "ব্যবসা ও বাণিজ্য",
-  "/admin/islamic":            "মসজিদ/মন্দির",
+  "/admin/islamic":            "ধর্মীয় সেবা",
   "/admin/tourism":            "পর্যটন",
   "/admin/gallery":            "গ্যালারি",
   "/admin/business-requests":  "ব্যবসা আবেদন",

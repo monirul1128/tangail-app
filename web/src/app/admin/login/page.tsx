@@ -37,9 +37,11 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <span className="text-white font-black text-3xl">ট</span>
-          </div>
+          <img
+            src="/images/logo.png"
+            alt="আমাদের টাঙ্গাইল"
+            className="h-16 w-auto object-contain mx-auto mb-4 drop-shadow-lg"
+          />
           <h1 className="text-2xl font-black text-white">আমাদের টাঙ্গাইল</h1>
           <p className="text-white/50 text-sm mt-1">Admin Panel</p>
         </div>

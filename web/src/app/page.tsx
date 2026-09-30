@@ -87,7 +87,7 @@ const serviceCategories = [
     ],
   },
   {
-    title: "ইসলামিক সেবা",
+    title: "ধর্মীয় সেবা",
     color: "bg-emerald-50 border-emerald-100",
     titleColor: "text-emerald-700",
     accent: "bg-emerald-500",

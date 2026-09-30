@@ -57,9 +57,11 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-              <span className="text-white font-black text-xl">ট</span>
-            </div>
+            <img
+              src="/images/logo.png"
+              alt="আমাদের টাঙ্গাইল"
+              className="h-10 w-auto object-contain"
+            />
             <div>
               <div className="font-black text-primary text-lg leading-none">আমাদের টাঙ্গাইল</div>
               <div className="text-gray-400 text-[10px]">সেবা ও তথ্য পোর্টাল</div>

@@ -98,7 +98,7 @@ export default function IslamicPage() {
 
   return (
     <ServicePageLayout
-      title="ইসলামিক সেবা"
+      title="ধর্মীয় সেবা"
       subtitle="মসজিদ, মন্দির, নামাজ, রোজা, হজ্জ ও জাকাতের তথ্য"
       emoji="🕌"
       accentColor="bg-emerald-700"
