@@ -16,6 +16,7 @@ const pageTitles: Record<string, string> = {
   "/admin/pharmacy":           "ফার্মেসি",
   "/admin/education":          "শিক্ষা প্রতিষ্ঠান",
   "/admin/coaching":           "কোচিং ও টিউশন",
+  "/admin/results":            "রেজাল্ট লিংক",
   "/admin/jobs":               "চাকরি বিজ্ঞাপন",
   "/admin/transport":          "পরিবহন",
   "/admin/finance":            "আর্থিক সেবা",

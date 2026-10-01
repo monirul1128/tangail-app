@@ -82,7 +82,9 @@ export default function GovtPage() {
     <ServicePageLayout title="সরকারি সেবা" subtitle="টাঙ্গাইল জেলার সকল সরকারি সেবার তথ্য" emoji="🏛️" accentColor="bg-indigo-700">
       <div className="mb-6"><FilterChips options={typeFilters} selected={type} onChange={setType} allLabel="সব সেবা" /></div>
       <div className="space-y-4">
-        {services.map(cat => (
+        {services
+          .filter(cat => !type || cat.items.some(i => i.link.includes(type) || cat.cat.toLowerCase().includes(type)))
+          .map(cat => (
           <div key={cat.cat} className={`rounded-2xl border p-4 ${cat.color}`}>
             <h3 className={`font-bold text-sm mb-3 flex items-center gap-2 ${cat.titleColor}`}>
               <span>{cat.emoji}</span>{cat.cat}

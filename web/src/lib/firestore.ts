@@ -21,7 +21,7 @@ function fromDocs<T>(snap: { docs: any[] }): T[] {
 
 // ─── Hospitals ────────────────────────────────────────────────────────────────
 export async function getHospitals(filters?: { upazilaId?: string; type?: string }): Promise<Hospital[]> {
-  const constraints: QueryConstraint[] = [orderBy("rating", "desc"), limit(50)];
+  const constraints: QueryConstraint[] = [orderBy("rating", "desc"), limit(500)];
   if (filters?.upazilaId) constraints.unshift(where("upazilaId", "==", filters.upazilaId));
   if (filters?.type)      constraints.unshift(where("type",      "==", filters.type));
   const snap = await getDocs(query(collection(db, COLLECTIONS.hospitals), ...constraints));
@@ -36,7 +36,7 @@ export async function getHospitalById(id: string): Promise<Hospital | null> {
 
 // ─── Doctors ──────────────────────────────────────────────────────────────────
 export async function getDoctors(filters?: { specialty?: string; upazilaId?: string }): Promise<Doctor[]> {
-  const constraints: QueryConstraint[] = [orderBy("rating", "desc"), limit(50)];
+  const constraints: QueryConstraint[] = [orderBy("rating", "desc"), limit(500)];
   if (filters?.specialty) constraints.unshift(where("specialty", "==", filters.specialty));
   if (filters?.upazilaId) constraints.unshift(where("upazilaId", "==", filters.upazilaId));
   const snap = await getDocs(query(collection(db, COLLECTIONS.doctors), ...constraints));
@@ -51,7 +51,7 @@ export async function getDoctorById(id: string): Promise<Doctor | null> {
 
 // ─── Blood Donors ─────────────────────────────────────────────────────────────
 export async function getBloodDonors(filters?: { bloodGroup?: string; upazilaId?: string }): Promise<BloodDonor[]> {
-  const constraints: QueryConstraint[] = [where("isAvailable", "==", true), limit(50)];
+  const constraints: QueryConstraint[] = [where("isAvailable", "==", true), limit(500)];
   if (filters?.bloodGroup) constraints.unshift(where("bloodGroup", "==", filters.bloodGroup));
   if (filters?.upazilaId)  constraints.unshift(where("upazilaId",  "==", filters.upazilaId));
   const snap = await getDocs(query(collection(db, COLLECTIONS.blood_donors), ...constraints));
@@ -67,7 +67,7 @@ export async function registerBloodDonor(donor: Omit<BloodDonor, "id">): Promise
 
 // ─── Ambulances ───────────────────────────────────────────────────────────────
 export async function getAmbulances(upazilaId?: string): Promise<Ambulance[]> {
-  const constraints: QueryConstraint[] = [where("isAvailable", "==", true), limit(50)];
+  const constraints: QueryConstraint[] = [where("isAvailable", "==", true), limit(500)];
   if (upazilaId) constraints.unshift(where("upazilaId", "==", upazilaId));
   const snap = await getDocs(query(collection(db, COLLECTIONS.ambulances), ...constraints));
   return fromDocs<Ambulance>(snap);
@@ -101,7 +101,7 @@ export async function getEmergencyContacts(): Promise<EmergencyContact[]> {
 
 // ─── Pharmacies ───────────────────────────────────────────────────────────────
 export async function getPharmacies(upazilaId?: string): Promise<Pharmacy[]> {
-  const constraints: QueryConstraint[] = [orderBy("name"), limit(50)];
+  const constraints: QueryConstraint[] = [orderBy("name"), limit(500)];
   if (upazilaId) constraints.unshift(where("upazilaId", "==", upazilaId));
   const snap = await getDocs(query(collection(db, COLLECTIONS.pharmacies), ...constraints));
   return fromDocs<Pharmacy>(snap);
@@ -142,7 +142,7 @@ export async function submitBusinessRegistration(data: Omit<BusinessRegistration
 export async function getTransportServices(filters?: {
   type?: string; upazilaId?: string;
 }): Promise<TransportService[]> {
-  const constraints: QueryConstraint[] = [orderBy("name"), limit(50)];
+  const constraints: QueryConstraint[] = [orderBy("name"), limit(500)];
   if (filters?.type)      constraints.unshift(where("type",      "==", filters.type));
   if (filters?.upazilaId) constraints.unshift(where("upazilaId", "==", filters.upazilaId));
   const snap = await getDocs(query(collection(db, COLLECTIONS.transport), ...constraints));
@@ -153,7 +153,7 @@ export async function getTransportServices(filters?: {
 export async function getFinanceServices(filters?: {
   type?: string; upazilaId?: string;
 }): Promise<FinanceService[]> {
-  const constraints: QueryConstraint[] = [orderBy("name"), limit(50)];
+  const constraints: QueryConstraint[] = [orderBy("name"), limit(500)];
   if (filters?.type)      constraints.unshift(where("type",      "==", filters.type));
   if (filters?.upazilaId) constraints.unshift(where("upazilaId", "==", filters.upazilaId));
   const snap = await getDocs(query(collection(db, COLLECTIONS.finance), ...constraints));
@@ -164,7 +164,7 @@ export async function getFinanceServices(filters?: {
 export async function getProfessionals(filters?: {
   type?: string; upazilaId?: string;
 }): Promise<Professional[]> {
-  const constraints: QueryConstraint[] = [orderBy("name"), limit(50)];
+  const constraints: QueryConstraint[] = [orderBy("name"), limit(500)];
   if (filters?.type)      constraints.unshift(where("type",      "==", filters.type));
   if (filters?.upazilaId) constraints.unshift(where("upazilaId", "==", filters.upazilaId));
   const snap = await getDocs(query(collection(db, COLLECTIONS.professionals), ...constraints));
@@ -175,7 +175,7 @@ export async function getProfessionals(filters?: {
 export async function getOrganizations(filters?: {
   type?: string; upazilaId?: string;
 }): Promise<Organization[]> {
-  const constraints: QueryConstraint[] = [orderBy("name"), limit(50)];
+  const constraints: QueryConstraint[] = [orderBy("name"), limit(500)];
   if (filters?.type)      constraints.unshift(where("type",      "==", filters.type));
   if (filters?.upazilaId) constraints.unshift(where("upazilaId", "==", filters.upazilaId));
   const snap = await getDocs(query(collection(db, COLLECTIONS.organizations), ...constraints));
@@ -196,7 +196,7 @@ export async function getJobs(type?: string): Promise<JobPosting[]> {
 export async function getTourismSpots(filters?: {
   category?: string; upazilaId?: string;
 }): Promise<TourismSpot[]> {
-  const constraints: QueryConstraint[] = [orderBy("name"), limit(50)];
+  const constraints: QueryConstraint[] = [orderBy("name"), limit(500)];
   if (filters?.category)  constraints.unshift(where("category",  "==", filters.category));
   if (filters?.upazilaId) constraints.unshift(where("upazilaId", "==", filters.upazilaId));
   const snap = await getDocs(query(collection(db, COLLECTIONS.tourism), ...constraints));
@@ -215,7 +215,7 @@ export async function getGalleryPhotos(category?: string): Promise<GalleryPhoto[
 
 // ─── Notable Persons ──────────────────────────────────────────────────────────
 export async function getNotablePersons(category?: string): Promise<NotablePerson[]> {
-  const constraints: QueryConstraint[] = [orderBy("name"), limit(50)];
+  const constraints: QueryConstraint[] = [orderBy("name"), limit(500)];
   if (category) constraints.unshift(where("category", "==", category));
   const snap = await getDocs(query(collection(db, COLLECTIONS.notable_persons), ...constraints));
   return fromDocs<NotablePerson>(snap);

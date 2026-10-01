@@ -111,7 +111,7 @@ const serviceCategories = [
       { label: "জন্ম নিবন্ধন",     emoji: "📋", href: "/govt?type=birth"       },
       { label: "ই-নামজারি",         emoji: "🏡", href: "/govt?type=land"        },
       { label: "ভোটার সেবা",        emoji: "🗳️", href: "/govt?type=voter"       },
-      { label: "বিদ্যুৎ অফিস",     emoji: "⚡", href: "/govt?type=electricity" },
+      { label: "বিদ্যুৎ অফিস",     emoji: "⚡", href: "/electricity"           },
       { label: "আদালত",             emoji: "⚖️", href: "/govt?type=court"       },
       { label: "চাকরির বিজ্ঞাপন",  emoji: "💼", href: "/jobs"                  },
     ],
@@ -152,7 +152,7 @@ const serviceCategories = [
       { label: "রেস্টুরেন্ট",     emoji: "🍽️", href: "/business?type=restaurant" },
       { label: "বিউটি পার্লার",   emoji: "💅", href: "/business?type=beauty"     },
       { label: "নার্সারি",         emoji: "🌱", href: "/business?type=nursery"    },
-      { label: "কৃষি সেবা",       emoji: "🌾", href: "/business?type=agri"       },
+      { label: "কৃষি সেবা",       emoji: "🌾", href: "/business?type=agriculture" },
     ],
   },
   {

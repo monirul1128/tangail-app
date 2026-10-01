@@ -20,6 +20,7 @@ const navItems = [
   { href: "/admin/pharmacy",       label: "ফার্মেসি",            icon: Pill             },
   { href: "/admin/education",      label: "শিক্ষা প্রতিষ্ঠান",   icon: GraduationCap    },
   { href: "/admin/coaching",       label: "কোচিং/টিউশন",         icon: BookOpen         },
+  { href: "/admin/results",        label: "রেজাল্ট লিংক",         icon: Star             },
   { href: "/admin/jobs",           label: "চাকরি",               icon: Briefcase        },
   { href: "/admin/transport",      label: "পরিবহন",              icon: Bus              },
   { href: "/admin/finance",        label: "আর্থিক সেবা",         icon: Banknote         },

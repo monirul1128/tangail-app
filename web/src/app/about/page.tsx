@@ -258,8 +258,8 @@ export default function AboutPage() {
           যোগাযোগ করুন
         </h2>
         <div className="space-y-2 text-sm text-gray-600">
-          <p className="flex items-center gap-2">📧 <span>info@amadeртangail.com</span></p>
-          <p className="flex items-center gap-2">📞 <span>01711000000</span></p>
+          <p className="flex items-center gap-2">📧 <span>ariful.online365@gmail.com</span></p>
+          <p className="flex items-center gap-2">📞 <span>+974 5204 3903</span></p>
           <p className="flex items-center gap-2">📍 <span>টাঙ্গাইল জেলা সদর, টাঙ্গাইল, বাংলাদেশ</span></p>
         </div>
       </div>
