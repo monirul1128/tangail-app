@@ -4,6 +4,7 @@ import { Droplets } from "lucide-react";
 import { getBloodDonors } from "@/lib/firestore";
 import type { BloodDonor } from "@/models/types";
 import BloodDonorClient from "./BloodDonorClient";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "রক্তদাতা খুঁজুন",
@@ -38,7 +39,9 @@ export default async function BloodDonorPage() {
         </Link>
       </div>
 
-      <BloodDonorClient donors={donors} />
+      <Suspense fallback={<div className="py-10 text-center text-gray-400">লোড হচ্ছে...</div>}>
+        <BloodDonorClient donors={donors} />
+      </Suspense>
     </div>
   );
 }

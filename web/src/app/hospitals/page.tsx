@@ -7,6 +7,7 @@ import type { Hospital } from "@/models/types";
 import VerifiedBadge from "@/components/ui/VerifiedBadge";
 import StarRating from "@/components/ui/StarRating";
 import HospitalsClient from "./HospitalsClient";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "হাসপাতাল",
@@ -29,7 +30,9 @@ export default async function HospitalsPage() {
       </div>
 
       {/* Client-side filters + list */}
-      <HospitalsClient hospitals={hospitals} />
+      <Suspense fallback={<div className="py-10 text-center text-gray-400">লোড হচ্ছে...</div>}>
+        <HospitalsClient hospitals={hospitals} />
+      </Suspense>
     </div>
   );
 }

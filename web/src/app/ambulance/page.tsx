@@ -4,6 +4,7 @@ import { getAmbulances } from "@/lib/firestore";
 import { AMBULANCE_TYPES, UPAZILAS } from "@/lib/constants";
 import type { Ambulance } from "@/models/types";
 import AmbulanceClient from "./AmbulanceClient";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "অ্যাম্বুলেন্স সার্ভিস",
@@ -39,7 +40,9 @@ export default async function AmbulancePage() {
         </a>
       </div>
 
-      <AmbulanceClient ambulances={ambulances} />
+      <Suspense fallback={<div className="py-10 text-center text-gray-400">লোড হচ্ছে...</div>}>
+        <AmbulanceClient ambulances={ambulances} />
+      </Suspense>
     </div>
   );
 }

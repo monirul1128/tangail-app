@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getDoctors } from "@/lib/firestore";
 import type { Doctor } from "@/models/types";
 import DoctorsClient from "./DoctorsClient";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "বিশেষজ্ঞ ডাক্তার",
@@ -21,7 +22,9 @@ export default async function DoctorsPage() {
           টাঙ্গাইল জেলার {doctors.length}জন বিশেষজ্ঞ ডাক্তারের তালিকা
         </p>
       </div>
-      <DoctorsClient doctors={doctors} />
+      <Suspense fallback={<div className="py-10 text-center text-gray-400">লোড হচ্ছে...</div>}>
+        <DoctorsClient doctors={doctors} />
+      </Suspense>
     </div>
   );
 }

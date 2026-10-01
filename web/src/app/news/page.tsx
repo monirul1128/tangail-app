@@ -5,6 +5,7 @@ import { getNews } from "@/lib/firestore";
 import type { NewsArticle } from "@/models/types";
 import { formatDistanceToNow } from "date-fns";
 import NewsClient from "./NewsClient";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "খবর ও নোটিশ",
@@ -22,7 +23,9 @@ export default async function NewsPage() {
         <h1 className="text-3xl font-bold text-gray-800 mb-2">সর্বশেষ খবর ও নোটিশ</h1>
         <p className="text-gray-500">টাঙ্গাইল জেলার সর্বশেষ খবর এবং সরকারি নোটিশ</p>
       </div>
-      <NewsClient newsList={newsList} />
+      <Suspense fallback={<div className="py-10 text-center text-gray-400">লোড হচ্ছে...</div>}>
+        <NewsClient newsList={newsList} />
+      </Suspense>
     </div>
   );
 }
