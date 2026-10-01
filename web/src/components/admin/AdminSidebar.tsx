@@ -6,7 +6,7 @@ import {
   LayoutDashboard, Hospital, Stethoscope, Ambulance, Droplets,
   Newspaper, Phone, Pill, GraduationCap, Briefcase, Bus,
   Banknote, Wrench, Users, MapPin, Image, ShoppingBag,
-  LogOut, ChevronRight, X, Store, BookOpen, Zap, Landmark,
+  LogOut, ChevronRight, X, Store, BookOpen, Zap, Landmark, Star,
 } from "lucide-react";
 
 const navItems = [
@@ -27,10 +27,11 @@ const navItems = [
   { href: "/admin/professionals",  label: "পেশাদার সেবা",        icon: Wrench           },
   { href: "/admin/organizations",  label: "সংগঠন",               icon: Users            },
   { href: "/admin/business",       label: "ব্যবসা ও বাণিজ্য",   icon: Store            },
-  { href: "/admin/islamic",        label: "ধর্মীয় সেবা",         icon: Landmark         },
-  { href: "/admin/tourism",        label: "পর্যটন",              icon: MapPin           },
-  { href: "/admin/gallery",        label: "গ্যালারি",             icon: Image            },
-  { href: "/admin/business-requests", label: "ব্যবসা আবেদন",    icon: ShoppingBag      },
+  { href: "/admin/islamic",           label: "ধর্মীয় সেবা",        icon: Landmark         },
+  { href: "/admin/tourism",           label: "পর্যটন",              icon: MapPin           },
+  { href: "/admin/notable-persons",   label: "গুণিজন",              icon: Star             },
+  { href: "/admin/gallery",           label: "গ্যালারি",             icon: Image            },
+  { href: "/admin/business-requests", label: "ব্যবসা আবেদন",       icon: ShoppingBag      },
 ];
 
 interface Props {

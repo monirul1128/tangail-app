@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ServicePageLayout from "@/components/ui/ServicePageLayout";
@@ -22,10 +23,11 @@ const typeBadgeColor: Record<string, string> = {
 };
 
 export default function BusinessPage() {
+  const searchParams = useSearchParams();
   const [all, setAll]         = useState<ServiceItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch]   = useState("");
-  const [type, setType]       = useState("");
+  const [type, setType]       = useState(searchParams.get("type") ?? "");
 
   useEffect(() => {
     getDocs(query(collection(db, "businesses"), where("isVerified", "==", true), orderBy("name")))

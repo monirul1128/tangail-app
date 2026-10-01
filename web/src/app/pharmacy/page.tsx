@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ServicePageLayout from "@/components/ui/ServicePageLayout";
@@ -11,10 +12,11 @@ import { UPAZILAS } from "@/lib/constants";
 const upazilaFilters = [...UPAZILAS].map(u => ({ id: u.id, label: u.name }));
 
 export default function PharmacyPage() {
+  const searchParams = useSearchParams();
   const [all, setAll]         = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch]   = useState("");
-  const [upazila, setUpazila] = useState("");
+  const [upazila, setUpazila] = useState(searchParams.get("upazila") ?? "");
 
   useEffect(() => {
     getDocs(query(collection(db, "pharmacies"), orderBy("name")))

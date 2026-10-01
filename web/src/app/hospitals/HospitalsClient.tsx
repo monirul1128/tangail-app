@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { MapPin, Bed, Clock } from "lucide-react";
 import { UPAZILAS, HOSPITAL_TYPES } from "@/lib/constants";
@@ -14,8 +15,9 @@ interface Props {
 }
 
 export default function HospitalsClient({ hospitals }: Props) {
-  const [selectedUpazila, setSelectedUpazila] = useState("");
-  const [selectedType, setSelectedType]       = useState("");
+  const searchParams = useSearchParams();
+  const [selectedUpazila, setSelectedUpazila] = useState(searchParams.get("upazila") ?? "");
+  const [selectedType, setSelectedType]       = useState(searchParams.get("type") ?? "");
   const [search, setSearch]                   = useState("");
 
   const filtered = hospitals.filter((h) => {

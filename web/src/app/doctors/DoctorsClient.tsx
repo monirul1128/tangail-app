@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { MapPin, Clock, Stethoscope } from "lucide-react";
 import { SPECIALTIES, UPAZILAS } from "@/lib/constants";
@@ -13,7 +14,8 @@ import CallButton from "@/components/ui/CallButton";
 interface Props { doctors: Doctor[] }
 
 export default function DoctorsClient({ doctors }: Props) {
-  const [selectedSpecialty, setSelectedSpecialty] = useState("");
+  const searchParams = useSearchParams();
+  const [selectedSpecialty, setSelectedSpecialty] = useState(searchParams.get("spec") ?? "");
   const [search, setSearch]                       = useState("");
 
   const filtered = doctors.filter((d) => {

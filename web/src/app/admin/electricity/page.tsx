@@ -83,6 +83,8 @@ export default function AdminElectricityPage() {
       else if (selected) await adminUpdate("electricity_offices", selected.id, form);
       await load();
       setModal(null);
+    } catch (e: any) {
+      alert("সংরক্ষণ ব্যর্থ: " + (e?.message ?? "Firebase rules চেক করুন"));
     } finally { setSaving(false); }
   };
 

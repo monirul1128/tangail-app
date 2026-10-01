@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ServicePageLayout from "@/components/ui/ServicePageLayout";
@@ -19,11 +20,12 @@ const typeBadgeColor: Record<string, string> = {
 };
 
 export default function FinancePage() {
+  const searchParams = useSearchParams();
   const [all, setAll]         = useState<ServiceItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch]   = useState("");
-  const [type, setType]       = useState("");
-  const [upazila, setUpazila] = useState("");
+  const [type, setType]       = useState(searchParams.get("type") ?? "");
+  const [upazila, setUpazila] = useState(searchParams.get("upazila") ?? "");
 
   useEffect(() => {
     getDocs(query(collection(db, "finance"), orderBy("name")))

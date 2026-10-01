@@ -2,68 +2,46 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
-    function isAdmin() {
-      return request.auth != null && request.auth.token.admin == true;
-    }
-    function isOwner(userId) {
-      return request.auth != null && request.auth.uid == userId;
-    }
     function isLoggedIn() {
       return request.auth != null;
     }
 
-    // ── Public read / Admin write collections ─────────────────────────────────
-    // hospitals, doctors, ambulances, emergency_contacts, upazilas,
-    // news, pharmacies, education, transport, finance, professionals,
-    // organizations, jobs, tourism, gallery, notable_persons
-    match /hospitals/{id}           { allow read: if true; allow write: if isAdmin(); }
-    match /doctors/{id}             { allow read: if true; allow write: if isAdmin(); }
-    match /ambulances/{id}          { allow read: if true; allow write: if isAdmin(); }
-    match /emergency_contacts/{id}  { allow read: if true; allow write: if isAdmin(); }
-    match /upazilas/{id}            { allow read: if true; allow write: if isAdmin(); }
-    match /news/{id}                { allow read: if true; allow write: if isAdmin(); }
-    match /pharmacies/{id}          { allow read: if true; allow write: if isAdmin(); }
-    match /education/{id}           { allow read: if true; allow write: if isAdmin(); }
-    match /transport/{id}           { allow read: if true; allow write: if isAdmin(); }
-    match /finance/{id}             { allow read: if true; allow write: if isAdmin(); }
-    match /professionals/{id}       { allow read: if true; allow write: if isAdmin(); }
-    match /organizations/{id}       { allow read: if true; allow write: if isAdmin(); }
-    match /jobs/{id}                { allow read: if true; allow write: if isAdmin(); }
-    match /tourism/{id}             { allow read: if true; allow write: if isAdmin(); }
-    match /notable_persons/{id}     { allow read: if true; allow write: if isAdmin(); }
+    // ── All service collections: public read, authenticated write ─────────────
+    match /hospitals/{id}            { allow read: if true; allow write: if isLoggedIn(); }
+    match /doctors/{id}              { allow read: if true; allow write: if isLoggedIn(); }
+    match /ambulances/{id}           { allow read: if true; allow write: if isLoggedIn(); }
+    match /emergency_contacts/{id}   { allow read: if true; allow write: if isLoggedIn(); }
+    match /upazilas/{id}             { allow read: if true; allow write: if isLoggedIn(); }
+    match /news/{id}                 { allow read: if true; allow write: if isLoggedIn(); }
+    match /pharmacies/{id}           { allow read: if true; allow write: if isLoggedIn(); }
+    match /education/{id}            { allow read: if true; allow write: if isLoggedIn(); }
+    match /transport/{id}            { allow read: if true; allow write: if isLoggedIn(); }
+    match /finance/{id}              { allow read: if true; allow write: if isLoggedIn(); }
+    match /professionals/{id}        { allow read: if true; allow write: if isLoggedIn(); }
+    match /organizations/{id}        { allow read: if true; allow write: if isLoggedIn(); }
+    match /jobs/{id}                 { allow read: if true; allow write: if isLoggedIn(); }
+    match /tourism/{id}              { allow read: if true; allow write: if isLoggedIn(); }
+    match /notable_persons/{id}      { allow read: if true; allow write: if isLoggedIn(); }
+    match /islamic_places/{id}       { allow read: if true; allow write: if isLoggedIn(); }
+    match /electricity_offices/{id}  { allow read: if true; allow write: if isLoggedIn(); }
+    match /businesses/{id}           { allow read: if true; allow write: if isLoggedIn(); }
+    match /business_requests/{id}    { allow read: if true; allow write: if isLoggedIn(); }
 
-    // ── Gallery: public read, authenticated create, admin approve ────────────
+    // Gallery: public read, authenticated write
     match /gallery/{id} {
-      allow read:   if true;
-      allow create: if isLoggedIn();
-      allow update, delete: if isAdmin();
+      allow read:  if true;
+      allow write: if isLoggedIn();
     }
 
-    // ── Blood donors: public read, self register & update ────────────────────
-    match /blood_donors/{donorId} {
-      allow read:   if true;
-      allow create: if isLoggedIn();
-      allow update, delete: if isOwner(resource.data.userId) || isAdmin();
+    // Blood donors: public read, authenticated write
+    match /blood_donors/{id} {
+      allow read:  if true;
+      allow write: if isLoggedIn();
     }
 
-    // ── Businesses: verified public read, authenticated create, owner update ─
-    match /businesses/{businessId} {
-      allow read:   if true;
-      allow create: if isLoggedIn();
-      allow update, delete: if isOwner(resource.data.userId) || isAdmin();
-    }
-
-    // ── Business registration requests: authenticated submit, admin manage ───
-    match /business_requests/{id} {
-      allow create: if isLoggedIn();
-      allow read, update, delete: if isAdmin();
-    }
-
-    // ── Users: own profile only, admin can read all ───────────────────────────
+    // Users: authenticated read/write
     match /users/{userId} {
-      allow read, write: if isOwner(userId);
-      allow read:        if isAdmin();
+      allow read, write: if isLoggedIn();
     }
   }
 }

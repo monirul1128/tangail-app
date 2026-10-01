@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { MapPin, Phone } from "lucide-react";
 import { BLOOD_GROUPS, UPAZILAS } from "@/lib/constants";
 import type { BloodDonor } from "@/models/types";
@@ -19,8 +20,9 @@ interface Props {
 }
 
 export default function BloodDonorClient({ donors }: Props) {
-  const [selectedGroup,   setSelectedGroup]   = useState("");
-  const [selectedUpazila, setSelectedUpazila] = useState("");
+  const searchParams = useSearchParams();
+  const [selectedGroup,   setSelectedGroup]   = useState(searchParams.get("group") ?? "");
+  const [selectedUpazila, setSelectedUpazila] = useState(searchParams.get("upazila") ?? "");
 
   const filtered = donors.filter((d) => {
     const matchesGroup   = !selectedGroup   || d.bloodGroup === selectedGroup;

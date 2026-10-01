@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Newspaper } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
@@ -18,7 +19,8 @@ const CATEGORIES = [
 interface Props { newsList: NewsArticle[] }
 
 export default function NewsClient({ newsList }: Props) {
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const searchParams = useSearchParams();
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") ?? "");
 
   const filtered =
     selectedCategory === "notice"

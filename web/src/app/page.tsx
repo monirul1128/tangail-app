@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { getLatestNews } from "@/lib/firestore";
 import SearchBar from "@/components/ui/SearchBar";
+import GalleryPreview from "@/components/ui/GalleryPreview";
 import type { NewsArticle } from "@/models/types";
 
 export const revalidate = 60;
@@ -79,7 +80,7 @@ const serviceCategories = [
       { label: "বিশ্ববিদ্যালয়",    emoji: "🎓", href: "/education?type=university"},
       { label: "মাদ্রাসা",           emoji: "📖", href: "/education?type=madrasa"   },
       { label: "কোচিং সেন্টার",     emoji: "✏️", href: "/education?type=coaching"  },
-      { label: "শিক্ষক",            emoji: "👨‍🏫", href: "/education?type=teacher"   },
+      { label: "শিক্ষক",            emoji: "👨‍🏫", href: "/professionals?type=teacher" },
       { label: "টিউশন সেবা",        emoji: "📝", href: "/education?type=tuition"   },
       { label: "লাইব্রেরি",         emoji: "📚", href: "/education?type=library"   },
       { label: "ট্রেনিং সেন্টার",   emoji: "🖥️", href: "/education?type=training"  },
@@ -573,23 +574,7 @@ export default async function HomePage() {
               সব দেখুন <ArrowRight size={14} />
             </Link>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {[
-              { src: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=400&q=70", caption: "টাঙ্গাইল সদর" },
-              { src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=70",   caption: "মধুপুর বন" },
-              { src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=70", caption: "যমুনা নদী" },
-              { src: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=400&q=70", caption: "আতিয়া মসজিদ" },
-            ].map((photo, i) => (
-              <div key={i} className="relative aspect-square rounded-2xl overflow-hidden shadow-sm group cursor-pointer">
-                <img src={photo.src} alt={photo.caption}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="absolute bottom-2 left-0 right-0 text-center text-white text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                  {photo.caption}
-                </div>
-              </div>
-            ))}
-          </div>
+          <GalleryPreview />
         </section>
 
       </div>{/* end max-w-6xl */}

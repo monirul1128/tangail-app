@@ -91,6 +91,8 @@ export default function AdminIslamicPage() {
       else if (selected) await adminUpdate("islamic_places", selected.id, form);
       await load();
       setModal(null);
+    } catch (e: any) {
+      alert("সংরক্ষণ ব্যর্থ: " + (e?.message ?? "Firebase rules চেক করুন"));
     } finally { setSaving(false); }
   };
 

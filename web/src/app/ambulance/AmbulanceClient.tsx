@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Phone, Clock, MapPin, User } from "lucide-react";
 import { AMBULANCE_TYPES, UPAZILAS } from "@/lib/constants";
 import type { Ambulance } from "@/models/types";
@@ -10,8 +11,9 @@ import VerifiedBadge from "@/components/ui/VerifiedBadge";
 interface Props { ambulances: Ambulance[] }
 
 export default function AmbulanceClient({ ambulances }: Props) {
-  const [selectedType,    setSelectedType]    = useState("");
-  const [selectedUpazila, setSelectedUpazila] = useState("");
+  const searchParams = useSearchParams();
+  const [selectedType,    setSelectedType]    = useState(searchParams.get("type") ?? "");
+  const [selectedUpazila, setSelectedUpazila] = useState(searchParams.get("upazila") ?? "");
 
   const filtered = ambulances.filter((a) => {
     const matchesType    = !selectedType    || a.type      === selectedType;
