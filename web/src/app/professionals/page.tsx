@@ -6,13 +6,13 @@ import ServicePageLayout from "@/components/ui/ServicePageLayout";
 import ServiceCard, { ServiceItem } from "@/components/ui/ServiceCard";
 import FilterChips from "@/components/ui/FilterChips";
 import { Search } from "lucide-react";
-import { PROFESSIONAL_TYPES } from "@/lib/constants";
+import { PROFESSIONAL_TYPES, UPAZILAS } from "@/lib/constants";
 
-// Teacher is also in professionals
 const typeFilters = [
   ...Object.entries(PROFESSIONAL_TYPES).map(([id, label]) => ({ id, label })),
   { id: "teacher", label: "শিক্ষক" },
 ];
+const upazilaFilters = [...UPAZILAS].map(u => ({ id: u.id, label: u.name }));
 
 const typeBadgeColor: Record<string, string> = {
   lawyer:     "bg-red-50 text-red-700",
@@ -24,10 +24,11 @@ const typeBadgeColor: Record<string, string> = {
 };
 
 export default function ProfessionalsPage() {
-  const [all, setAll]         = useState<ServiceItem[]>([]);
+  const [all, setAll]         = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch]   = useState("");
   const [type, setType]       = useState("");
+  const [upazila, setUpazila] = useState("");
 
   useEffect(() => {
     getDocs(query(collection(db, "professionals"), orderBy("name")))
@@ -36,21 +37,25 @@ export default function ProfessionalsPage() {
           const x = d.data();
           const typeName = PROFESSIONAL_TYPES[x.type] ?? (x.type === "teacher" ? "শিক্ষক" : x.type);
           return {
-            id: d.id, name: x.name, subtitle: x.specialization ?? typeName,
+            id: d.id, name: x.name,
+            subtitle: x.specialization ?? typeName,
             address: x.address, phone: x.phone ?? "", hours: x.hours ?? "",
             verified: x.isVerified,
             badge: x.type,
             badgeColor: typeBadgeColor[x.type] ?? "bg-gray-100 text-gray-600",
             extra: x.experience ? `অভিজ্ঞতা: ${x.experience}` : "",
-          } as ServiceItem;
+            _upazilaId: x.upazilaId,
+          };
         }));
       })
+      .catch(() => setAll([]))
       .finally(() => setLoading(false));
   }, []);
 
   const filtered = all.filter(p =>
-    (!search || p.name.toLowerCase().includes(search.toLowerCase()) || p.subtitle?.toLowerCase().includes(search.toLowerCase())) &&
-    (!type   || p.badge === type)
+    (!search  || p.name.toLowerCase().includes(search.toLowerCase()) || p.subtitle?.toLowerCase().includes(search.toLowerCase())) &&
+    (!type    || p.badge === type) &&
+    (!upazila || p._upazilaId === upazila)
   );
 
   return (
@@ -59,10 +64,14 @@ export default function ProfessionalsPage() {
         <Search size={15} className="text-gray-400" />
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="নাম বা পেশা..." className="flex-1 outline-none text-sm bg-transparent" />
       </div>
-      <div className="mb-5">
+      <div className="mb-3">
+        <p className="text-xs text-gray-500 font-semibold mb-1.5">পেশা</p>
         <FilterChips options={typeFilters} selected={type} onChange={setType} allLabel="সব পেশা" />
       </div>
-
+      <div className="mb-5">
+        <p className="text-xs text-gray-500 font-semibold mb-1.5">উপজেলা</p>
+        <FilterChips options={upazilaFilters} selected={upazila} onChange={setUpazila} allLabel="সব উপজেলা" />
+      </div>
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[...Array(4)].map((_, i) => <div key={i} className="bg-white rounded-2xl p-4 animate-pulse h-28 border border-gray-100" />)}

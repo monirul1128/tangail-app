@@ -6,9 +6,10 @@ import ServicePageLayout from "@/components/ui/ServicePageLayout";
 import ServiceCard, { ServiceItem } from "@/components/ui/ServiceCard";
 import FilterChips from "@/components/ui/FilterChips";
 import { Search } from "lucide-react";
-import { FINANCE_TYPES } from "@/lib/constants";
+import { FINANCE_TYPES, UPAZILAS } from "@/lib/constants";
 
 const typeFilters = Object.entries(FINANCE_TYPES).map(([id, label]) => ({ id, label }));
+const upazilaFilters = [...UPAZILAS].map(u => ({ id: u.id, label: u.name }));
 
 const typeBadgeColor: Record<string, string> = {
   bank:           "bg-blue-50 text-blue-700",
@@ -22,12 +23,14 @@ export default function FinancePage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch]   = useState("");
   const [type, setType]       = useState("");
+  const [upazila, setUpazila] = useState("");
 
   useEffect(() => {
     getDocs(query(collection(db, "finance"), orderBy("name")))
       .then(snap => {
         setAll(snap.docs.map(d => {
           const x = d.data();
+          const uName = UPAZILAS.find(u => u.id === x.upazilaId)?.name ?? "";
           return {
             id: d.id, name: x.name,
             subtitle: x.isGovt ? "সরকারি" : FINANCE_TYPES[x.type] ?? x.type,
@@ -35,16 +38,20 @@ export default function FinancePage() {
             verified: x.isVerified,
             badge: x.type,
             badgeColor: typeBadgeColor[x.type] ?? "bg-gray-100 text-gray-600",
-          } as ServiceItem;
+            extra: uName,
+            _upazilaId: x.upazilaId,
+          } as ServiceItem & { _upazilaId: string };
         }));
       })
+      .catch(() => setAll([]))
       .finally(() => setLoading(false));
   }, []);
 
-  const filtered = all.filter(f =>
-    (!search || f.name.toLowerCase().includes(search.toLowerCase()) || f.address?.toLowerCase().includes(search.toLowerCase())) &&
-    (!type   || f.badge === type)
-  );
+  const filtered = (all as any[]).filter((f: any) =>
+    (!search  || f.name.toLowerCase().includes(search.toLowerCase()) || f.address?.toLowerCase().includes(search.toLowerCase())) &&
+    (!type    || f.badge === type) &&
+    (!upazila || f._upazilaId === upazila)
+  ) as ServiceItem[];
 
   return (
     <ServicePageLayout title="আর্থিক সেবা" subtitle="টাঙ্গাইল জেলার ব্যাংক, এটিএম ও আর্থিক সেবা" emoji="🏦" accentColor="bg-teal-700">
@@ -52,10 +59,14 @@ export default function FinancePage() {
         <Search size={15} className="text-gray-400" />
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="ব্যাংক বা সেবার নাম..." className="flex-1 outline-none text-sm bg-transparent" />
       </div>
-      <div className="mb-5">
+      <div className="mb-3">
+        <p className="text-xs text-gray-500 font-semibold mb-1.5">সেবার ধরন</p>
         <FilterChips options={typeFilters} selected={type} onChange={setType} allLabel="সব ধরন" />
       </div>
-
+      <div className="mb-5">
+        <p className="text-xs text-gray-500 font-semibold mb-1.5">উপজেলা</p>
+        <FilterChips options={upazilaFilters} selected={upazila} onChange={setUpazila} allLabel="সব উপজেলা" />
+      </div>
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[...Array(4)].map((_, i) => <div key={i} className="bg-white rounded-2xl p-4 animate-pulse h-28 border border-gray-100" />)}
