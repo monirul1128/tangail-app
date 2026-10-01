@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ServicePageLayout from "@/components/ui/ServicePageLayout";
 import ServiceCard, { ServiceItem } from "@/components/ui/ServiceCard";
@@ -30,8 +30,9 @@ export default function BusinessPage() {
   const [type, setType]       = useState(searchParams.get("type") ?? "");
 
   useEffect(() => {
-    getDocs(query(collection(db, "businesses"), where("isVerified", "==", true), orderBy("name")))
-      .then(snap => {
+    const fetch = async () => {
+      try {
+        const snap = await getDocs(query(collection(db, "businesses"), orderBy("name")));
         setAll(snap.docs.map(d => {
           const x = d.data();
           const uName = UPAZILAS.find(u => u.id === x.upazilaId)?.name ?? x.upazilaId ?? "";
@@ -46,8 +47,27 @@ export default function BusinessPage() {
             extra: x.description ?? "",
           } as ServiceItem;
         }));
-      })
-      .finally(() => setLoading(false));
+      } catch {
+        // Fallback without ordering
+        try {
+          const snap = await getDocs(collection(db, "businesses"));
+          setAll(snap.docs.map(d => {
+            const x = d.data();
+            const uName = UPAZILAS.find(u => u.id === x.upazilaId)?.name ?? "";
+            return {
+              id: d.id, name: x.name,
+              subtitle: BUSINESS_CATEGORIES[x.category] ?? x.category,
+              address: `${x.address}${uName ? `, ${uName}` : ""}`,
+              phone: x.phone, verified: x.isVerified,
+              badge: x.category,
+              badgeColor: typeBadgeColor[x.category] ?? "bg-gray-100 text-gray-600",
+              extra: x.description ?? "",
+            } as ServiceItem;
+          }));
+        } catch { setAll([]); }
+      } finally { setLoading(false); }
+    };
+    fetch();
   }, []);
 
   const filtered = all.filter(b =>

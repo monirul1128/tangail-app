@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { getLatestNews } from "@/lib/firestore";
 import SearchBar from "@/components/ui/SearchBar";
 import GalleryPreview from "@/components/ui/GalleryPreview";
-import type { NewsArticle } from "@/models/types";
+import NoticePreview from "@/components/ui/NoticePreview";
+import NotablePersonsPreview from "@/components/ui/NotablePersonsPreview";
+import TourismPreview from "@/components/ui/TourismPreview";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 /* ─── Prayer times ─── */
 const prayerTimes = [
@@ -188,8 +189,6 @@ const toBanglaNum = (n: number) =>
   String(n).replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[+d]);
 
 export default async function HomePage() {
-  const latestNews = await getLatestNews(3).catch(() => [] as NewsArticle[]);
-
   const now          = new Date();
   const banglaDay    = ["রবিবার","সোমবার","মঙ্গলবার","বুধবার","বৃহস্পতিবার","শুক্রবার","শনিবার"][now.getDay()];
   const banglaMonths = ["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
@@ -203,7 +202,7 @@ export default async function HomePage() {
       ══════════════════════════════════════════ */}
       <section className="relative w-full overflow-hidden" style={{ minHeight: 340 }}>
         <div className="absolute inset-0 bg-cover bg-center scale-105"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1400&q=80')" }} />
+          style={{ backgroundImage: "url('/images/banner.jpeg')" }} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
 
@@ -480,24 +479,7 @@ export default async function HomePage() {
               সব দেখুন <ArrowRight size={14} />
             </Link>
           </div>
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-50">
-            {[
-              { title: "জেলা প্রশাসন নোটিশ — ভূমি সেবা সপ্তাহ ২০২৬",   date: "২৬ সেপ্টেম্বর ২০২৬" },
-              { title: "টাঙ্গাইল জেলা পরিষদের নতুন বাজেট ঘোষণা",         date: "২৪ সেপ্টেম্বর ২০২৬" },
-              { title: "শেখ হাসিনা মেডিকেলে বিনামূল্যে স্বাস্থ্য সেবা",  date: "২০ সেপ্টেম্বর ২০২৬" },
-            ].map((n, i) => (
-              <div key={i} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer">
-                <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <span className="text-sm">📋</span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-800 line-clamp-1">{n.title}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">{n.date}</p>
-                </div>
-                <ArrowRight size={14} className="text-gray-300 flex-shrink-0" />
-              </div>
-            ))}
-          </div>
+          <NoticePreview />
         </section>
 
         {/* ══════════════════════════════════════════
@@ -505,59 +487,8 @@ export default async function HomePage() {
         ══════════════════════════════════════════ */}
         <section>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* গুণিজন */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 px-4 py-3">
-                <h3 className="font-bold text-white flex items-center gap-2">🏅 গুণিজন</h3>
-                <p className="text-white/70 text-xs mt-0.5">টাঙ্গাইলের বিশিষ্ট ব্যক্তিত্ব</p>
-              </div>
-              <div className="divide-y divide-gray-50">
-                {[
-                  { name: "মাওলানা আব্দুল হামিদ খান ভাসানী", title: "রাজনীতিবিদ ও জননেতা" },
-                  { name: "হুমায়ূন আহমেদ",                   title: "বিখ্যাত লেখক ও চলচ্চিত্রকার" },
-                  { name: "শামসুর রাহমান",                    title: "কবি ও সাহিত্যিক" },
-                ].map((p) => (
-                  <div key={p.name} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer">
-                    <div className="w-8 h-8 bg-emerald-50 rounded-full flex items-center justify-center text-sm flex-shrink-0">🧑</div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-gray-800 truncate">{p.name}</p>
-                      <p className="text-xs text-gray-400">{p.title}</p>
-                    </div>
-                    <ArrowRight size={13} className="text-gray-300 flex-shrink-0" />
-                  </div>
-                ))}
-                <Link href="/notable-persons" className="flex items-center justify-center gap-1 py-3 text-emerald-600 text-sm font-semibold hover:bg-gray-50 transition-colors">
-                  সব দেখুন <ArrowRight size={14} />
-                </Link>
-              </div>
-            </div>
-
-            {/* পর্যটন */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="bg-gradient-to-r from-sky-600 to-sky-500 px-4 py-3">
-                <h3 className="font-bold text-white flex items-center gap-2">🏞️ পর্যটন স্থান</h3>
-                <p className="text-white/70 text-xs mt-0.5">টাঙ্গাইলের দর্শনীয় স্থানসমূহ</p>
-              </div>
-              <div className="divide-y divide-gray-50">
-                {[
-                  { name: "ভারতেশ্বরী হোমস",   loc: "মির্জাপুর"    },
-                  { name: "আতিয়া মসজিদ",       loc: "দেলদুয়ার"   },
-                  { name: "মধুপুর জাতীয় উদ্যান",loc: "মধুপুর"     },
-                ].map((t) => (
-                  <div key={t.name} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer">
-                    <div className="w-8 h-8 bg-sky-50 rounded-lg flex items-center justify-center text-sm flex-shrink-0">📍</div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-gray-800 truncate">{t.name}</p>
-                      <p className="text-xs text-gray-400">{t.loc}</p>
-                    </div>
-                    <ArrowRight size={13} className="text-gray-300 flex-shrink-0" />
-                  </div>
-                ))}
-                <Link href="/tourism" className="flex items-center justify-center gap-1 py-3 text-sky-600 text-sm font-semibold hover:bg-gray-50 transition-colors">
-                  সব দেখুন <ArrowRight size={14} />
-                </Link>
-              </div>
-            </div>
+            <NotablePersonsPreview />
+            <TourismPreview />
           </div>
         </section>
 
