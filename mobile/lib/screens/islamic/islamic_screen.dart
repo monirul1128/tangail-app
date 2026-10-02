@@ -6,7 +6,8 @@ import '../../widgets/info_card.dart';
 import '../../widgets/shimmer_list.dart';
 
 class IslamicScreen extends StatefulWidget {
-  const IslamicScreen({super.key});
+  final String initialType;
+  const IslamicScreen({super.key, this.initialType = ''});
   @override
   State<IslamicScreen> createState() => _IslamicScreenState();
 }
@@ -14,14 +15,14 @@ class IslamicScreen extends StatefulWidget {
 class _IslamicScreenState extends State<IslamicScreen> {
   List<Map<String, dynamic>> _items = [];
   bool _loading = true;
-  String _selectedType = '';
+  late String _selectedType;
 
   static const _typeOptions = [
     ('', 'সব'), ('mosque', 'মসজিদ'), ('temple', 'মন্দির'),
     ('mazar', 'মাজার'), ('church', 'চার্চ'),
   ];
 
-  @override void initState() { super.initState(); _load(); }
+  @override void initState() { super.initState(); _selectedType = widget.initialType; _load(); }
 
   Future<void> _load() async {
     setState(() => _loading = true);

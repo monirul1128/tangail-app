@@ -6,7 +6,8 @@ import '../../widgets/info_card.dart';
 import '../../widgets/shimmer_list.dart';
 
 class TransportScreen extends StatefulWidget {
-  const TransportScreen({super.key});
+  final String initialType;
+  const TransportScreen({super.key, this.initialType = ''});
   @override
   State<TransportScreen> createState() => _TransportScreenState();
 }
@@ -14,7 +15,7 @@ class TransportScreen extends StatefulWidget {
 class _TransportScreenState extends State<TransportScreen> {
   List<Map<String, dynamic>> _items = [];
   bool _loading = true;
-  String _selectedType = '';
+  late String _selectedType;
 
   static const _typeOptions = [
     ('', 'সব'), ('bus', 'বাস'), ('train', 'ট্রেন'),
@@ -31,7 +32,7 @@ class _TransportScreenState extends State<TransportScreen> {
     'courier': Icons.local_shipping_rounded,
   };
 
-  @override void initState() { super.initState(); _load(); }
+  @override void initState() { super.initState(); _selectedType = widget.initialType; _load(); }
 
   Future<void> _load() async {
     setState(() => _loading = true);

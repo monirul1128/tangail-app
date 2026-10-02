@@ -6,7 +6,8 @@ import '../../widgets/info_card.dart';
 import '../../widgets/shimmer_list.dart';
 
 class FinanceScreen extends StatefulWidget {
-  const FinanceScreen({super.key});
+  final String initialType;
+  const FinanceScreen({super.key, this.initialType = ''});
   @override
   State<FinanceScreen> createState() => _FinanceScreenState();
 }
@@ -14,14 +15,14 @@ class FinanceScreen extends StatefulWidget {
 class _FinanceScreenState extends State<FinanceScreen> {
   List<Map<String, dynamic>> _items = [];
   bool _loading = true;
-  String _selectedType = '';
+  late String _selectedType;
 
   static const _typeOptions = [
     ('', 'সব'), ('bank', 'ব্যাংক'), ('atm', 'এটিএম'),
     ('mobile_banking', 'মোবাইল ব্যাংকিং'), ('market', 'ক্রয়-বিক্রয়'),
   ];
 
-  @override void initState() { super.initState(); _load(); }
+  @override void initState() { super.initState(); _selectedType = widget.initialType; _load(); }
 
   Future<void> _load() async {
     setState(() => _loading = true);

@@ -63,23 +63,23 @@ const _serviceCategories = [
     'title': 'শিক্ষা প্রতিষ্ঠান',
     'color': 0xFFEFF6FF, 'border': 0xFFBFDBFE, 'titleColor': 0xFF1D4ED8, 'accent': 0xFF3B82F6,
     'items': [
-      {'label': 'স্কুল',             'emoji': '🏫', 'route': '/education'},
-      {'label': 'কলেজ',              'emoji': '🏛️', 'route': '/education'},
-      {'label': 'বিশ্ববিদ্যালয়',   'emoji': '🎓', 'route': '/education'},
-      {'label': 'মাদ্রাসা',          'emoji': '📖', 'route': '/education'},
-      {'label': 'কোচিং সেন্টার',    'emoji': '✏️', 'route': '/education'},
-      {'label': 'শিক্ষক',           'emoji': '👨‍🏫','route': '/professionals'},
-      {'label': 'টিউশন সেবা',       'emoji': '📝', 'route': '/education'},
-      {'label': 'লাইব্রেরি',        'emoji': '📚', 'route': '/education'},
-      {'label': 'ট্রেনিং সেন্টার',  'emoji': '🖥️', 'route': '/education'},
+      {'label': 'স্কুল',             'emoji': '🏫', 'route': '/education?type=school'},
+      {'label': 'কলেজ',              'emoji': '🏛️', 'route': '/education?type=college'},
+      {'label': 'বিশ্ববিদ্যালয়',   'emoji': '🎓', 'route': '/education?type=university'},
+      {'label': 'মাদ্রাসা',          'emoji': '📖', 'route': '/education?type=madrasa'},
+      {'label': 'কোচিং সেন্টার',    'emoji': '✏️', 'route': '/education?type=coaching'},
+      {'label': 'শিক্ষক',           'emoji': '👨‍🏫','route': '/professionals?type=teacher'},
+      {'label': 'টিউশন সেবা',       'emoji': '📝', 'route': '/education?type=tuition'},
+      {'label': 'লাইব্রেরি',        'emoji': '📚', 'route': '/education?type=library'},
+      {'label': 'ট্রেনিং সেন্টার',  'emoji': '🖥️', 'route': '/education?type=training'},
     ],
   },
   {
     'title': 'ধর্মীয় সেবা',
     'color': 0xFFF0FDF4, 'border': 0xFFA7F3D0, 'titleColor': 0xFF065F46, 'accent': 0xFF10B981,
     'items': [
-      {'label': 'মসজিদ',  'emoji': '🕌', 'route': '/islamic'},
-      {'label': 'মন্দির',  'emoji': '🛕', 'route': '/islamic'},
+      {'label': 'মসজিদ',  'emoji': '🕌', 'route': '/islamic?type=mosque'},
+      {'label': 'মন্দির',  'emoji': '🛕', 'route': '/islamic?type=temple'},
       {'label': 'নামাজ',  'emoji': '🙏', 'route': '/islamic'},
       {'label': 'রোজা',   'emoji': '🌙', 'route': '/islamic'},
       {'label': 'হজ্জ',   'emoji': '🕋', 'route': '/islamic'},
@@ -102,43 +102,43 @@ const _serviceCategories = [
     'title': 'পরিবহন সেবা',
     'color': 0xFFFFFBEB, 'border': 0xFFFDE68A, 'titleColor': 0xFFB45309, 'accent': 0xFFF59E0B,
     'items': [
-      {'label': 'বাস কাউন্টার',    'emoji': '🚌', 'route': '/transport'},
-      {'label': 'ট্রেন সার্ভিস',   'emoji': '🚂', 'route': '/transport'},
-      {'label': 'রেন্ট এ কার',     'emoji': '🚗', 'route': '/transport'},
-      {'label': 'সিএনজি স্টেশন',  'emoji': '⛽', 'route': '/transport'},
-      {'label': 'ফুয়েল স্টেশন',   'emoji': '🛢️', 'route': '/transport'},
-      {'label': 'কুরিয়ার সার্ভিস','emoji': '📦', 'route': '/transport'},
+      {'label': 'বাস কাউন্টার',    'emoji': '🚌', 'route': '/transport?type=bus'},
+      {'label': 'ট্রেন সার্ভিস',   'emoji': '🚂', 'route': '/transport?type=train'},
+      {'label': 'রেন্ট এ কার',     'emoji': '🚗', 'route': '/transport?type=rentcar'},
+      {'label': 'সিএনজি স্টেশন',  'emoji': '⛽', 'route': '/transport?type=cng'},
+      {'label': 'ফুয়েল স্টেশন',   'emoji': '🛢️', 'route': '/transport?type=fuel'},
+      {'label': 'কুরিয়ার সার্ভিস','emoji': '📦', 'route': '/transport?type=courier'},
     ],
   },
   {
     'title': 'আর্থিক সেবা',
     'color': 0xFFF0FDFA, 'border': 0xFF99F6E4, 'titleColor': 0xFF0F766E, 'accent': 0xFF14B8A6,
     'items': [
-      {'label': 'ব্যাংক',       'emoji': '🏦', 'route': '/finance'},
-      {'label': 'এটিএম',        'emoji': '💳', 'route': '/finance'},
-      {'label': 'ক্রয়-বিক্রয়', 'emoji': '🛒', 'route': '/finance'},
+      {'label': 'ব্যাংক',       'emoji': '🏦', 'route': '/finance?type=bank'},
+      {'label': 'এটিএম',        'emoji': '💳', 'route': '/finance?type=atm'},
+      {'label': 'ক্রয়-বিক্রয়', 'emoji': '🛒', 'route': '/finance?type=market'},
     ],
   },
   {
     'title': 'ব্যবসা ও বাণিজ্য',
     'color': 0xFFFFF7ED, 'border': 0xFFFED7AA, 'titleColor': 0xFFC2410C, 'accent': 0xFFF97316,
     'items': [
-      {'label': 'দোকান/শো-রুম',   'emoji': '🏪', 'route': '/business'},
-      {'label': 'হোটেল (আবাসিক)','emoji': '🏨', 'route': '/business'},
-      {'label': 'রেস্টুরেন্ট',    'emoji': '🍽️', 'route': '/business'},
-      {'label': 'বিউটি পার্লার',  'emoji': '💅', 'route': '/business'},
-      {'label': 'নার্সারি',        'emoji': '🌱', 'route': '/business'},
-      {'label': 'কৃষি সেবা',      'emoji': '🌾', 'route': '/business'},
+      {'label': 'দোকান/শো-রুম',   'emoji': '🏪', 'route': '/business?type=shop'},
+      {'label': 'হোটেল (আবাসিক)','emoji': '🏨', 'route': '/business?type=hotel'},
+      {'label': 'রেস্টুরেন্ট',    'emoji': '🍽️', 'route': '/business?type=restaurant'},
+      {'label': 'বিউটি পার্লার',  'emoji': '💅', 'route': '/business?type=beauty'},
+      {'label': 'নার্সারি',        'emoji': '🌱', 'route': '/business?type=nursery'},
+      {'label': 'কৃষি সেবা',      'emoji': '🌾', 'route': '/business?type=agriculture'},
     ],
   },
   {
     'title': 'পেশাদার সেবা',
     'color': 0xFFEEF2FF, 'border': 0xFFC7D2FE, 'titleColor': 0xFF3730A3, 'accent': 0xFF6366F1,
     'items': [
-      {'label': 'আইনজীবী',     'emoji': '⚖️', 'route': '/professionals'},
-      {'label': 'সাংবাদিক',    'emoji': '📰', 'route': '/professionals'},
-      {'label': 'টেকনিশিয়ান', 'emoji': '🔧', 'route': '/professionals'},
-      {'label': 'কাজি অফিস',   'emoji': '💍', 'route': '/professionals'},
+      {'label': 'আইনজীবী',     'emoji': '⚖️', 'route': '/professionals?type=lawyer'},
+      {'label': 'সাংবাদিক',    'emoji': '📰', 'route': '/professionals?type=journalist'},
+      {'label': 'টেকনিশিয়ান', 'emoji': '🔧', 'route': '/professionals?type=technician'},
+      {'label': 'কাজি অফিস',   'emoji': '💍', 'route': '/professionals?type=kazi'},
     ],
   },
   {
@@ -162,7 +162,7 @@ const _upazilas = [
   {'id': 'dhanbari',      'name': 'ধনবাড়ী',   'icon': '🏛️', 'unions':  4, 'area': '১৭৫ বর্গকিমি'},
   {'id': 'ghatail',       'name': 'ঘাটাইল',   'icon': '⛵', 'unions': 14, 'area': '৪৩০ বর্গকিমি'},
   {'id': 'gopalpur',      'name': 'গোপালপুর', 'icon': '🌳', 'unions':  9, 'area': '২৩৩ বর্গকিমি'},
-  {'id': 'kalihati',      'name': 'কালিহাতী', 'icon': '🛖', 'unions': 15, 'area': '৩৮৫ বর্গকিমি'},
+  {'id': 'kalihati',      'name': 'কালিহাতী', 'icon': '🌴', 'unions': 15, 'area': '৩৮৫ বর্গকিমি'},
   {'id': 'madhupur',      'name': 'মধুপুর',   'icon': '🌲', 'unions': 11, 'area': '৪২৩ বর্গকিমি'},
   {'id': 'mirzapur',      'name': 'মির্জাপুর','icon': '🏗️', 'unions': 14, 'area': '৩৭২ বর্গকিমি'},
   {'id': 'nagarpur',      'name': 'নাগরপুর',  'icon': '🌻', 'unions': 11, 'area': '২৮৮ বর্গকিমি'},
@@ -197,8 +197,9 @@ class HomeScreen extends ConsumerWidget {
             _NotablePersonsSection(),
             _TourismSection(),
             _GallerySection(),
+            _TangailMapSection(),
             _CtaBanner(),
-            SizedBox(height: 80),
+            _AppFooter(),
           ],
         ),
       ),
@@ -1160,7 +1161,410 @@ class _GallerySection extends StatelessWidget {
   }
 }
 
-// ─── CTA Banner ───────────────────────────────────────────────────────────────
+// ─── Tangail Map Section ─────────────────────────────────────────────────────
+class _TangailMapSection extends StatelessWidget {
+  const _TangailMapSection();
+
+  static const _boundaries = [
+    {'dir': 'উত্তরে',  'districts': 'জামালপুর ও ময়মনসিংহ'},
+    {'dir': 'দক্ষিণে', 'districts': 'ঢাকা ও মানিকগঞ্জ'},
+    {'dir': 'পূর্বে',  'districts': 'ময়মনসিংহ ও গাজীপুর'},
+    {'dir': 'পশ্চিমে', 'districts': 'সিরাজগঞ্জ ও পাবনা'},
+  ];
+
+  static const _stats = [
+    {'icon': '📐', 'label': 'আয়তন',    'value': '৩,৪১৪ বর্গকিমি'},
+    {'icon': '👥', 'label': 'জনসংখ্যা', 'value': '৩৮ লক্ষ+'},
+    {'icon': '🗺️', 'label': 'উপজেলা',  'value': '১২টি'},
+    {'icon': '🏘️', 'label': 'ইউনিয়ন',  'value': '১২১টি'},
+    {'icon': '🌾', 'label': 'গ্রাম',    'value': '১,৬৮৩টি'},
+    {'icon': '🏙️', 'label': 'পৌরসভা',  'value': '৮টি'},
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _SectionTitle(title: 'একনজরে টাঙ্গাইল'),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [BoxShadow(
+                  color: Colors.black.withOpacity(0.06),
+                  blurRadius: 10, offset: const Offset(0, 3))],
+            ),
+            child: Column(
+              children: [
+                // Header
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 14),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF006A4E), Color(0xFF009966)],
+                    ),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(16)),
+                  ),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('🗺️ একনজরে টাঙ্গাইল',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800)),
+                      Text('সংক্ষিপ্ত পরিচিতি ও সীমানা',
+                          style: TextStyle(
+                              color: Colors.white70, fontSize: 11)),
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    children: [
+                      // Map image + description
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Map image
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                              'assets/images/tangail-map.jpg',
+                              width: 120,
+                              height: 150,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => Container(
+                                width: 120, height: 150,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFF0FDF4),
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: const Color(0xFF006A4E)
+                                          .withOpacity(0.2)),
+                                ),
+                                child: const Center(
+                                    child: Text('🗺️',
+                                        style: TextStyle(fontSize: 40))),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          // Description
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'টাঙ্গাইল জেলা বাংলাদেশের মধ্যভাগে ঢাকা বিভাগের অন্তর্গত একটি গুরুত্বপূর্ণ জেলা। যমুনা ও ধলেশ্বরী নদীর তীরে অবস্থিত এই জেলাটি শিল্প, কৃষি ও ঐতিহ্যে সমৃদ্ধ।',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF4B5563),
+                                      height: 1.5),
+                                ),
+                                const SizedBox(height: 10),
+                                // Stats — simple column layout, no GridView
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        _StatItem(icon: _stats[0]['icon']!, label: _stats[0]['label']!, value: _stats[0]['value']!),
+                                        const SizedBox(width: 6),
+                                        _StatItem(icon: _stats[1]['icon']!, label: _stats[1]['label']!, value: _stats[1]['value']!),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Row(
+                                      children: [
+                                        _StatItem(icon: _stats[2]['icon']!, label: _stats[2]['label']!, value: _stats[2]['value']!),
+                                        const SizedBox(width: 6),
+                                        _StatItem(icon: _stats[3]['icon']!, label: _stats[3]['label']!, value: _stats[3]['value']!),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Row(
+                                      children: [
+                                        _StatItem(icon: _stats[4]['icon']!, label: _stats[4]['label']!, value: _stats[4]['value']!),
+                                        const SizedBox(width: 6),
+                                        _StatItem(icon: _stats[5]['icon']!, label: _stats[5]['label']!, value: _stats[5]['value']!),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 14),
+
+                      // Boundaries
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF006A4E).withOpacity(0.05),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              color: const Color(0xFF006A4E)
+                                  .withOpacity(0.15)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('📍 চার পাশের সীমানা',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF006A4E))),
+                            const SizedBox(height: 8),
+                            // Boundaries — simple Column, no GridView
+                            Column(
+                              children: _boundaries.map((b) => Padding(
+                                padding: const EdgeInsets.only(bottom: 6),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: 48,
+                                      child: Text(b['dir']!,
+                                          style: const TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w700,
+                                              color: Color(0xFF006A4E))),
+                                    ),
+                                    Expanded(
+                                      child: Text(b['districts']!,
+                                          style: const TextStyle(
+                                              fontSize: 11,
+                                              color: Color(0xFF4B5563))),
+                                    ),
+                                  ],
+                                ),
+                              )).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // Coordinates
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: [
+                          _InfoPill('📌 ২৪°১৫\' উত্তর অক্ষাংশ'),
+                          _InfoPill('📌 ৮৯°৫৫\' পূর্ব দ্রাঘিমাংশ'),
+                          _InfoPill('🏛️ ঢাকা বিভাগ'),
+                          _InfoPill('📅 প্রতিষ্ঠা: ১৯৬৯'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _InfoPill extends StatelessWidget {
+  final String text;
+  const _InfoPill(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF4F6F8),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(text,
+          style: const TextStyle(
+              fontSize: 10, color: Color(0xFF6B7280))),
+    );
+  }
+}
+
+// ─── Stat Item helper ─────────────────────────────────────────────────────────
+class _StatItem extends StatelessWidget {
+  final String icon;
+  final String label;
+  final String value;
+  const _StatItem({required this.icon, required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF4F6F8),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            Text(icon, style: const TextStyle(fontSize: 14)),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(label,
+                      style: const TextStyle(
+                          fontSize: 9, color: Color(0xFF9CA3AF))),
+                  Text(value,
+                      style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF1F2937))),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─── App Footer ───────────────────────────────────────────────────────────────
+class _AppFooter extends StatelessWidget {
+  const _AppFooter();
+
+  @override
+  Widget build(BuildContext context) {
+    // bottom nav bar height + safe area
+    final bottomPad = MediaQuery.of(context).padding.bottom + 80;
+    return Container(
+      color: const Color(0xFF1F2937),
+      padding: EdgeInsets.fromLTRB(20, 28, 20, bottomPad),
+      child: Column(
+        children: [
+          // Logo + name
+          Row(
+            children: [
+              Image.asset(
+                'assets/images/logo.png',
+                height: 44,
+                errorBuilder: (_, __, ___) => const Icon(
+                    Icons.location_city_rounded,
+                    color: Colors.white, size: 44),
+              ),
+              const SizedBox(width: 12),
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('আমাদের টাঙ্গাইল',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900)),
+                  Text('সেবা ও তথ্য পোর্টাল',
+                      style: TextStyle(
+                          color: Colors.white54, fontSize: 11)),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          const Divider(color: Colors.white12),
+          const SizedBox(height: 14),
+
+          // Quick links
+          const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('দ্রুত সেবা',
+                        style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700)),
+                    SizedBox(height: 8),
+                    _FooterLink('🏥 হাসপাতাল'),
+                    _FooterLink('👨‍⚕️ ডাক্তার'),
+                    _FooterLink('🩸 রক্তদাতা'),
+                    _FooterLink('🚑 অ্যাম্বুলেন্স'),
+                  ],
+                ),
+              ),
+              SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('আরও সেবা',
+                        style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700)),
+                    SizedBox(height: 8),
+                    _FooterLink('📰 খবর ও নোটিশ'),
+                    _FooterLink('🏞️ পর্যটন'),
+                    _FooterLink('🏅 গুণিজন'),
+                    _FooterLink('📞 জরুরি: ৯৯৯'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 16),
+          const Divider(color: Colors.white12),
+          const SizedBox(height: 12),
+
+          // Copyright
+          const Text(
+            '© ২০২৫ আমাদের টাঙ্গাইল। সকল স্বত্ব সংরক্ষিত।',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.white38, fontSize: 11),
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            'টাঙ্গাইল জেলা, বাংলাদেশ',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.white24, fontSize: 10),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _FooterLink extends StatelessWidget {
+  final String text;
+  const _FooterLink(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5),
+      child: Text(text,
+          style: const TextStyle(
+              color: Colors.white54, fontSize: 11)),
+    );
+  }
+}
 class _CtaBanner extends StatelessWidget {
   const _CtaBanner();
 

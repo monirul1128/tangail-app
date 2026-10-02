@@ -6,7 +6,8 @@ import '../../widgets/info_card.dart';
 import '../../widgets/shimmer_list.dart';
 
 class ProfessionalsScreen extends StatefulWidget {
-  const ProfessionalsScreen({super.key});
+  final String initialType;
+  const ProfessionalsScreen({super.key, this.initialType = ''});
   @override
   State<ProfessionalsScreen> createState() => _ProfessionalsScreenState();
 }
@@ -14,7 +15,7 @@ class ProfessionalsScreen extends StatefulWidget {
 class _ProfessionalsScreenState extends State<ProfessionalsScreen> {
   List<Map<String, dynamic>> _items = [];
   bool _loading = true;
-  String _selectedType = '';
+  late String _selectedType;
 
   static const _typeOptions = [
     ('', 'সব'), ('lawyer', 'আইনজীবী'), ('journalist', 'সাংবাদিক'),
@@ -22,7 +23,7 @@ class _ProfessionalsScreenState extends State<ProfessionalsScreen> {
     ('teacher', 'শিক্ষক'), ('other', 'অন্যান্য'),
   ];
 
-  @override void initState() { super.initState(); _load(); }
+  @override void initState() { super.initState(); _selectedType = widget.initialType; _load(); }
 
   Future<void> _load() async {
     setState(() => _loading = true);

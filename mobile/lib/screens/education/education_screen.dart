@@ -9,7 +9,8 @@ import '../../widgets/shimmer_list.dart';
 final _educationTypeProvider = StateProvider<String>((_) => '');
 
 class EducationScreen extends ConsumerStatefulWidget {
-  const EducationScreen({super.key});
+  final String initialType;
+  const EducationScreen({super.key, this.initialType = ''});
 
   @override
   ConsumerState<EducationScreen> createState() => _EducationScreenState();
@@ -20,6 +21,18 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
   bool _loading = true;
   String _error = '';
 
+  @override
+  void initState() {
+    super.initState();
+    // Set initial filter from route parameter
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.initialType.isNotEmpty) {
+        ref.read(_educationTypeProvider.notifier).state = widget.initialType;
+      }
+    });
+    _loadData();
+  }
+
   static const _typeOptions = [
     ('', 'সব'),
     ('school', 'স্কুল'),
@@ -29,12 +42,6 @@ class _EducationScreenState extends ConsumerState<EducationScreen> {
     ('coaching', 'কোচিং'),
     ('kindergarten', 'কিন্ডারগার্টেন'),
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
-  }
 
   Future<void> _loadData() async {
     setState(() { _loading = true; _error = ''; });

@@ -6,7 +6,8 @@ import '../../widgets/info_card.dart';
 import '../../widgets/shimmer_list.dart';
 
 class BusinessScreen extends StatefulWidget {
-  const BusinessScreen({super.key});
+  final String initialType;
+  const BusinessScreen({super.key, this.initialType = ''});
   @override
   State<BusinessScreen> createState() => _BusinessScreenState();
 }
@@ -14,7 +15,7 @@ class BusinessScreen extends StatefulWidget {
 class _BusinessScreenState extends State<BusinessScreen> {
   List<Map<String, dynamic>> _items = [];
   bool _loading = true;
-  String _selectedType = '';
+  late String _selectedType;
 
   static const _typeOptions = [
     ('', 'সব'), ('shop', 'দোকান'), ('hotel', 'হোটেল'),
@@ -22,7 +23,7 @@ class _BusinessScreenState extends State<BusinessScreen> {
     ('nursery', 'নার্সারি'), ('agriculture', 'কৃষি'),
   ];
 
-  @override void initState() { super.initState(); _load(); }
+  @override void initState() { super.initState(); _selectedType = widget.initialType; _load(); }
 
   Future<void> _load() async {
     setState(() => _loading = true);
