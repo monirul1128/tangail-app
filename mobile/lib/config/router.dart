@@ -11,6 +11,8 @@ import '../screens/ambulance/ambulance_screen.dart';
 import '../screens/news/news_screen.dart';
 import '../screens/news/news_detail_screen.dart';
 import '../screens/emergency/emergency_screen.dart';
+import '../screens/services/services_menu_screen.dart';
+import '../screens/more/more_screen.dart';
 import '../widgets/main_scaffold.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -27,6 +29,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/ambulance', builder: (_, __) => const AmbulanceScreen()),
           GoRoute(path: '/news', builder: (_, __) => const NewsScreen()),
           GoRoute(path: '/emergency', builder: (_, __) => const EmergencyScreen()),
+          GoRoute(path: '/services', builder: (_, __) => const ServicesMenuScreen()),
+          GoRoute(path: '/more', builder: (_, __) => const MoreScreen()),
         ],
       ),
       // Detail routes (outside shell — no bottom nav)
