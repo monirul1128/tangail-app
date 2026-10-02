@@ -6,110 +6,90 @@ import '../../config/app_theme.dart';
 import '../../models/news_model.dart';
 import '../../services/news_service.dart';
 
+/// Kept for backward compatibility — used by home_screen.dart
 final newsStreamProvider =
     StreamProvider.autoDispose.family<List<NewsModel>, String>((ref, category) {
   return NewsService().getNews(category: category.isEmpty ? null : category);
 });
-
-final _selectedNewsCategoryProvider = StateProvider<String>((_) => '');
 
 class NewsScreen extends ConsumerWidget {
   const NewsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedCategory = ref.watch(_selectedNewsCategoryProvider);
-    final newsAsync = ref.watch(newsStreamProvider(selectedCategory));
-
-    return Scaffold(
-      appBar: AppBar(title: const Text('সর্বশেষ খবর ও নোটিশ')),
-      body: Column(
-        children: [
-          // Category tabs
-          SizedBox(
-            height: 46,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              children: const [
-                ('', 'সব'),
-                ('health', 'স্বাস্থ্য'),
-                ('district', 'জেলা'),
-                ('notice', 'নোটিশ'),
-                ('government', 'সরকারি'),
-                ('general', 'সাধারণ'),
-              ].map((item) {
-                return _CategoryChip(
-                  id: item.$1,
-                  label: item.$2,
-                  selectedCategory: selectedCategory,
-                  onSelected: (v) => ref
-                      .read(_selectedNewsCategoryProvider.notifier)
-                      .state = v,
-                );
-              }).toList(),
-            ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('সর্বশেষ খবর ও নোটিশ'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'খবর'),
+              Tab(text: 'নোটিশ'),
+            ],
+            indicatorColor: Colors.white,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white70,
           ),
-
-          // News list
-          Expanded(
-            child: newsAsync.when(
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
-              error: (e, _) =>
-                  Center(child: Text('ত্রুটি হয়েছে: $e')),
-              data: (newsList) {
-                if (newsList.isEmpty) {
-                  return const Center(child: Text('কোনো খবর নেই'));
-                }
-                return ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: newsList.length,
-                  itemBuilder: (_, i) => NewsCard(
-                    news: newsList[i],
-                    onTap: () => context.push('/news/${newsList[i].id}'),
-                  ),
-                );
-              },
+        ),
+        body: TabBarView(
+          children: [
+            // Tab 0: News
+            _NewsTab(
+              stream: NewsService().getNews(limit: 30),
+              emptyMessage: 'কোনো খবর পাওয়া যায়নি',
             ),
-          ),
-        ],
+            // Tab 1: Notices
+            _NewsTab(
+              stream: NewsService().getNotices(limit: 30),
+              emptyMessage: 'কোনো নোটিশ পাওয়া যায়নি',
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class _CategoryChip extends StatelessWidget {
-  final String id;
-  final String label;
-  final String selectedCategory;
-  final ValueChanged<String> onSelected;
+class _NewsTab extends StatelessWidget {
+  final Stream<List<NewsModel>> stream;
+  final String emptyMessage;
 
-  const _CategoryChip({
-    required this.id,
-    required this.label,
-    required this.selectedCategory,
-    required this.onSelected,
+  const _NewsTab({
+    required this.stream,
+    required this.emptyMessage,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isSelected = selectedCategory == id;
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: FilterChip(
-        label: Text(label),
-        selected: isSelected,
-        onSelected: (_) => onSelected(id),
-        selectedColor: AppTheme.primaryColor.withOpacity(0.15),
-        checkmarkColor: AppTheme.primaryColor,
-        labelStyle: TextStyle(
-            fontSize: 12,
-            color: isSelected
-                ? AppTheme.primaryColor
-                : AppTheme.textSecondary),
-      ),
+    return StreamBuilder<List<NewsModel>>(
+      stream: stream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('ত্রুটি হয়েছে: ${snapshot.error}'));
+        }
+        final newsList = snapshot.data ?? [];
+        if (newsList.isEmpty) {
+          return Center(child: Text(emptyMessage));
+        }
+        return RefreshIndicator(
+          onRefresh: () async {
+            // StreamBuilder auto-refreshes; just wait a moment
+            await Future.delayed(const Duration(milliseconds: 300));
+          },
+          child: ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: newsList.length,
+            itemBuilder: (_, i) => NewsCard(
+              news: newsList[i],
+              onTap: () => context.push('/news/${newsList[i].id}'),
+            ),
+          ),
+        );
+      },
     );
   }
 }

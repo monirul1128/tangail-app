@@ -13,6 +13,24 @@ import '../screens/news/news_detail_screen.dart';
 import '../screens/emergency/emergency_screen.dart';
 import '../screens/services/services_menu_screen.dart';
 import '../screens/more/more_screen.dart';
+import '../screens/pharmacy/pharmacy_screen.dart';
+import '../screens/education/education_screen.dart';
+import '../screens/transport/transport_screen.dart';
+import '../screens/finance/finance_screen.dart';
+import '../screens/business/business_screen.dart';
+import '../screens/govt/govt_screen.dart';
+import '../screens/police/police_screen.dart';
+import '../screens/electricity/electricity_screen.dart';
+import '../screens/islamic/islamic_screen.dart';
+import '../screens/professionals/professionals_screen.dart';
+import '../screens/organizations/organizations_screen.dart';
+import '../screens/jobs/jobs_screen.dart';
+import '../screens/notable_persons/notable_persons_screen.dart';
+import '../screens/notable_persons/notable_person_detail_screen.dart';
+import '../screens/tourism/tourism_screen.dart';
+import '../screens/tourism/tourism_detail_screen.dart';
+import '../screens/gallery/gallery_screen.dart';
+import '../screens/upazila/upazila_detail_screen.dart';
 import '../widgets/main_scaffold.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -52,6 +70,37 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/register-donor',
         builder: (_, __) => const RegisterDonorScreen(),
+      ),
+      // New service screens
+      GoRoute(path: '/pharmacy', builder: (_, __) => const PharmacyScreen()),
+      GoRoute(path: '/education', builder: (_, __) => const EducationScreen()),
+      GoRoute(path: '/transport', builder: (_, __) => const TransportScreen()),
+      GoRoute(path: '/finance', builder: (_, __) => const FinanceScreen()),
+      GoRoute(path: '/business', builder: (_, __) => const BusinessScreen()),
+      GoRoute(path: '/govt', builder: (_, __) => const GovtScreen()),
+      GoRoute(path: '/police', builder: (_, __) => const PoliceScreen()),
+      GoRoute(path: '/electricity', builder: (_, __) => const ElectricityScreen()),
+      GoRoute(path: '/islamic', builder: (_, __) => const IslamicScreen()),
+      GoRoute(path: '/professionals', builder: (_, __) => const ProfessionalsScreen()),
+      GoRoute(path: '/organizations', builder: (_, __) => const OrganizationsScreen()),
+      GoRoute(path: '/jobs', builder: (_, __) => const JobsScreen()),
+      GoRoute(path: '/notable-persons', builder: (_, __) => const NotablePersonsScreen()),
+      GoRoute(
+        path: '/notable-persons/:id',
+        builder: (_, state) =>
+            NotablePersonDetailScreen(personId: state.pathParameters['id']!),
+      ),
+      GoRoute(path: '/tourism', builder: (_, __) => const TourismScreen()),
+      GoRoute(
+        path: '/tourism/:id',
+        builder: (_, state) =>
+            TourismDetailScreen(tourismId: state.pathParameters['id']!),
+      ),
+      GoRoute(path: '/gallery', builder: (_, __) => const GalleryScreen()),
+      GoRoute(
+        path: '/upazila/:id',
+        builder: (_, state) =>
+            UpazilaDetailScreen(upazilaId: state.pathParameters['id']!),
       ),
     ],
   );

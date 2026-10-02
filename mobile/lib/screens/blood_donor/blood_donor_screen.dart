@@ -153,10 +153,16 @@ class BloodDonorScreen extends ConsumerWidget {
                     ),
                   );
                 }
-                return ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
-                  itemCount: donors.length,
-                  itemBuilder: (_, i) => _DonorCard(donor: donors[i]),
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    ref.invalidate(bloodDonorsProvider);
+                    await Future.delayed(const Duration(milliseconds: 500));
+                  },
+                  child: ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
+                    itemCount: donors.length,
+                    itemBuilder: (_, i) => _DonorCard(donor: donors[i]),
+                  ),
                 );
               },
             ),
