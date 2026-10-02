@@ -77,9 +77,16 @@ export default function NewsClient({ newsList }: Props) {
                 <div className="flex items-center justify-between text-xs text-gray-400">
                   <span className="text-primary font-medium">{news.source}</span>
                   <span>
-                    {formatDistanceToNow(news.publishedAt.toDate(), {
-                      addSuffix: true,
-                    })}
+                    {(() => {
+                      try {
+                        const d = news.publishedAt?.toDate
+                          ? news.publishedAt.toDate()
+                          : news.publishedAt?.seconds
+                          ? new Date((news.publishedAt as any).seconds * 1000)
+                          : null;
+                        return d ? formatDistanceToNow(d, { addSuffix: true }) : "";
+                      } catch { return ""; }
+                    })()}
                   </span>
                 </div>
               </div>

@@ -30,7 +30,13 @@ export default async function NewsDetailPage({ params }: Props) {
   const news = await getNewsById(params.id).catch(() => null);
   if (!news) notFound();
 
-  const publishedDate = news.publishedAt.toDate();
+  const publishedDate = (() => {
+    try {
+      if (news.publishedAt?.toDate) return news.publishedAt.toDate();
+      if ((news.publishedAt as any)?.seconds) return new Date((news.publishedAt as any).seconds * 1000);
+      return new Date();
+    } catch { return new Date(); }
+  })();
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">

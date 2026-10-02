@@ -1,21 +1,13 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import SearchBar from "@/components/ui/SearchBar";
+import PrayerTimes from "@/components/ui/PrayerTimes";
 import GalleryPreview from "@/components/ui/GalleryPreview";
 import NoticePreview from "@/components/ui/NoticePreview";
 import NotablePersonsPreview from "@/components/ui/NotablePersonsPreview";
 import TourismPreview from "@/components/ui/TourismPreview";
 
 export const revalidate = 0;
-
-/* ─── Prayer times ─── */
-const prayerTimes = [
-  { name: "ফজর",    time: "৪:৩০"  },
-  { name: "জোহর",   time: "১২:০০" },
-  { name: "আসর",    time: "৪:১৫"  },
-  { name: "মাগরিব", time: "৬:৩০"  },
-  { name: "এশা",    time: "৭:৪৫"  },
-];
 
 /* ─── Quick service pills ─── */
 const quickServices = [
@@ -247,20 +239,7 @@ export default async function HomePage() {
           <div className="mt-auto">
             <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mx-4" />
             <div className="bg-black/60 backdrop-blur-md border-t border-white/10">
-              <div className="max-w-6xl mx-auto px-4 md:px-8">
-                <div className="flex items-center overflow-x-auto scrollbar-hide divide-x divide-white/10">
-                  <div className="flex-shrink-0 pr-4 py-3">
-                    <p className="text-white/40 text-[9px] uppercase tracking-widest font-semibold">নামাজের</p>
-                    <p className="text-white/40 text-[9px] uppercase tracking-widest font-semibold">সময়</p>
-                  </div>
-                  {prayerTimes.map((p) => (
-                    <div key={p.name} className="flex-shrink-0 px-4 md:px-6 py-3 text-center group">
-                      <div className="text-white/50 text-[10px] mb-1 group-hover:text-white/80 transition-colors">{p.name}</div>
-                      <div className="text-white font-bold text-sm tabular-nums">{p.time}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <PrayerTimes />
             </div>
           </div>
         </div>

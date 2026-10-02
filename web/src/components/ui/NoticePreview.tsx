@@ -4,19 +4,25 @@ import { collection, getDocs, orderBy, query, where, limit } from "firebase/fire
 import { db } from "@/lib/firebase";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Timestamp } from "firebase/firestore";
 
 interface Notice {
   id: string;
   title: string;
   isNotice: boolean;
-  publishedAt: Timestamp;
+  publishedAt: any;
   source: string;
 }
 
-const toBanglaDate = (ts: Timestamp) => {
+const toBanglaDate = (ts: any) => {
   try {
-    const d = ts.toDate();
+    let d: Date;
+    if (ts && typeof ts.toDate === "function") {
+      d = ts.toDate();
+    } else if (ts && ts.seconds) {
+      d = new Date(ts.seconds * 1000);
+    } else {
+      return "";
+    }
     const months = ["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
     const toBn = (n: number) => String(n).replace(/\d/g, x => "০১২৩৪৫৬৭৮৯"[+x]);
     return `${toBn(d.getDate())} ${months[d.getMonth()]} ${toBn(d.getFullYear())}`;
@@ -85,7 +91,7 @@ export default function NoticePreview() {
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-gray-800 line-clamp-1">{n.title}</p>
             <p className="text-xs text-gray-400 mt-0.5">
-              {n.publishedAt ? toBanglaDate(n.publishedAt) : n.source}
+              {n.publishedAt ? toBanglaDate(n.publishedAt) : (n.source ?? "")}
             </p>
           </div>
           <ArrowRight size={14} className="text-gray-300 flex-shrink-0" />

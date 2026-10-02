@@ -14,10 +14,13 @@ export const metadata: Metadata = {
   description: "টাঙ্গাইল জেলার সকল সরকারি ও বেসরকারি হাসপাতালের তালিকা",
 };
 
+import { serializeFirestore } from "@/lib/serialize";
+
 export const revalidate = 300;
 
 export default async function HospitalsPage() {
-  const hospitals = await getHospitals().catch(() => [] as Hospital[]);
+  const raw = await getHospitals().catch(() => [] as Hospital[]);
+  const hospitals = serializeFirestore(raw);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">

@@ -5,6 +5,7 @@ import { getBloodDonors } from "@/lib/firestore";
 import type { BloodDonor } from "@/models/types";
 import BloodDonorClient from "./BloodDonorClient";
 import { Suspense } from "react";
+import { serializeFirestore } from "@/lib/serialize";
 
 export const metadata: Metadata = {
   title: "রক্তদাতা খুঁজুন",
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function BloodDonorPage() {
-  const donors = await getBloodDonors().catch(() => [] as BloodDonor[]);
+  const donors = serializeFirestore(await getBloodDonors().catch(() => [] as BloodDonor[]));
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">

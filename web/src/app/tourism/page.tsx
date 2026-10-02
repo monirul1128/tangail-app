@@ -53,7 +53,8 @@ export default function TourismPage() {
           {filtered.map(s => {
             const upazilaName = UPAZILAS.find(u => u.id === s.upazilaId)?.name ?? s.upazilaId;
             return (
-              <div key={s.id} className={`rounded-2xl border overflow-hidden shadow-sm hover:shadow-md transition-shadow ${catColor[s.category] ? "bg-white" : "bg-white"}`}>
+              <Link key={s.id} href={`/tourism/${s.id}`}
+                className={`rounded-2xl border overflow-hidden shadow-sm hover:shadow-md transition-shadow ${catColor[s.category] ? "bg-white" : "bg-white"}`}>
                 {s.imageUrl ? (
                   <img src={s.imageUrl} alt={s.name} className="w-full h-44 object-cover" />
                 ) : (

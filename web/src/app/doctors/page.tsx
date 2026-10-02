@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getDoctors } from "@/lib/firestore";
 import type { Doctor } from "@/models/types";
+import { serializeFirestore } from "@/lib/serialize";
 import DoctorsClient from "./DoctorsClient";
 import { Suspense } from "react";
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 export const revalidate = 300;
 
 export default async function DoctorsPage() {
-  const doctors = await getDoctors().catch(() => [] as Doctor[]);
+  const doctors = serializeFirestore(await getDoctors().catch(() => [] as Doctor[]));
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">

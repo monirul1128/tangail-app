@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Newspaper } from "lucide-react";
 import { getNews } from "@/lib/firestore";
 import type { NewsArticle } from "@/models/types";
-import { formatDistanceToNow } from "date-fns";
+import { serializeFirestore } from "@/lib/serialize";
 import NewsClient from "./NewsClient";
 import { Suspense } from "react";
 
@@ -15,7 +13,8 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function NewsPage() {
-  const newsList = await getNews(undefined, 40).catch(() => [] as NewsArticle[]);
+  const rawNews = await getNews(undefined, 40).catch(() => [] as NewsArticle[]);
+  const newsList = serializeFirestore(rawNews);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">

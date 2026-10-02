@@ -56,7 +56,7 @@ export default function NotablePersonsPreview() {
           </div>
         ) : (
           persons.map(p => (
-            <Link key={p.id} href="/notable-persons"
+            <Link key={p.id} href={`/notable-persons/${p.id}`}
               className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
               <div className="w-8 h-8 bg-emerald-50 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
                 {p.imageUrl

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Phone, Clock, Car } from "lucide-react";
+import { Phone, Car } from "lucide-react";
 import { getAmbulances } from "@/lib/firestore";
 import { AMBULANCE_TYPES, UPAZILAS } from "@/lib/constants";
 import type { Ambulance } from "@/models/types";
+import { serializeFirestore } from "@/lib/serialize";
 import AmbulanceClient from "./AmbulanceClient";
 import { Suspense } from "react";
 
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 export const revalidate = 300;
 
 export default async function AmbulancePage() {
-  const ambulances = await getAmbulances().catch(() => [] as Ambulance[]);
+  const ambulances = serializeFirestore(await getAmbulances().catch(() => [] as Ambulance[]));
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">

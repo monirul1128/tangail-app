@@ -59,7 +59,7 @@ export default function TourismPreview() {
           spots.map(t => {
             const uName = UPAZILAS.find(u => u.id === t.upazilaId)?.name ?? t.upazilaId;
             return (
-              <Link key={t.id} href="/tourism"
+              <Link key={t.id} href={`/tourism/${t.id}`}
                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
                 <div className="w-8 h-8 bg-sky-50 rounded-lg flex items-center justify-center text-sm flex-shrink-0">
                   📍
