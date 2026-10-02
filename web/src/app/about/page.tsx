@@ -121,7 +121,7 @@ export default function AboutPage() {
               </h3>
               <p className="text-primary font-semibold text-sm mb-1">প্রতিষ্ঠাতা ও পরিচালক</p>
               <p className="text-gray-500 text-sm flex items-center justify-center sm:justify-start gap-1 mb-4">
-                <span className="text-red-500">📍</span> টাঙ্গাইল জেলা, বাংলাদেশ
+                <span className="text-red-500">📍</span> আমাদের টাঙ্গাইল
               </p>
 
               {/* Action buttons — phone, whatsapp, facebook */}
@@ -260,7 +260,7 @@ export default function AboutPage() {
         <div className="space-y-2 text-sm text-gray-600">
           <p className="flex items-center gap-2">📧 <span>ariful.online365@gmail.com</span></p>
           <p className="flex items-center gap-2">📞 <span>+974 5204 3903</span></p>
-          <p className="flex items-center gap-2">📍 <span>টাঙ্গাইল জেলা সদর, টাঙ্গাইল, বাংলাদেশ</span></p>
+          <p className="flex items-center gap-2">📍 <span>নাগরপুর, টাঙ্গাইল, বাংলাদেশ</span></p>
         </div>
       </div>
 
