@@ -1,0 +1,37 @@
+{
+  "id": "FEAT-004",
+  "type": "chore",
+  "description": "Full project integration, analysis clean-up, and build verification. Depends on FEAT-001, FEAT-002, FEAT-003 all being complete. Fixes any cross-FEAT import issues, runs flutter analyze across the whole project, fixes all errors, then runs flutter build apk --debug to confirm the app compiles end-to-end.",
+  "status": "completed",
+  "steps": [
+    "1. Run `flutter pub get` to ensure all packages are resolved.",
+
+    "2. Run `flutter analyze` at the project root. Read the full output. Fix every error and warning — common issues to expect:\n   - Missing imports (e.g., a screen file forgetting to import a widget or model)\n   - Unused imports left from rewrites\n   - Type mismatches in GenericServiceModel usage across screens\n   - withOpacity deprecation warnings (acceptable — suppress with // ignore: deprecated_member_use if needed)\n   - go_router context extension usage (import 'package:go_router/go_router.dart' in every screen file that calls context.go or context.push)",
+
+    "3. Check that `lib/main.dart` still compiles cleanly — it must not have been changed by earlier FEATs. The firebase_options import remains commented out.",
+
+    "4. Verify timeago is available: check pubspec.yaml for `timeago` dependency. If missing, add `timeago: ^3.6.1` under dependencies and re-run `flutter pub get`. The news_screen.dart already imports it.",
+
+    "5. Check that AppConstants.serviceCategories is defined and has 10 entries matching these route targets: /hospitals, /doctors, /pharmacy, /education, /transport, /finance, /business, /govt, /police, /electricity. If any routes in serviceCategories point to screens that haven't been created, add stub screens or fix the routes.",
+
+    "6. Run `flutter build apk --debug` (or `flutter build apk --debug --no-pub` if pub already done). If it fails:\n   - Read the full error output\n   - Fix compilation errors one by one\n   - Re-run until it succeeds\n   Common build-time errors: missing firebase_options.dart (already handled — it's intentionally commented out), Kotlin/Gradle issues are outside scope (flag to user if Android toolchain errors occur).",
+
+    "7. Update `task.json` status to 'completed' at `c:\\Users\\360\\Downloads\\zella app\\tangail-app\\mobile\\.agents\\tasks\\task.json`.",
+
+    "8. Update each FEAT's status field to 'completed' in their respective JSON files.",
+
+    "9. Record a brief summary of what was built in each FEAT's `findings` field."
+  ],
+  "acceptance_criteria": [
+    "flutter analyze exits with 0 errors (warnings about deprecated APIs are acceptable)",
+    "flutter build apk --debug completes successfully",
+    "All 4 FEAT JSON files have status='completed'",
+    "task.json has status='completed'"
+  ],
+  "verification": [
+    "cd 'c:\\Users\\360\\Downloads\\zella app\\tangail-app\\mobile' && flutter pub get && flutter analyze",
+    "cd 'c:\\Users\\360\\Downloads\\zella app\\tangail-app\\mobile' && flutter build apk --debug"
+  ],
+  "blocked_reason": null,
+  "findings": "flutter analyze exits clean (0 issues). flutter build apk --debug succeeded — APK built at build/app/outputs/flutter-apk/app-debug.apk. Fixes applied: removed unused call_button import from doctors_screen.dart; removed unused _categoryColors/_categoryIcons fields from EmergencyScreen class (kept in _EmergencyContactCard where they are used); added const to BoxDecoration in blood_donor_screen.dart, _StatChip constructors in hospital_detail_screen.dart, and CallButton in ambulance_screen.dart. Android platform files generated via flutter create --platforms=android. Auto-generated test/widget_test.dart fixed (referenced non-existent MyApp class — replaced with placeholder test)."
+}

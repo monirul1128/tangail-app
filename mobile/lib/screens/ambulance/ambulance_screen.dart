@@ -64,7 +64,7 @@ class AmbulanceScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                CallButton(phone: '999', label: '৯৯৯'),
+                const CallButton(phone: '999', label: '৯৯৯'),
               ],
             ),
           ),

@@ -100,13 +100,13 @@ class _HospitalDetailContent extends StatelessWidget {
                         color: AppTheme.accentColor),
                     const SizedBox(width: 8),
                     if (hospital.emergencyAvailable)
-                      _StatChip(
+                      const _StatChip(
                           icon: Icons.emergency_rounded,
                           label: 'জরুরি',
                           color: AppTheme.secondaryColor),
                     if (hospital.isOpen24Hours) ...[
                       const SizedBox(width: 8),
-                      _StatChip(
+                      const _StatChip(
                           icon: Icons.access_time_rounded,
                           label: '২৪ ঘণ্টা',
                           color: AppTheme.successColor),

@@ -1,0 +1,7 @@
+{
+  "task_id": "task-tangail-flutter-app",
+  "task_description": "Build a complete Flutter Android app for 'আমাদের টাঙ্গাইল' that mirrors the Next.js web app's UI, UX, and all functionality including prayer times, 20+ service screens, home screen with 11 sections, and bottom nav with 5 tabs.",
+  "status": "completed",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003", "FEAT-004"],
+  "blocked_reason": null
+}

@@ -20,24 +20,6 @@ final emergencyContactsProvider =
 class EmergencyScreen extends ConsumerWidget {
   const EmergencyScreen({super.key});
 
-  static const _categoryColors = {
-    'fire': Color(0xFFEF4444),
-    'police': Color(0xFF1D4ED8),
-    'ambulance': Color(0xFFD97706),
-    'hospital': Color(0xFF0066CC),
-    'hotline': Color(0xFF059669),
-    'other': Color(0xFF6B7280),
-  };
-
-  static const _categoryIcons = {
-    'fire': Icons.local_fire_department_rounded,
-    'police': Icons.local_police_rounded,
-    'ambulance': Icons.airport_shuttle_rounded,
-    'hospital': Icons.local_hospital_rounded,
-    'hotline': Icons.support_agent_rounded,
-    'other': Icons.phone_rounded,
-  };
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final contactsAsync = ref.watch(emergencyContactsProvider);

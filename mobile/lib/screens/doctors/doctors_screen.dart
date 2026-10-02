@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../config/app_theme.dart';
 import '../../config/app_constants.dart';
 import '../../models/doctor_model.dart';
-import '../../widgets/call_button.dart';
 import '../../widgets/verified_badge.dart';
 
 final _selectedSpecialtyProvider = StateProvider<String>((_) => '');

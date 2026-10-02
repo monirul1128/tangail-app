@@ -198,7 +198,7 @@ class _DonorCard extends StatelessWidget {
           Container(
             width: 54,
             height: 54,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppTheme.secondaryColor,
               shape: BoxShape.circle,
             ),
