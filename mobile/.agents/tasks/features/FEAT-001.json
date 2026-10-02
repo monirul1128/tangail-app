@@ -1,0 +1,53 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Infrastructure & shared layer: update app_constants.dart with all new collections/data; create 5 new models (generic_service, notable_person, tourism, gallery_item, prayer_times); create 2 new services (generic_service_service, prayer_times_service); create 8 new shared widgets (filter_chip_row, shimmer_list, empty_state, info_card, prayer_times_strip, search_bar_widget, blood_group_selector, upazila_grid_widget); rewrite main_scaffold.dart with 5-tab NavigationBar.",
+  "status": "completed",
+  "steps": [
+    "1. Edit `lib/config/app_constants.dart`: add collection name constants colPharmacies='pharmacies', colEducation='education', colTransport='transport', colFinance='finance', colGovtServices='govt_services', colPoliceStations='police_stations', colElectricityOffices='electricity_offices', colIslamic='islamic', colProfessionals='professionals', colOrganizations='organizations', colJobs='jobs', colNotablePersons='notable_persons', colTourism='tourism', colGallery='gallery'. Add static const List<Map<String,dynamic>> upazilas with all 12: [{id:'tangail_sadar', name:'টাঙ্গাইল সদর', unionCount:14, area:336}, {id:'mirzapur', name:'মির্জাপুর', unionCount:14, area:469}, {id:'madhupur', name:'মধুপুর', unionCount:10, area:518}, {id:'ghatail', name:'ঘাটাইল', unionCount:16, area:441}, {id:'kalihati', name:'কালিহাতী', unionCount:15, area:388}, {id:'basail', name:'বাসাইল', unionCount:7, area:148}, {id:'bhuapur', name:'ভূয়াপুর', unionCount:10, area:246}, {id:'delduar', name:'দেলদুয়ার', unionCount:9, area:166}, {id:'dhanbari', name:'ধনবাড়ী', unionCount:6, area:156}, {id:'gopalpur', name:'গোপালপুর', unionCount:10, area:224}, {id:'nagarpur', name:'নাগরপুর', unionCount:13, area:320}, {id:'sakhipur', name:'সখিপুর', unionCount:11, area:391}]. Add serviceCategories list of 10 items with icon name string, label, route, colorHex. Add quickServicePills list of 6.",
+
+    "2. Create `lib/models/generic_service_model.dart` with fields: id (String), name (String), type (String), upazilaId (String), address (String), phone (List<String>), imageUrl (String), description (String), isVerified (bool), website (String). Add factory GenericServiceModel.fromFirestore(DocumentSnapshot doc) following the hospital_model.dart pattern.",
+
+    "3. Create `lib/models/notable_person_model.dart` with fields: id, name, nameEn, designation, bio, imageUrl, category, birthYear (int). Add fromFirestore factory.",
+
+    "4. Create `lib/models/tourism_model.dart` with fields: id, name, description, category, imageUrl, address, upazilaId, openingHours (String), entryFee (String), location (GeoPoint?). Add fromFirestore factory.",
+
+    "5. Create `lib/models/gallery_item_model.dart` with fields: id, imageUrl, caption, category, createdAt (DateTime). Add fromFirestore factory that converts Timestamp.",
+
+    "6. Create `lib/models/prayer_times_model.dart` with fields: fajr, dhuhr, asr, maghrib, isha (all String in 'HH:MM' 24h format), date (String). Add fromJson(Map<String,dynamic> json) factory that reads json['data']['timings'] map.",
+
+    "7. Create `lib/services/generic_service_service.dart`: class GenericServiceService { final _db = FirebaseFirestore.instance; Stream<List<GenericServiceModel>> getItems(String collectionName, {String? upazilaId, String? type}) — builds Query with optional where clauses, orders by 'name', maps snapshots; Future<GenericServiceModel?> getItemById(String collectionName, String id); }",
+
+    "8. Create `lib/services/prayer_times_service.dart`: class PrayerTimesService { Future<PrayerTimesModel> fetchTodayTimings() — formats today's date as 'DD-MM-YYYY', calls http.get('https://api.aladhan.com/v1/timings/{date}?latitude=24.2513&longitude=89.9167&method=1&school=1&timezone=Asia/Dhaka'), on success parses response body JSON and returns PrayerTimesModel.fromJson(decoded); on any error returns PrayerTimesModel with all times set to '--:--'. Import http and dart:convert. }",
+
+    "9. Create `lib/widgets/filter_chip_row.dart`: FilterChipRow stateless widget takes List<(String id, String label)> options, String selected, Color accentColor, ValueChanged<String> onChanged. Renders SizedBox(height:44) horizontal ListView of FilterChip widgets. Use the exact chip styling from hospitals_screen.dart _UpazilaFilterBar as the pattern.",
+
+    "10. Create `lib/widgets/shimmer_list.dart`: ShimmerList(itemCount) widget. Import shimmer package. Renders ListView.builder of itemCount shimmer-animated Container rows (height:80, white, rounded corners, shimmer baseColor:AppTheme.backgroundColor, highlightColor:Colors.white).",
+
+    "11. Create `lib/widgets/empty_state.dart`: EmptyState({required IconData icon, required String message, VoidCallback? onRetry}) centered Column: large icon (color:AppTheme.textSecondary, size:64), SizedBox(8), Text(message, textSecondary), if onRetry!=null: SizedBox(16) + OutlinedButton('আবার চেষ্টা করুন').",
+
+    "12. Create `lib/widgets/info_card.dart`: InfoCard({required IconData icon, required Color iconColor, required String title, String? subtitle, String? badge, required List<String> phones, bool isVerified=false}) — white card Container matching hospital_card style; icon in colored circle; title+verified badge+subtitle+badge chip; call buttons for each phone using CallButton widget.",
+
+    "13. Create `lib/widgets/prayer_times_strip.dart`: file-level FutureProvider<PrayerTimesModel> prayerTimesProvider = FutureProvider((ref) => PrayerTimesService().fetchTodayTimings()); PrayerTimesStrip ConsumerWidget that reads prayerTimesProvider and on data renders a horizontal SizedBox(height:56) ListView of 5 prayer chips. Each chip: white rounded Container(padding:EdgeInsets.symmetric(h:12,v:6)), Column of [Text(prayerName, 10pt, textSecondary), Text(formattedTime, 12pt, bold, primaryColor)]. Convert HH:MM to 12h Bangla: use intl DateFormat.jm() or manual parse — if hour<12 prefix 'সকাল', 12==hour prefix 'দুপুর', hour<18 prefix 'বিকাল', else prefix 'রাত'. On loading show shimmer row; on error show 'সময় পাওয়া যায়নি'.",
+
+    "14. Create `lib/widgets/search_bar_widget.dart`: SearchBarWidget stateless widget. TextField with hint 'কী খুঁজছেন?', suffix mic icon (Icons.mic_rounded), filled white, rounded 24. onSubmitted/onChanged debounced: check if query contains 'হাসপাতাল'→go('/hospitals'), 'ডাক্তার'→go('/doctors'), 'রক্ত'→go('/blood-donors'), 'অ্যাম্বুলেন্স'→go('/ambulance'), 'ফার্মেসি'→go('/pharmacy'), 'পুলিশ'→go('/police'), else go('/news'). Needs BuildContext — accept it or use go_router context extension.",
+
+    "15. Create `lib/widgets/blood_group_selector.dart`: BloodGroupSelector({required void Function(String) onSelected}) — renders 4×2 GridView of 8 blood group buttons from AppConstants.bloodGroups; each is ElevatedButton with secondaryColor background; tapping calls onSelected(bloodGroup).",
+
+    "16. Create `lib/widgets/upazila_grid_widget.dart`: UpazilaGridWidget({VoidCallback? onUpazilaSelected}) — GridView.count(crossAxisCount:2) of cards for each upazila in AppConstants.upazilas. Each card: white, rounded 12, shows name + '${unionCount}টি ইউনিয়ন • ${area} বর্গকিমি'; tapping navigates context.push('/upazila/{id}').",
+
+    "17. Rewrite `lib/widgets/main_scaffold.dart`: replace BottomNavigationBar with Material 3 NavigationBar. 5 destinations: হোম(Icons.home_rounded, '/'), হাসপাতাল(Icons.local_hospital_rounded, '/hospitals'), ডাক্তার(Icons.medical_services_rounded, '/doctors'), সেবা(Icons.grid_view_rounded, '/services'), আরও(Icons.more_horiz_rounded, '/more'). Use NavigationBar widget, selectedIndex computed from current GoRouter path. Keep ShellRoute compatibility (child passed to Scaffold body)."
+  ],
+  "acceptance_criteria": [
+    "flutter analyze lib/config/app_constants.dart exits with 0 errors",
+    "flutter analyze lib/models/ exits with 0 errors — all 5 new model files present",
+    "flutter analyze lib/services/ exits with 0 errors — both new service files present",
+    "flutter analyze lib/widgets/ exits with 0 errors — all 8 new widget files present plus main_scaffold.dart updated",
+    "PrayerTimesService.fetchTodayTimings() compiles and uses correct aladhan API URL with Dhaka lat/lng"
+  ],
+  "verification": [
+    "cd 'c:\\Users\\360\\Downloads\\zella app\\tangail-app\\mobile' && flutter analyze lib/config/ lib/models/ lib/services/ lib/widgets/"
+  ],
+  "blocked_reason": null,
+  "findings": "All 17 steps implemented and verified clean. app_constants.dart extended with 14 new collection constants, 12 upazilas list, 10 serviceCategories, and 6 quickServicePills. Five new models created (GenericServiceModel, NotablePersonModel, TourismModel, GalleryItemModel, PrayerTimesModel) following the HospitalModel fromFirestore pattern. Two new services created: GenericServiceService (Firestore stream/fetch with optional upazila/type filters) and PrayerTimesService (AlAdhan API call for Tangail lat/lng 24.2513/89.9167 with method=1, school=1, Asia/Dhaka timezone). Eight new shared widgets created: FilterChipRow, ShimmerList, EmptyState, InfoCard, PrayerTimesStrip (with file-level FutureProvider and Bangla 12h time formatting), SearchBarWidget, BloodGroupSelector, UpazilaGridWidget. main_scaffold.dart rewritten to use Material 3 NavigationBar with 5 destinations (হোম/হাসপাতাল/ডাক্তার/সেবা/আরও). Pre-existing CardTheme→CardThemeData type error in app_theme.dart and unused_import in router.dart fixed as blocking issues. analysis_options.yaml created to suppress project-wide withOpacity deprecation infos per context.json guidance. flutter analyze exits 0 with no issues."
+}

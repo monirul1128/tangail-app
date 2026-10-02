@@ -7,11 +7,11 @@ class MainScaffold extends StatelessWidget {
   const MainScaffold({super.key, required this.child});
 
   static const _tabs = [
-    _TabItem(path: '/', icon: Icons.home_rounded, label: 'হোম'),
-    _TabItem(path: '/hospitals', icon: Icons.local_hospital_rounded, label: 'হাসপাতাল'),
-    _TabItem(path: '/doctors', icon: Icons.medical_services_rounded, label: 'ডাক্তার'),
-    _TabItem(path: '/blood-donors', icon: Icons.water_drop_rounded, label: 'রক্ত'),
-    _TabItem(path: '/emergency', icon: Icons.emergency_rounded, label: 'জরুরি'),
+    _TabItem(path: '/',          icon: Icons.home_rounded,             label: 'হোম'),
+    _TabItem(path: '/hospitals', icon: Icons.local_hospital_rounded,   label: 'হাসপাতাল'),
+    _TabItem(path: '/doctors',   icon: Icons.medical_services_rounded, label: 'ডাক্তার'),
+    _TabItem(path: '/services',  icon: Icons.grid_view_rounded,        label: 'সেবা'),
+    _TabItem(path: '/more',      icon: Icons.more_horiz_rounded,       label: 'আরও'),
   ];
 
   int _currentIndex(BuildContext context) {
@@ -24,22 +24,27 @@ class MainScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentIndex = _currentIndex(context);
+
     return Scaffold(
       body: child,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex(context),
-        onTap: (i) => context.go(_tabs[i].path),
-        items: _tabs
-            .map((t) => BottomNavigationBarItem(
-                  icon: Icon(t.icon),
-                  label: t.label,
-                ))
-            .toList(),
-        selectedItemColor: AppTheme.primaryColor,
-        unselectedItemColor: AppTheme.textSecondary,
-        type: BottomNavigationBarType.fixed,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: currentIndex,
+        onDestinationSelected: (i) => context.go(_tabs[i].path),
         backgroundColor: Colors.white,
-        elevation: 10,
+        indicatorColor: AppTheme.primaryColor.withOpacity(0.12),
+        shadowColor: Colors.black12,
+        elevation: 8,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        destinations: _tabs.map((t) {
+          return NavigationDestination(
+            icon: Icon(t.icon,
+                color: AppTheme.textSecondary),
+            selectedIcon: Icon(t.icon,
+                color: AppTheme.primaryColor),
+            label: t.label,
+          );
+        }).toList(),
       ),
     );
   }
