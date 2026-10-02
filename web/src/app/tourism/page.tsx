@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import Link from "next/link";
 import ServicePageLayout from "@/components/ui/ServicePageLayout";
 import FilterChips from "@/components/ui/FilterChips";
 import { MapPin, Clock } from "lucide-react";
@@ -54,7 +55,7 @@ export default function TourismPage() {
             const upazilaName = UPAZILAS.find(u => u.id === s.upazilaId)?.name ?? s.upazilaId;
             return (
               <Link key={s.id} href={`/tourism/${s.id}`}
-                className={`rounded-2xl border overflow-hidden shadow-sm hover:shadow-md transition-shadow ${catColor[s.category] ? "bg-white" : "bg-white"}`}>
+                className="rounded-2xl border overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white">
                 {s.imageUrl ? (
                   <img src={s.imageUrl} alt={s.name} className="w-full h-44 object-cover" />
                 ) : (
@@ -81,7 +82,7 @@ export default function TourismPage() {
                     </div>
                   )}
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
