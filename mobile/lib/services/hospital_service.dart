@@ -5,65 +5,34 @@ import '../config/app_constants.dart';
 class HospitalService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  /// Get all hospitals, optionally filtered by upazilaId
-  Stream<List<HospitalModel>> getHospitals({String? upazilaId}) {
-    Query query = _db
-        .collection(AppConstants.colHospitals)
-        .orderBy('rating', descending: true);
+  Stream<List<HospitalModel>> getHospitals({String? upazilaId, String? type}) {
+    // No orderBy — avoids index errors. Filter + sort client-side.
+    final query = _db.collection(AppConstants.colHospitals).limit(200);
 
-    if (upazilaId != null && upazilaId.isNotEmpty) {
-      query = query.where('upazilaId', isEqualTo: upazilaId);
-    }
+    return query.snapshots().map((snap) {
+      var list = snap.docs
+          .map((doc) => HospitalModel.fromFirestore(doc))
+          .toList();
 
-    return query.snapshots().map((snap) =>
-        snap.docs.map((doc) => HospitalModel.fromFirestore(doc)).toList());
+      if (upazilaId != null && upazilaId.isNotEmpty) {
+        list = list.where((h) => h.upazilaId == upazilaId).toList();
+      }
+      if (type != null && type.isNotEmpty) {
+        list = list.where((h) => h.type == type).toList();
+      }
+
+      list.sort((a, b) => a.name.compareTo(b.name));
+      return list;
+    });
   }
 
-  /// Get hospitals by type (government, private, etc.)
-  Stream<List<HospitalModel>> getHospitalsByType(String type) {
-    return _db
-        .collection(AppConstants.colHospitals)
-        .where('type', isEqualTo: type)
-        .orderBy('rating', descending: true)
-        .snapshots()
-        .map((snap) =>
-            snap.docs.map((doc) => HospitalModel.fromFirestore(doc)).toList());
-  }
-
-  /// Get a single hospital by ID
   Future<HospitalModel?> getHospitalById(String id) async {
-    final doc =
-        await _db.collection(AppConstants.colHospitals).doc(id).get();
-    if (!doc.exists) return null;
-    return HospitalModel.fromFirestore(doc);
-  }
-
-  /// Search hospitals by name
-  Future<List<HospitalModel>> searchHospitals(String query) async {
-    // Firestore doesn't support full-text search natively
-    // Use a range query on the name field for basic prefix search
-    final snap = await _db
-        .collection(AppConstants.colHospitals)
-        .where('nameEn', isGreaterThanOrEqualTo: query)
-        .where('nameEn', isLessThan: '${query}z')
-        .limit(20)
-        .get();
-    return snap.docs.map((doc) => HospitalModel.fromFirestore(doc)).toList();
-  }
-
-  /// Get verified hospitals only
-  Stream<List<HospitalModel>> getVerifiedHospitals({String? upazilaId}) {
-    Query query = _db
-        .collection(AppConstants.colHospitals)
-        .where('isVerified', isEqualTo: true)
-        .orderBy('rating', descending: true)
-        .limit(AppConstants.pageSize);
-
-    if (upazilaId != null && upazilaId.isNotEmpty) {
-      query = query.where('upazilaId', isEqualTo: upazilaId);
+    try {
+      final doc = await _db.collection(AppConstants.colHospitals).doc(id).get();
+      if (!doc.exists) return null;
+      return HospitalModel.fromFirestore(doc);
+    } catch (_) {
+      return null;
     }
-
-    return query.snapshots().map((snap) =>
-        snap.docs.map((doc) => HospitalModel.fromFirestore(doc)).toList());
   }
 }

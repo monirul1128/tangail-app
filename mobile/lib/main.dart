@@ -3,14 +3,22 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'config/app_theme.dart';
 import 'config/router.dart';
-// import 'firebase_options.dart'; // Uncomment after running flutterfire configure
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    // options: DefaultFirebaseOptions.currentPlatform, // Uncomment after flutterfire configure
-  );
+  // Wrap Firebase init in try/catch so the app always renders.
+  // Without google-services.json the app will still open — Firestore
+  // reads will simply return empty lists instead of crashing.
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    debugPrint('⚠️  Firebase init failed: $e');
+    debugPrint('    Place google-services.json in android/app/ and run flutterfire configure.');
+  }
 
   runApp(
     const ProviderScope(
@@ -27,14 +35,14 @@ class TangailApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: 'টাঙ্গাইল জেলা',
+      title: 'আমাদের টাঙ্গাইল',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       routerConfig: router,
       builder: (context, child) {
-        // Ensure Bangla text renders properly
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: TextScaler.noScaling),
           child: child!,
         );
       },

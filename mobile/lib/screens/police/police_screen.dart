@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../config/app_constants.dart';
-import '../../models/generic_service_model.dart';
-import '../../services/generic_service_service.dart';
+import '../../models/emergency_contact_model.dart';
 import '../../widgets/info_card.dart';
 import '../../widgets/shimmer_list.dart';
 import '../../widgets/empty_state.dart';
 
-final _policeServiceProvider = Provider((_) => GenericServiceService());
-
 final policeStreamProvider =
-    StreamProvider.autoDispose<List<GenericServiceModel>>((ref) {
-  final service = ref.watch(_policeServiceProvider);
-  return service.getItems(AppConstants.colPoliceStations);
+    StreamProvider.autoDispose<List<EmergencyContactModel>>((ref) {
+  return FirebaseFirestore.instance
+      .collection(AppConstants.colEmergencyContacts)
+      .limit(100)
+      .snapshots()
+      .map((snap) {
+    final list = snap.docs
+        .map((doc) => EmergencyContactModel.fromFirestore(doc))
+        .toList();
+    // filter police category
+    return list.where((c) => c.category == 'police').toList()
+      ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+  });
 });
 
 class PoliceScreen extends ConsumerWidget {
@@ -33,8 +41,8 @@ class PoliceScreen extends ConsumerWidget {
             width: double.infinity,
             child: ElevatedButton.icon(
               onPressed: () async {
-                await FlutterPhoneDirectCaller.callNumber(
-                    AppConstants.nationalEmergency);
+                final uri = Uri(scheme: 'tel', path: AppConstants.nationalEmergency);
+                if (await canLaunchUrl(uri)) await launchUrl(uri);
               },
               icon: const Icon(Icons.local_police_rounded),
               label: const Text('জাতীয় পুলিশ হেল্পলাইন: ৯৯৯'),
@@ -64,7 +72,7 @@ class PoliceScreen extends ConsumerWidget {
                   if (items.isEmpty) {
                     return const EmptyState(
                       icon: Icons.local_police_rounded,
-                      message: 'কোনো পুলিশ স্টেশন পাওয়া যায়নি',
+                      message: 'কোনো পুলিশ তথ্য পাওয়া যায়নি',
                     );
                   }
                   return ListView.builder(
@@ -73,11 +81,10 @@ class PoliceScreen extends ConsumerWidget {
                     itemBuilder: (_, i) => InfoCard(
                       icon: Icons.local_police_rounded,
                       iconColor: const Color(0xFF1D4ED8),
-                      title: items[i].name,
-                      subtitle: items[i].address,
-                      badge: items[i].type.isNotEmpty ? items[i].type : null,
+                      title: items[i].title,
+                      subtitle: items[i].isNational ? 'জাতীয়' : '',
                       phones: items[i].phone,
-                      isVerified: items[i].isVerified,
+                      isVerified: false,
                     ),
                   );
                 },

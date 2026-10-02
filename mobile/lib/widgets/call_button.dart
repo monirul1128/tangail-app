@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../config/app_theme.dart';
 
 class CallButton extends StatelessWidget {
@@ -15,7 +15,10 @@ class CallButton extends StatelessWidget {
   });
 
   Future<void> _call() async {
-    await FlutterPhoneDirectCaller.callNumber(phone);
+    final uri = Uri(scheme: 'tel', path: phone);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
   }
 
   @override

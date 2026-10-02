@@ -15,11 +15,15 @@ final notablePersonsStreamProvider =
     StreamProvider.autoDispose<List<NotablePersonModel>>((ref) {
   return FirebaseFirestore.instance
       .collection(AppConstants.colNotablePersons)
-      .orderBy('name')
+      .limit(200)
       .snapshots()
-      .map((snap) => snap.docs
-          .map((doc) => NotablePersonModel.fromFirestore(doc))
-          .toList());
+      .map((snap) {
+    final list = snap.docs
+        .map((doc) => NotablePersonModel.fromFirestore(doc))
+        .toList();
+    list.sort((a, b) => a.name.compareTo(b.name));
+    return list;
+  });
 });
 
 class NotablePersonsScreen extends ConsumerWidget {

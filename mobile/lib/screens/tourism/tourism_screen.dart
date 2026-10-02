@@ -15,10 +15,15 @@ final tourismStreamProvider =
     StreamProvider.autoDispose<List<TourismModel>>((ref) {
   return FirebaseFirestore.instance
       .collection(AppConstants.colTourism)
-      .orderBy('name')
+      .limit(200)
       .snapshots()
-      .map((snap) =>
-          snap.docs.map((doc) => TourismModel.fromFirestore(doc)).toList());
+      .map((snap) {
+    final list = snap.docs
+        .map((doc) => TourismModel.fromFirestore(doc))
+        .toList();
+    list.sort((a, b) => a.name.compareTo(b.name));
+    return list;
+  });
 });
 
 class TourismScreen extends ConsumerWidget {

@@ -16,6 +16,7 @@ final hospitalsStreamProvider = StreamProvider.autoDispose
   final service = ref.watch(_hospitalServiceProvider);
   return service.getHospitals(
     upazilaId: filters['upazilaId'],
+    type: filters['type'],
   );
 });
 
@@ -25,8 +26,9 @@ class HospitalsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedUpazila = ref.watch(_selectedUpazilaProvider);
+    final selectedType = ref.watch(_selectedTypeProvider);
     final hospitalsAsync = ref.watch(
-        hospitalsStreamProvider({'upazilaId': selectedUpazila}));
+        hospitalsStreamProvider({'upazilaId': selectedUpazila, 'type': selectedType}));
 
     return Scaffold(
       appBar: AppBar(
@@ -63,25 +65,20 @@ class HospitalsScreen extends ConsumerWidget {
               error: (e, _) =>
                   Center(child: Text('ত্রুটি হয়েছে: $e')),
               data: (hospitals) {
-                final typeFilter = ref.watch(_selectedTypeProvider);
-                final filtered = typeFilter.isEmpty
-                    ? hospitals
-                    : hospitals
-                        .where((h) => h.type == typeFilter)
-                        .toList();
-
-                if (filtered.isEmpty) {
+                if (hospitals.isEmpty) {
                   return const Center(
                       child: Text('কোনো হাসপাতাল পাওয়া যায়নি'));
                 }
 
-                return ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: filtered.length,
-                  itemBuilder: (_, i) => HospitalCard(
-                    hospital: filtered[i],
-                    onTap: () =>
-                        context.push('/hospitals/${filtered[i].id}'),
+                return RefreshIndicator(
+                  onRefresh: () async => ref.invalidate(hospitalsStreamProvider),
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: hospitals.length,
+                    itemBuilder: (_, i) => HospitalCard(
+                      hospital: hospitals[i],
+                      onTap: () => context.push('/hospitals/${hospitals[i].id}'),
+                    ),
                   ),
                 );
               },

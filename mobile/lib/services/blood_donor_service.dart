@@ -11,20 +11,29 @@ class BloodDonorService {
     String? upazilaId,
     bool availableOnly = true,
   }) {
-    Query query = _db.collection(AppConstants.colBloodDonors);
+    // Simple query — filter client-side to avoid composite index errors
+    return _db
+        .collection(AppConstants.colBloodDonors)
+        .limit(200)
+        .snapshots()
+        .map((snap) {
+      var list = snap.docs
+          .map((doc) => BloodDonorModel.fromFirestore(doc))
+          .toList();
 
-    if (availableOnly) {
-      query = query.where('isAvailable', isEqualTo: true);
-    }
-    if (bloodGroup != null && bloodGroup.isNotEmpty) {
-      query = query.where('bloodGroup', isEqualTo: bloodGroup);
-    }
-    if (upazilaId != null && upazilaId.isNotEmpty) {
-      query = query.where('upazilaId', isEqualTo: upazilaId);
-    }
+      if (availableOnly) {
+        list = list.where((d) => d.isAvailable).toList();
+      }
+      if (bloodGroup != null && bloodGroup.isNotEmpty) {
+        list = list.where((d) => d.bloodGroup == bloodGroup).toList();
+      }
+      if (upazilaId != null && upazilaId.isNotEmpty) {
+        list = list.where((d) => d.upazilaId == upazilaId).toList();
+      }
 
-    return query.snapshots().map((snap) =>
-        snap.docs.map((doc) => BloodDonorModel.fromFirestore(doc)).toList());
+      list.sort((a, b) => a.name.compareTo(b.name));
+      return list;
+    });
   }
 
   /// Register as a blood donor

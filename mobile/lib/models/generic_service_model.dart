@@ -26,31 +26,27 @@ class GenericServiceModel {
   });
 
   factory GenericServiceModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>? ?? {};
+
+    // phone field can be a List, a String, or missing
+    List<String> parsePhone(dynamic raw) {
+      if (raw == null) return [];
+      if (raw is List) return raw.map((e) => e.toString()).toList();
+      if (raw is String && raw.isNotEmpty) return [raw];
+      return [];
+    }
+
     return GenericServiceModel(
       id: doc.id,
-      name: data['name'] ?? '',
-      type: data['type'] ?? '',
-      upazilaId: data['upazilaId'] ?? '',
-      address: data['address'] ?? '',
-      phone: List<String>.from(data['phone'] ?? []),
-      imageUrl: data['imageUrl'] ?? '',
-      description: data['description'] ?? '',
-      isVerified: data['isVerified'] ?? false,
-      website: data['website'] ?? '',
+      name: data['name'] as String? ?? data['title'] as String? ?? '',
+      type: data['type'] as String? ?? data['category'] as String? ?? '',
+      upazilaId: data['upazilaId'] as String? ?? '',
+      address: data['address'] as String? ?? data['location'] as String? ?? '',
+      phone: parsePhone(data['phone'] ?? data['phones'] ?? data['contact']),
+      imageUrl: data['imageUrl'] as String? ?? data['image'] as String? ?? '',
+      description: data['description'] as String? ?? data['details'] as String? ?? '',
+      isVerified: data['isVerified'] as bool? ?? false,
+      website: data['website'] as String? ?? data['url'] as String? ?? '',
     );
   }
-
-  Map<String, dynamic> toMap() => {
-        'name': name,
-        'type': type,
-        'upazilaId': upazilaId,
-        'address': address,
-        'phone': phone,
-        'imageUrl': imageUrl,
-        'description': description,
-        'isVerified': isVerified,
-        'website': website,
-        'updatedAt': FieldValue.serverTimestamp(),
-      };
 }

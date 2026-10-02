@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "593702973522",
+    "project_id": "tangail-app",
+    "storage_bucket": "tangail-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593702973522:android:7a5ea6e3ffd9efeaa8af8b",
+        "android_client_info": {
+          "package_name": "com.example.tangail_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "593702973522-pvuo5p9mtt21tke57044nin275qj3pai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlyCCLMW1Sluzhe-AoXxuYl1rn3O5O308"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "593702973522-pvuo5p9mtt21tke57044nin275qj3pai.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

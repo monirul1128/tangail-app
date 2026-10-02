@@ -30,7 +30,7 @@ class AppConstants {
   static const String colGovtServices = 'govt_services';
   static const String colPoliceStations = 'police_stations';
   static const String colElectricityOffices = 'electricity_offices';
-  static const String colIslamic = 'islamic';
+  static const String colIslamic = 'islamic_places';   // ← fixed: was 'islamic'
   static const String colProfessionals = 'professionals';
   static const String colOrganizations = 'organizations';
   static const String colJobs = 'jobs';

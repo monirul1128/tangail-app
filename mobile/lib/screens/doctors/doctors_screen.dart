@@ -11,16 +11,21 @@ final _selectedSpecialtyProvider = StateProvider<String>((_) => '');
 
 final doctorsStreamProvider =
     StreamProvider.autoDispose.family<List<DoctorModel>, String>((ref, specialty) {
-  Query query = FirebaseFirestore.instance
+  // Simple query — no orderBy to avoid index errors. Filter client-side.
+  return FirebaseFirestore.instance
       .collection(AppConstants.colDoctors)
-      .orderBy('rating', descending: true);
-
-  if (specialty.isNotEmpty) {
-    query = query.where('specialty', isEqualTo: specialty);
-  }
-
-  return query.snapshots().map((snap) =>
-      snap.docs.map((doc) => DoctorModel.fromFirestore(doc)).toList());
+      .limit(200)
+      .snapshots()
+      .map((snap) {
+    var list = snap.docs
+        .map((doc) => DoctorModel.fromFirestore(doc))
+        .toList();
+    if (specialty.isNotEmpty) {
+      list = list.where((d) => d.specialty == specialty).toList();
+    }
+    list.sort((a, b) => a.name.compareTo(b.name));
+    return list;
+  });
 });
 
 class DoctorsScreen extends ConsumerWidget {
@@ -178,9 +183,14 @@ class DoctorCard extends StatelessWidget {
                           color: Color(0xFF7C3AED),
                           fontWeight: FontWeight.w600)),
                   const SizedBox(height: 3),
-                  Text(doctor.qualifications.join(', '),
+                  if (doctor.qualifications.isNotEmpty)
+                    Text(
+                      doctor.qualifications.join(', '),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                          fontSize: 11, color: AppTheme.textSecondary)),
+                          fontSize: 11, color: AppTheme.textSecondary),
+                    ),
                   const SizedBox(height: 6),
                   Row(
                     children: [
@@ -202,10 +212,16 @@ class DoctorCard extends StatelessWidget {
                       const Icon(Icons.access_time_rounded,
                           size: 12, color: AppTheme.textSecondary),
                       const SizedBox(width: 3),
-                      Text(doctor.visitingHours,
+                      Expanded(
+                        child: Text(
+                          doctor.visitingHours,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                              fontSize: 11, color: AppTheme.textSecondary)),
-                      const Spacer(),
+                              fontSize: 11, color: AppTheme.textSecondary),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
                       Text('ভিজিট: ৳${doctor.visitFee}',
                           style: const TextStyle(
                               fontSize: 12,

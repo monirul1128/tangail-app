@@ -5,37 +5,51 @@ import '../config/app_constants.dart';
 class NewsService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  /// Get latest news, optionally filtered by category
-  Stream<List<NewsModel>> getNews({String? category, int limit = 20}) {
-    Query query = _db
+  Stream<List<NewsModel>> getNews({String? category, int limit = 40}) {
+    // Simple query — no compound index needed
+    final query = _db
         .collection(AppConstants.colNews)
-        .orderBy('publishedAt', descending: true)
         .limit(limit);
 
-    if (category != null && category.isNotEmpty) {
-      query = query.where('category', isEqualTo: category);
-    }
+    return query.snapshots().map((snap) {
+      var list = snap.docs
+          .map((doc) => NewsModel.fromFirestore(doc))
+          .toList();
 
-    return query.snapshots().map(
-        (snap) => snap.docs.map((doc) => NewsModel.fromFirestore(doc)).toList());
+      if (category != null && category.isNotEmpty) {
+        list = list.where((n) => n.category == category).toList();
+      }
+
+      // Sort newest first client-side
+      list.sort((a, b) => b.publishedAt.compareTo(a.publishedAt));
+      return list;
+    });
   }
 
-  /// Get notices only
+  /// Notices only (isNotice == true)
   Stream<List<NewsModel>> getNotices({int limit = 10}) {
     return _db
         .collection(AppConstants.colNews)
-        .where('isNotice', isEqualTo: true)
-        .orderBy('publishedAt', descending: true)
-        .limit(limit)
+        .limit(100) // fetch more, filter client-side
         .snapshots()
-        .map((snap) =>
-            snap.docs.map((doc) => NewsModel.fromFirestore(doc)).toList());
+        .map((snap) {
+      var list = snap.docs
+          .map((doc) => NewsModel.fromFirestore(doc))
+          .toList();
+
+      list = list.where((n) => n.isNotice).toList();
+      list.sort((a, b) => b.publishedAt.compareTo(a.publishedAt));
+      return list.take(limit).toList();
+    });
   }
 
-  /// Get a single news article
   Future<NewsModel?> getNewsById(String id) async {
-    final doc = await _db.collection(AppConstants.colNews).doc(id).get();
-    if (!doc.exists) return null;
-    return NewsModel.fromFirestore(doc);
+    try {
+      final doc = await _db.collection(AppConstants.colNews).doc(id).get();
+      if (!doc.exists) return null;
+      return NewsModel.fromFirestore(doc);
+    } catch (_) {
+      return null;
+    }
   }
 }

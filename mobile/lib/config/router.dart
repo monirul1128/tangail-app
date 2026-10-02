@@ -78,6 +78,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/finance', builder: (_, __) => const FinanceScreen()),
       GoRoute(path: '/business', builder: (_, __) => const BusinessScreen()),
       GoRoute(path: '/govt', builder: (_, __) => const GovtScreen()),
+      GoRoute(path: '/govt-services', builder: (_, __) => const GovtScreen()),
       GoRoute(path: '/police', builder: (_, __) => const PoliceScreen()),
       GoRoute(path: '/electricity', builder: (_, __) => const ElectricityScreen()),
       GoRoute(path: '/islamic', builder: (_, __) => const IslamicScreen()),

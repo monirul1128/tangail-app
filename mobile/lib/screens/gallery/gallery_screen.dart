@@ -14,11 +14,15 @@ final galleryStreamProvider =
     StreamProvider.autoDispose<List<GalleryItemModel>>((ref) {
   return FirebaseFirestore.instance
       .collection(AppConstants.colGallery)
-      .orderBy('createdAt', descending: true)
+      .limit(100)
       .snapshots()
-      .map((snap) => snap.docs
-          .map((doc) => GalleryItemModel.fromFirestore(doc))
-          .toList());
+      .map((snap) {
+    final list = snap.docs
+        .map((doc) => GalleryItemModel.fromFirestore(doc))
+        .toList();
+    list.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return list;
+  });
 });
 
 class GalleryScreen extends ConsumerWidget {

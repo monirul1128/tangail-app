@@ -24,31 +24,31 @@ class NewsModel {
   });
 
   factory NewsModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>? ?? {};
+
+    DateTime parsedDate = DateTime.now();
+    final raw = data['publishedAt'];
+    if (raw is Timestamp) {
+      parsedDate = raw.toDate();
+    } else if (raw is String) {
+      parsedDate = DateTime.tryParse(raw) ?? DateTime.now();
+    }
+    // also fallback to createdAt
+    if (raw == null) {
+      final created = data['createdAt'];
+      if (created is Timestamp) parsedDate = created.toDate();
+    }
+
     return NewsModel(
       id: doc.id,
-      title: data['title'] ?? '',
-      titleEn: data['titleEn'] ?? '',
-      body: data['body'] ?? '',
-      category: data['category'] ?? 'general',
-      imageUrl: data['imageUrl'] ?? '',
-      source: data['source'] ?? '',
-      isNotice: data['isNotice'] ?? false,
-      publishedAt: data['publishedAt'] != null
-          ? (data['publishedAt'] as Timestamp).toDate()
-          : DateTime.now(),
+      title: data['title'] as String? ?? '',
+      titleEn: data['titleEn'] as String? ?? '',
+      body: data['body'] as String? ?? '',
+      category: data['category'] as String? ?? 'general',
+      imageUrl: data['imageUrl'] as String? ?? '',
+      source: data['source'] as String? ?? '',
+      isNotice: data['isNotice'] as bool? ?? false,
+      publishedAt: parsedDate,
     );
   }
-
-  Map<String, dynamic> toMap() => {
-        'title': title,
-        'titleEn': titleEn,
-        'body': body,
-        'category': category,
-        'imageUrl': imageUrl,
-        'source': source,
-        'isNotice': isNotice,
-        'publishedAt': Timestamp.fromDate(publishedAt),
-        'createdAt': FieldValue.serverTimestamp(),
-      };
 }

@@ -1,96 +1,95 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../config/app_constants.dart';
-import '../../models/generic_service_model.dart';
-import '../../services/generic_service_service.dart';
 import '../../widgets/filter_chip_row.dart';
 import '../../widgets/info_card.dart';
 import '../../widgets/shimmer_list.dart';
-import '../../widgets/empty_state.dart';
 
-final _organizationsServiceProvider = Provider((_) => GenericServiceService());
-final _organizationsUpazilaProvider = StateProvider<String>((_) => '');
-
-final organizationsStreamProvider = StreamProvider.autoDispose
-    .family<List<GenericServiceModel>, Map<String, String>>((ref, filters) {
-  final service = ref.watch(_organizationsServiceProvider);
-  return service.getItems(
-    AppConstants.colOrganizations,
-    upazilaId: filters['upazilaId'],
-  );
-});
-
-class OrganizationsScreen extends ConsumerWidget {
+class OrganizationsScreen extends StatefulWidget {
   const OrganizationsScreen({super.key});
+  @override
+  State<OrganizationsScreen> createState() => _OrganizationsScreenState();
+}
 
-  static const _upazilaOptions = [
-    ('', 'সব'),
-    ('tangail_sadar', 'সদর'),
-    ('mirzapur', 'মির্জাপুর'),
-    ('madhupur', 'মধুপুর'),
-    ('ghatail', 'ঘাটাইল'),
-    ('kalihati', 'কালিহাতী'),
-    ('basail', 'বাসাইল'),
-    ('bhuapur', 'ভূয়াপুর'),
-    ('delduar', 'দেলদুয়ার'),
-    ('dhanbari', 'ধনবাড়ী'),
-    ('gopalpur', 'গোপালপুর'),
-    ('nagarpur', 'নাগরপুর'),
-    ('sakhipur', 'সখিপুর'),
+class _OrganizationsScreenState extends State<OrganizationsScreen> {
+  List<Map<String, dynamic>> _items = [];
+  bool _loading = true;
+  String _selectedType = '';
+
+  static const _typeOptions = [
+    ('', 'সব'), ('govt', 'সরকারি'), ('ngo', 'এনজিও'),
+    ('cultural', 'সাংস্কৃতিক'), ('sports', 'ক্রীড়া'),
+    ('social', 'সামাজিক'), ('business', 'ব্যবসায়িক'),
   ];
 
+  @override void initState() { super.initState(); _load(); }
+
+  Future<void> _load() async {
+    setState(() => _loading = true);
+    try {
+      final snap = await FirebaseFirestore.instance
+          .collection(AppConstants.colOrganizations).limit(200).get();
+      final list = snap.docs.map((d) {
+        final data = d.data() as Map<String, dynamic>? ?? {};
+        List<String> phones = [];
+        final raw = data['phone'];
+        if (raw is List) phones = raw.map((e) => e.toString()).toList();
+        else if (raw is String && raw.isNotEmpty) phones = [raw];
+        return {
+          'id': d.id,
+          'name': data['name'] as String? ?? '',
+          'type': data['type'] as String? ?? '',
+          'address': data['address'] as String? ?? '',
+          'phone': phones,
+          'isVerified': data['isVerified'] as bool? ?? false,
+        };
+      }).toList();
+      list.sort((a, b) => (a['name'] as String).compareTo(b['name'] as String));
+      setState(() { _items = list; _loading = false; });
+    } catch (_) { setState(() => _loading = false); }
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedUpazila = ref.watch(_organizationsUpazilaProvider);
-    final itemsAsync = ref.watch(
-        organizationsStreamProvider({'upazilaId': selectedUpazila}));
+  Widget build(BuildContext context) {
+    final filtered = _selectedType.isEmpty
+        ? _items
+        : _items.where((i) => i['type'] == _selectedType).toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('সংগঠন ও ক্লাব')),
+      appBar: AppBar(title: const Text('সংগঠন ও প্রতিষ্ঠান')),
       body: Column(
         children: [
           FilterChipRow(
-            options: _upazilaOptions,
-            selected: selectedUpazila,
-            accentColor: const Color(0xFF059669),
-            onChanged: (v) =>
-                ref.read(_organizationsUpazilaProvider.notifier).state = v,
+            options: _typeOptions,
+            selected: _selectedType,
+            accentColor: const Color(0xFFEC4899),
+            onChanged: (v) => setState(() => _selectedType = v),
           ),
           Expanded(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                ref.invalidate(organizationsStreamProvider);
-              },
-              child: itemsAsync.when(
-                loading: () => const ShimmerList(itemCount: 8),
-                error: (e, _) => EmptyState(
-                  icon: Icons.error_outline_rounded,
-                  message: 'ত্রুটি হয়েছে\nআবার চেষ্টা করুন',
-                  onRetry: () => ref.invalidate(organizationsStreamProvider),
-                ),
-                data: (items) {
-                  if (items.isEmpty) {
-                    return const EmptyState(
-                      icon: Icons.groups_rounded,
-                      message: 'কোনো সংগঠন পাওয়া যায়নি',
-                    );
-                  }
-                  return ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: items.length,
-                    itemBuilder: (_, i) => InfoCard(
-                      icon: Icons.groups_rounded,
-                      iconColor: const Color(0xFF059669),
-                      title: items[i].name,
-                      subtitle: items[i].address,
-                      badge: items[i].type.isNotEmpty ? items[i].type : null,
-                      phones: items[i].phone,
-                      isVerified: items[i].isVerified,
-                    ),
-                  );
-                },
-              ),
-            ),
+            child: _loading
+                ? const ShimmerList(itemCount: 8)
+                : filtered.isEmpty
+                    ? const Center(child: Text('কোনো সংগঠন পাওয়া যায়নি',
+                        style: TextStyle(color: Color(0xFF9CA3AF))))
+                    : RefreshIndicator(
+                        onRefresh: _load,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(16),
+                          itemCount: filtered.length,
+                          itemBuilder: (_, i) {
+                            final item = filtered[i];
+                            return InfoCard(
+                              icon: Icons.groups_rounded,
+                              iconColor: const Color(0xFFEC4899),
+                              title: item['name'] as String,
+                              subtitle: item['address'] as String,
+                              badge: (item['type'] as String).isNotEmpty ? item['type'] as String : null,
+                              phones: List<String>.from(item['phone'] as List),
+                              isVerified: item['isVerified'] as bool,
+                            );
+                          },
+                        ),
+                      ),
           ),
         ],
       ),

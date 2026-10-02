@@ -38,10 +38,8 @@ class MainScaffold extends StatelessWidget {
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         destinations: _tabs.map((t) {
           return NavigationDestination(
-            icon: Icon(t.icon,
-                color: AppTheme.textSecondary),
-            selectedIcon: Icon(t.icon,
-                color: AppTheme.primaryColor),
+            icon: Icon(t.icon, color: AppTheme.textSecondary),
+            selectedIcon: Icon(t.icon, color: AppTheme.primaryColor),
             label: t.label,
           );
         }).toList(),
