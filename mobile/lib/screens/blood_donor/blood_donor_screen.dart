@@ -1,83 +1,139 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
-import '../../config/app_theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../config/app_constants.dart';
-import '../../models/blood_donor_model.dart';
-import '../../services/blood_donor_service.dart';
-import '../../widgets/call_button.dart';
+import '../../widgets/shimmer_list.dart';
 
-final _selectedBloodGroupProvider = StateProvider<String>((_) => '');
-final _selectedUpazilaBloodProvider = StateProvider<String>((_) => '');
-
-final bloodDonorsProvider =
-    StreamProvider.autoDispose.family<List<BloodDonorModel>, Map<String, String>>(
-        (ref, filters) {
-  return BloodDonorService().getDonors(
-    bloodGroup: filters['bloodGroup'],
-    upazilaId: filters['upazilaId'],
-  );
-});
-
-class BloodDonorScreen extends ConsumerWidget {
+class BloodDonorScreen extends StatefulWidget {
   const BloodDonorScreen({super.key});
+  @override
+  State<BloodDonorScreen> createState() => _BloodDonorScreenState();
+}
+
+class _BloodDonorScreenState extends State<BloodDonorScreen> {
+  List<Map<String, dynamic>> _all = [];
+  bool _loading = true;
+  String _selectedGroup = '';
+  String _selectedUpazila = '';
+
+  static const _bloodGroups = [
+    'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'
+  ];
+
+  static const _upazilaOptions = [
+    ('', 'সব'),
+    ('tangail_sadar', 'সদর'),
+    ('mirzapur', 'মির্জাপুর'),
+    ('madhupur', 'মধুপুর'),
+    ('ghatail', 'ঘাটাইল'),
+    ('kalihati', 'কালিহাতী'),
+    ('basail', 'বাসাইল'),
+    ('bhuapur', 'ভূয়াপুর'),
+    ('delduar', 'দেলদুয়ার'),
+    ('dhanbari', 'ধনবাড়ী'),
+    ('gopalpur', 'গোপালপুর'),
+    ('nagarpur', 'নাগরপুর'),
+    ('sakhipur', 'সখিপুর'),
+  ];
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedGroup = ref.watch(_selectedBloodGroupProvider);
-    final selectedUpazila = ref.watch(_selectedUpazilaBloodProvider);
+  void initState() {
+    super.initState();
+    _load();
+  }
 
-    final donorsAsync = ref.watch(bloodDonorsProvider({
-      'bloodGroup': selectedGroup,
-      'upazilaId': selectedUpazila,
-    }));
+  Future<void> _load() async {
+    setState(() => _loading = true);
+    try {
+      final snap = await FirebaseFirestore.instance
+          .collection(AppConstants.colBloodDonors)
+          .limit(300)
+          .get();
+
+      final list = snap.docs.map((d) {
+        final data = d.data() as Map<String, dynamic>? ?? {};
+        return {
+          'id': d.id,
+          'name': data['name'] as String? ?? '',
+          'bloodGroup': data['bloodGroup'] as String? ?? '',
+          'phone': data['phone'] as String? ?? '',
+          'upazilaId': data['upazilaId'] as String? ?? '',
+          'address': data['address'] as String? ?? '',
+          'isAvailable': data['isAvailable'] as bool? ?? true,
+          'totalDonations': data['totalDonations'] ?? 0,
+          'gender': data['gender'] as String? ?? '',
+        };
+      }).toList();
+
+      list.sort((a, b) => (a['name'] as String).compareTo(b['name'] as String));
+      setState(() { _all = list; _loading = false; });
+    } catch (e) {
+      setState(() => _loading = false);
+    }
+  }
+
+  List<Map<String, dynamic>> get _filtered {
+    return _all.where((d) {
+      if (_selectedGroup.isNotEmpty && d['bloodGroup'] != _selectedGroup) {
+        return false;
+      }
+      if (_selectedUpazila.isNotEmpty && d['upazilaId'] != _selectedUpazila) {
+        return false;
+      }
+      return true;
+    }).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final filtered = _filtered;
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF4F6F8),
       appBar: AppBar(title: const Text('রক্তদাতা খুঁজুন')),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push('/register-donor'),
-        backgroundColor: AppTheme.secondaryColor,
+        backgroundColor: const Color(0xFFDC2626),
         icon: const Icon(Icons.favorite_rounded, color: Colors.white),
         label: const Text('ডোনার হোন',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
       ),
       body: Column(
         children: [
-          // Header banner
+          // ── Header banner ──────────────────────────────────────────
           Container(
-            margin: const EdgeInsets.all(16),
-            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppTheme.secondaryColor,
-                  AppTheme.secondaryColor.withRed(180)
-                ],
+              gradient: const LinearGradient(
+                colors: [Color(0xFFDC2626), Color(0xFFF43F5E)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(14),
             ),
             child: Row(
               children: [
                 const Icon(Icons.water_drop_rounded,
-                    color: Colors.white, size: 40),
-                const SizedBox(width: 14),
+                    color: Colors.white, size: 36),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('জরুরি রক্ত প্রয়োজন?',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(color: Colors.white)),
-                      const SizedBox(height: 4),
-                      Text('নিকটস্থ রক্তদাতা খুঁজুন',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(color: Colors.white70)),
+                      const Text('জরুরি রক্ত প্রয়োজন?',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700)),
+                      Text(
+                        _all.isEmpty
+                            ? 'নিকটস্থ রক্তদাতা খুঁজুন'
+                            : '${_all.length}জন নিবন্ধিত ডোনার',
+                        style: const TextStyle(
+                            color: Colors.white70, fontSize: 12),
+                      ),
                     ],
                   ),
                 ),
@@ -85,44 +141,82 @@ class BloodDonorScreen extends ConsumerWidget {
             ),
           ),
 
-          // Blood group filter
+          const SizedBox(height: 8),
+
+          // ── Blood group filter ─────────────────────────────────────
           SizedBox(
-            height: 50,
+            height: 46,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 12, vertical: 6),
               children: [
+                // "সব গ্রুপ" chip
                 Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: FilterChip(
-                    label: const Text('সব গ্রুপ'),
-                    selected: selectedGroup.isEmpty,
-                    onSelected: (_) => ref
-                        .read(_selectedBloodGroupProvider.notifier)
-                        .state = '',
-                    selectedColor: AppTheme.secondaryColor.withOpacity(0.15),
-                    checkmarkColor: AppTheme.secondaryColor,
+                  child: GestureDetector(
+                    onTap: () =>
+                        setState(() => _selectedGroup = ''),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: _selectedGroup.isEmpty
+                            ? const Color(0xFFDC2626)
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                            color: const Color(0xFFDC2626)),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (_selectedGroup.isEmpty)
+                            const Icon(Icons.check_rounded,
+                                size: 14, color: Colors.white),
+                          if (_selectedGroup.isEmpty)
+                            const SizedBox(width: 4),
+                          Text('সব গ্রুপ',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: _selectedGroup.isEmpty
+                                      ? Colors.white
+                                      : const Color(0xFFDC2626))),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-                ...AppConstants.bloodGroups.map((bg) {
-                  final isSelected = selectedGroup == bg;
+                // Blood group chips
+                ..._bloodGroups.map((bg) {
+                  final isSelected = _selectedGroup == bg;
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
-                    child: FilterChip(
-                      label: Text(bg,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
+                    child: GestureDetector(
+                      onTap: () =>
+                          setState(() => _selectedGroup = bg),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 14, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? const Color(0xFFDC2626)
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
                               color: isSelected
-                                  ? AppTheme.secondaryColor
-                                  : AppTheme.textSecondary)),
-                      selected: isSelected,
-                      onSelected: (_) => ref
-                          .read(_selectedBloodGroupProvider.notifier)
-                          .state = bg,
-                      selectedColor:
-                          AppTheme.secondaryColor.withOpacity(0.15),
-                      checkmarkColor: AppTheme.secondaryColor,
+                                  ? const Color(0xFFDC2626)
+                                  : const Color(0xFFE5E7EB)),
+                        ),
+                        child: Text(bg,
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: isSelected
+                                    ? Colors.white
+                                    : const Color(0xFF1F2937))),
+                      ),
                     ),
                   );
                 }),
@@ -130,42 +224,83 @@ class BloodDonorScreen extends ConsumerWidget {
             ),
           ),
 
-          // Donor list
-          Expanded(
-            child: donorsAsync.when(
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
-              error: (e, _) =>
-                  Center(child: Text('ত্রুটি হয়েছে: $e')),
-              data: (donors) {
-                if (donors.isEmpty) {
-                  return const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.water_drop_outlined,
-                            size: 60, color: AppTheme.textSecondary),
-                        SizedBox(height: 12),
-                        Text('কোনো ডোনার পাওয়া যায়নি',
-                            style:
-                                TextStyle(color: AppTheme.textSecondary)),
-                      ],
+          // ── Upazila filter ─────────────────────────────────────────
+          SizedBox(
+            height: 40,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 12, vertical: 4),
+              itemCount: _upazilaOptions.length,
+              itemBuilder: (_, i) {
+                final (id, label) = _upazilaOptions[i];
+                final isSelected = _selectedUpazila == id;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 6),
+                  child: GestureDetector(
+                    onTap: () =>
+                        setState(() => _selectedUpazila = id),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? const Color(0xFF006A4E)
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                            color: isSelected
+                                ? const Color(0xFF006A4E)
+                                : const Color(0xFFE5E7EB)),
+                      ),
+                      child: Text(label,
+                          style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: isSelected
+                                  ? Colors.white
+                                  : const Color(0xFF6B7280))),
                     ),
-                  );
-                }
-                return RefreshIndicator(
-                  onRefresh: () async {
-                    ref.invalidate(bloodDonorsProvider);
-                    await Future.delayed(const Duration(milliseconds: 500));
-                  },
-                  child: ListView.builder(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),
-                    itemCount: donors.length,
-                    itemBuilder: (_, i) => _DonorCard(donor: donors[i]),
                   ),
                 );
               },
             ),
+          ),
+
+          const SizedBox(height: 4),
+
+          // ── Donor list ─────────────────────────────────────────────
+          Expanded(
+            child: _loading
+                ? const ShimmerList(itemCount: 8)
+                : filtered.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.water_drop_outlined,
+                                size: 60, color: Color(0xFF9CA3AF)),
+                            const SizedBox(height: 12),
+                            Text(
+                              _all.isEmpty
+                                  ? 'কোনো ডোনার পাওয়া যায়নি'
+                                  : 'এই ফিল্টারে কোনো ডোনার নেই',
+                              style: const TextStyle(
+                                  color: Color(0xFF9CA3AF)),
+                            ),
+                          ],
+                        ),
+                      )
+                    : RefreshIndicator(
+                        onRefresh: _load,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.fromLTRB(
+                              12, 4, 12, 80),
+                          itemCount: filtered.length,
+                          itemBuilder: (_, i) =>
+                              _DonorCard(donor: filtered[i]),
+                        ),
+                      ),
           ),
         ],
       ),
@@ -173,18 +308,23 @@ class BloodDonorScreen extends ConsumerWidget {
   }
 }
 
+// ── Donor card ────────────────────────────────────────────────────────────────
 class _DonorCard extends StatelessWidget {
-  final BloodDonorModel donor;
+  final Map<String, dynamic> donor;
   const _DonorCard({required this.donor});
 
   @override
   Widget build(BuildContext context) {
+    final phone = donor['phone'] as String;
+    final isAvailable = donor['isAvailable'] as bool;
+    final totalDonations = donor['totalDonations'];
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
               color: Colors.black.withOpacity(0.05),
@@ -194,68 +334,79 @@ class _DonorCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Blood group badge
+          // Blood group circle
           Container(
-            width: 54,
-            height: 54,
+            width: 52, height: 52,
             decoration: const BoxDecoration(
-              color: AppTheme.secondaryColor,
+              color: Color(0xFFDC2626),
               shape: BoxShape.circle,
             ),
             child: Center(
-              child: Text(donor.bloodGroup,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 16)),
+              child: Text(
+                donor['bloodGroup'] as String,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 15),
+              ),
             ),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: 12),
+          // Info
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(donor.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(fontSize: 15)),
-                const SizedBox(height: 4),
+                Text(donor['name'] as String,
+                    style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF1F2937))),
+                const SizedBox(height: 3),
+                if ((donor['address'] as String).isNotEmpty)
+                  Row(
+                    children: [
+                      const Icon(Icons.location_on_rounded,
+                          size: 12, color: Color(0xFF9CA3AF)),
+                      const SizedBox(width: 3),
+                      Expanded(
+                        child: Text(
+                          donor['address'] as String,
+                          style: const TextStyle(
+                              fontSize: 12, color: Color(0xFF6B7280)),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                const SizedBox(height: 5),
                 Row(
                   children: [
-                    const Icon(Icons.location_on_rounded,
-                        size: 13, color: AppTheme.textSecondary),
-                    const SizedBox(width: 3),
-                    Text(donor.address,
-                        style: const TextStyle(
-                            fontSize: 12, color: AppTheme.textSecondary)),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text('মোট দান: ${donor.totalDonations} বার',
-                        style: const TextStyle(
-                            fontSize: 11, color: AppTheme.textSecondary)),
+                    if (totalDonations != null && totalDonations != 0)
+                      Text('মোট দান: $totalDonations বার',
+                          style: const TextStyle(
+                              fontSize: 11,
+                              color: Color(0xFF6B7280))),
                     const Spacer(),
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
-                        color: (donor.isAvailable
-                                ? AppTheme.successColor
-                                : AppTheme.textSecondary)
-                            .withOpacity(0.1),
+                        color: isAvailable
+                            ? const Color(0xFF059669).withOpacity(0.1)
+                            : const Color(0xFF6B7280).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                          donor.isAvailable ? 'উপলব্ধ' : 'অনুপলব্ধ',
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: donor.isAvailable
-                                  ? AppTheme.successColor
-                                  : AppTheme.textSecondary,
-                              fontWeight: FontWeight.w600)),
+                        isAvailable ? 'উপলব্ধ' : 'অনুপলব্ধ',
+                        style: TextStyle(
+                            fontSize: 11,
+                            color: isAvailable
+                                ? const Color(0xFF059669)
+                                : const Color(0xFF6B7280),
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ],
                 ),
@@ -263,7 +414,23 @@ class _DonorCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          CallButton(phone: donor.phone),
+          // Call button
+          if (phone.isNotEmpty)
+            GestureDetector(
+              onTap: () async {
+                final uri = Uri(scheme: 'tel', path: phone);
+                if (await canLaunchUrl(uri)) launchUrl(uri);
+              },
+              child: Container(
+                width: 42, height: 42,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF059669).withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.phone_rounded,
+                    color: Color(0xFF059669), size: 20),
+              ),
+            ),
         ],
       ),
     );

@@ -26,7 +26,13 @@ class CallButton extends StatelessWidget {
     final btn = ElevatedButton.icon(
       onPressed: _call,
       icon: const Icon(Icons.phone_rounded, size: 18),
-      label: Text(label ?? phone),
+      label: Text(
+        label ?? phone,
+        style: const TextStyle(
+          fontFamily: 'Roboto', // Latin font for phone numbers
+          letterSpacing: 0.5,
+        ),
+      ),
       style: ElevatedButton.styleFrom(
         backgroundColor: AppTheme.successColor,
         foregroundColor: Colors.white,

@@ -286,9 +286,7 @@ class _CallChip extends StatelessWidget {
             Text(
               phone,
               style: TextStyle(
-                  fontSize: 13,
-                  color: color,
-                  fontWeight: FontWeight.w700),
+                  fontSize: 13, fontFamily: 'Roboto', color: color, fontWeight: FontWeight.w700),
             ),
           ],
         ),

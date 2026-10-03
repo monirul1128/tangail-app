@@ -115,18 +115,17 @@ class _UpazilaDetailScreenState extends State<UpazilaDetailScreen> {
                           style: const TextStyle(color: Colors.white,
                               fontSize: 24, fontWeight: FontWeight.w900)),
                       const SizedBox(height: 12),
-                      Row(
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
                         children: [
                           _StatChip(icon: Icons.map_rounded,
                               label: '$area বর্গকিমি'),
-                          const SizedBox(width: 8),
                           _StatChip(icon: Icons.account_tree_rounded,
                               label: '$unionCount টি ইউনিয়ন'),
-                          if (villageCount > 0) ...[
-                            const SizedBox(width: 8),
+                          if (villageCount > 0)
                             _StatChip(icon: Icons.holiday_village_rounded,
                                 label: '$villageCount টি গ্রাম'),
-                          ],
                         ],
                       ),
                     ],

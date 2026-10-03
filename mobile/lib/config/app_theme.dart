@@ -15,6 +15,14 @@ class AppTheme {
   static const Color warningColor = Color(0xFFF59E0B);
   static const Color errorColor = Color(0xFFEF4444);
 
+  // Phone number style — always uses Latin digits (Roboto font)
+  static const TextStyle phoneStyle = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: 13,
+    fontWeight: FontWeight.w700,
+    letterSpacing: 0.3,
+  );
+
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,

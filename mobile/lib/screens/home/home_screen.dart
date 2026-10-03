@@ -80,21 +80,21 @@ const _serviceCategories = [
     'items': [
       {'label': 'মসজিদ',  'emoji': '🕌', 'route': '/islamic?type=mosque'},
       {'label': 'মন্দির',  'emoji': '🛕', 'route': '/islamic?type=temple'},
-      {'label': 'নামাজ',  'emoji': '🙏', 'route': '/islamic'},
-      {'label': 'রোজা',   'emoji': '🌙', 'route': '/islamic'},
-      {'label': 'হজ্জ',   'emoji': '🕋', 'route': '/islamic'},
-      {'label': 'জাকাত',  'emoji': '💰', 'route': '/islamic'},
+      {'label': 'নামাজ',  'emoji': '🙏', 'route': '/islamic?type=namaz'},
+      {'label': 'রোজা',   'emoji': '🌙', 'route': '/islamic?type=roja'},
+      {'label': 'হজ্জ',   'emoji': '🕋', 'route': '/islamic?type=hajj'},
+      {'label': 'জাকাত',  'emoji': '💰', 'route': '/islamic?type=zakat'},
     ],
   },
   {
     'title': 'সরকারি সেবা',
     'color': 0xFFFAF5FF, 'border': 0xFFE9D5FF, 'titleColor': 0xFF7E22CE, 'accent': 0xFFA855F7,
     'items': [
-      {'label': 'জন্ম নিবন্ধন',    'emoji': '📋', 'route': '/govt'},
-      {'label': 'ই-নামজারি',        'emoji': '🏡', 'route': '/govt'},
-      {'label': 'ভোটার সেবা',       'emoji': '🗳️', 'route': '/govt'},
+      {'label': 'জন্ম নিবন্ধন',    'emoji': '📋', 'route': '/govt?type=birth'},
+      {'label': 'ই-নামজারি',        'emoji': '🏡', 'route': '/govt?type=land'},
+      {'label': 'ভোটার সেবা',       'emoji': '🗳️', 'route': '/govt?type=voter'},
       {'label': 'বিদ্যুৎ অফিস',    'emoji': '⚡', 'route': '/electricity'},
-      {'label': 'আদালত',            'emoji': '⚖️', 'route': '/govt'},
+      {'label': 'আদালত',            'emoji': '⚖️', 'route': '/govt?type=court'},
       {'label': 'চাকরির বিজ্ঞাপন', 'emoji': '💼', 'route': '/jobs'},
     ],
   },
@@ -464,12 +464,12 @@ class _QuickPills extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: SizedBox(
         height: 40,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          itemCount: _quickPills.length,
-          itemBuilder: (_, i) {
-            final p = _quickPills[i];
+        child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        physics: const ClampingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Row(
+          children: _quickPills.map((p) {
             final color = Color(p['color'] as int);
             return GestureDetector(
               onTap: () => context.push(p['route'] as String),
@@ -491,8 +491,9 @@ class _QuickPills extends StatelessWidget {
                 ),
               ),
             );
-          },
+          }).toList(),
         ),
+      ),
       ),
     );
   }
@@ -552,8 +553,8 @@ class _ServiceCategoriesSection extends StatelessWidget {
               final titleColor = Color(cat['titleColor'] as int);
               final accentColor = Color(cat['accent'] as int);
               return Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
                 decoration: BoxDecoration(
                   color: bgColor,
                   borderRadius: BorderRadius.circular(16),
@@ -565,50 +566,52 @@ class _ServiceCategoriesSection extends StatelessWidget {
                     // Category header
                     Row(
                       children: [
-                        Container(width: 4, height: 16, decoration: BoxDecoration(color: accentColor, borderRadius: BorderRadius.circular(4))),
-                        const SizedBox(width: 8),
+                        Container(width: 4, height: 14, decoration: BoxDecoration(color: accentColor, borderRadius: BorderRadius.circular(4))),
+                        const SizedBox(width: 6),
                         Text(cat['title'] as String,
-                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: titleColor)),
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: titleColor)),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     // Items grid
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
-                        childAspectRatio: 0.9,
-                      ),
-                      itemCount: items.length,
-                      itemBuilder: (_, i) {
-                        final item = items[i] as Map;
-                        return GestureDetector(
-                          onTap: () => context.push(item['route'] as String),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 6, offset: const Offset(0, 2))],
-                              border: Border.all(color: Colors.white),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(item['emoji'] as String, style: const TextStyle(fontSize: 22)),
-                                const SizedBox(height: 4),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 2),
-                                  child: Text(item['label'] as String,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Color(0xFF4B5563), height: 1.2)),
+                    // Items — Wrap to avoid scroll conflict
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        final itemW = (constraints.maxWidth - 18) / 4;
+                        return Wrap(
+                          spacing: 6,
+                          runSpacing: 6,
+                          children: List.generate(items.length, (i) {
+                            final item = items[i] as Map;
+                            return GestureDetector(
+                              onTap: () => context.push(item['route'] as String),
+                              child: SizedBox(
+                                width: itemW,
+                                height: itemW,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 6, offset: const Offset(0, 2))],
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(item['emoji'] as String, style: const TextStyle(fontSize: 20)),
+                                      const SizedBox(height: 3),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 2),
+                                        child: Text(item['label'] as String,
+                                            textAlign: TextAlign.center,
+                                            maxLines: 2,
+                                            style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w600, color: Color(0xFF4B5563), height: 1.2)),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          }),
                         );
                       },
                     ),
@@ -820,8 +823,36 @@ class _BloodGroupSection extends StatelessWidget {
 }
 
 // ─── Notices Section ──────────────────────────────────────────────────────────
-class _NoticesSection extends StatelessWidget {
+class _NoticesSection extends StatefulWidget {
   const _NoticesSection();
+
+  @override
+  State<_NoticesSection> createState() => _NoticesSectionState();
+}
+
+class _NoticesSectionState extends State<_NoticesSection> {
+  List<NewsModel> _items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final snap = await FirebaseFirestore.instance
+          .collection(AppConstants.colNews)
+          .limit(50)
+          .get();
+      final list = snap.docs
+          .map((d) => NewsModel.fromFirestore(d))
+          .where((n) => n.isNotice)
+          .toList();
+      list.sort((a, b) => b.publishedAt.compareTo(a.publishedAt));
+      if (mounted) setState(() => _items = list.take(3).toList());
+    } catch (_) {}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -834,23 +865,9 @@ class _NoticesSection extends StatelessWidget {
           actionLabel: 'সব দেখুন',
           onAction: () => context.push('/news'),
         ),
-        StreamBuilder<List<NewsModel>>(
-          stream: NewsService().getNotices(limit: 3),
-          builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.waiting) {
-              return const _LoadingCards(count: 3, height: 64);
-            }
-            final items = snap.data ?? [];
-            if (items.isEmpty) {
-              return const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Text('কোনো নোটিশ নেই', style: TextStyle(color: Color(0xFF6B7280), fontSize: 13)),
-              );
-            }
-            return Column(
-              children: items.map((n) => _NoticeRow(notice: n)).toList(),
-            );
-          },
+        if (_items.isEmpty) const SizedBox.shrink()
+        else Column(
+          children: _items.map((n) => _NoticeRow(notice: n)).toList(),
         ),
       ],
     );
@@ -903,11 +920,39 @@ class _NoticeRow extends StatelessWidget {
 }
 
 // ─── Notable Persons Section ──────────────────────────────────────────────────
-class _NotablePersonsSection extends StatelessWidget {
+class _NotablePersonsSection extends StatefulWidget {
   const _NotablePersonsSection();
 
   @override
+  State<_NotablePersonsSection> createState() => _NotablePersonsSectionState();
+}
+
+class _NotablePersonsSectionState extends State<_NotablePersonsSection> {
+  List<Map<String, dynamic>> _items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final snap = await FirebaseFirestore.instance
+          .collection(AppConstants.colNotablePersons)
+          .limit(3)
+          .get();
+      if (mounted) {
+        setState(() => _items = snap.docs
+            .map((d) => {'id': d.id, ...d.data()})
+            .toList());
+      }
+    } catch (_) {}
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_items.isEmpty) return const SizedBox.shrink();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -916,72 +961,61 @@ class _NotablePersonsSection extends StatelessWidget {
           actionLabel: 'সব দেখুন',
           onAction: () => context.push('/notable-persons'),
         ),
-        StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection(AppConstants.colNotablePersons)
-              .limit(3)
-              .snapshots(),
-          builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.waiting) {
-              return const _LoadingCards(count: 3, height: 72);
-            }
-            final docs = snap.data?.docs ?? [];
-            if (docs.isEmpty) return const SizedBox.shrink();
-            return Column(
-              children: docs.map((doc) {
-                final d = doc.data() as Map<String, dynamic>;
-                return GestureDetector(
-                  onTap: () => context.push('/notable-persons/${doc.id}'),
-                  child: Container(
-                    margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 8, offset: const Offset(0, 2))],
-                    ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 26,
-                          backgroundColor: const Color(0xFFF4F6F8),
-                          backgroundImage: (d['photoUrl'] as String?)?.isNotEmpty == true
-                              ? CachedNetworkImageProvider(d['photoUrl'] as String)
-                              : null,
-                          child: (d['photoUrl'] as String?)?.isEmpty != false
-                              ? const Icon(Icons.person_rounded, color: Color(0xFF9CA3AF))
-                              : null,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(d['name'] as String? ?? '',
-                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF1F2937))),
-                              if ((d['designation'] ?? d['profession']) != null)
-                                Text(d['designation'] as String? ?? d['profession'] as String? ?? '',
-                                    style: const TextStyle(fontSize: 12, color: Color(0xFF6B7280))),
-                            ],
-                          ),
-                        ),
-                        const Icon(Icons.chevron_right_rounded, size: 16, color: Color(0xFF9CA3AF)),
-                      ],
-                    ),
+        ..._items.map((d) => GestureDetector(
+          onTap: () => context.push('/notable-persons/${d['id']}'),
+          child: Container(
+            margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 8, offset: const Offset(0, 2))],
+            ),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 26,
+                  backgroundColor: const Color(0xFFF4F6F8),
+                  backgroundImage: (d['photoUrl'] as String?)?.isNotEmpty == true
+                      ? CachedNetworkImageProvider(d['photoUrl'] as String)
+                      : null,
+                  child: (d['photoUrl'] as String?)?.isEmpty != false
+                      ? const Icon(Icons.person_rounded, color: Color(0xFF9CA3AF))
+                      : null,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(d['name'] as String? ?? '',
+                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF1F2937))),
+                      if ((d['designation'] ?? d['profession']) != null)
+                        Text(d['designation'] as String? ?? d['profession'] as String? ?? '',
+                            style: const TextStyle(fontSize: 12, color: Color(0xFF6B7280))),
+                    ],
                   ),
-                );
-              }).toList(),
-            );
-          },
-        ),
+                ),
+                const Icon(Icons.chevron_right_rounded, size: 16, color: Color(0xFF9CA3AF)),
+              ],
+            ),
+          ),
+        )),
       ],
     );
   }
 }
 
 // ─── Tourism Section ──────────────────────────────────────────────────────────
-class _TourismSection extends StatelessWidget {
+class _TourismSection extends StatefulWidget {
   const _TourismSection();
+
+  @override
+  State<_TourismSection> createState() => _TourismSectionState();
+}
+
+class _TourismSectionState extends State<_TourismSection> {
+  List<Map<String, dynamic>> _items = [];
 
   static const _catColors = {
     'historical': [0xFFFEF3C7, 0xFF92400E],
@@ -992,7 +1026,29 @@ class _TourismSection extends StatelessWidget {
   };
 
   @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final snap = await FirebaseFirestore.instance
+          .collection(AppConstants.colTourism)
+          .limit(5)
+          .get();
+      if (mounted) {
+        setState(() => _items = snap.docs
+            .map((d) => {'id': d.id, ...d.data()})
+            .toList());
+      }
+    } catch (_) {}
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_items.isEmpty) return const SizedBox.shrink();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1002,97 +1058,92 @@ class _TourismSection extends StatelessWidget {
           actionLabel: 'সব দেখুন',
           onAction: () => context.push('/tourism'),
         ),
-        StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection(AppConstants.colTourism)
-              .limit(5)
-              .snapshots(),
-          builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.waiting) {
-              return SizedBox(
-                height: 180,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  itemCount: 3,
-                  itemBuilder: (_, __) => Container(
-                    width: 160, margin: const EdgeInsets.only(right: 12),
-                    decoration: BoxDecoration(color: const Color(0xFFF4F6F8), borderRadius: BorderRadius.circular(16)),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const ClampingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Row(
+            children: _items.map((d) {
+              final cat = d['category'] as String? ?? '';
+              final colors = _catColors[cat] ?? [0xFFF4F6F8, 0xFF374151];
+              return GestureDetector(
+                onTap: () => context.push('/tourism/${d['id']}'),
+                child: Container(
+                  width: 160,
+                  height: 200,
+                  margin: const EdgeInsets.only(right: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2))],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(16)),
+                        child: (d['imageUrl'] as String?)?.isNotEmpty == true
+                            ? CachedNetworkImage(
+                                imageUrl: d['imageUrl'] as String,
+                                height: 110,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                placeholder: (_, __) =>
+                                    Container(height: 110, color: const Color(0xFFF4F6F8)),
+                                errorWidget: (_, __, ___) => Container(
+                                  height: 110,
+                                  color: const Color(0xFFF4F6F8),
+                                  child: const Icon(Icons.landscape_rounded,
+                                      color: Color(0xFF9CA3AF), size: 36),
+                                ),
+                              )
+                            : Container(
+                                height: 110,
+                                color: const Color(0xFFF4F6F8),
+                                child: const Center(
+                                    child: Text('🏞️',
+                                        style: TextStyle(fontSize: 36)))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(d['name'] as String? ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF1F2937))),
+                            const SizedBox(height: 4),
+                            if (cat.isNotEmpty)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: Color(colors[0]),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(cat,
+                                    style: TextStyle(
+                                        fontSize: 9,
+                                        color: Color(colors[1]),
+                                        fontWeight: FontWeight.w600)),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );
-            }
-            final docs = snap.data?.docs ?? [];
-            if (docs.isEmpty) return const SizedBox.shrink();
-            return SizedBox(
-              height: 200,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                itemCount: docs.length,
-                itemBuilder: (_, i) {
-                  final d = docs[i].data() as Map<String, dynamic>;
-                  final cat = d['category'] as String? ?? '';
-                  final colors = _catColors[cat] ?? [0xFFF4F6F8, 0xFF374151];
-                  return GestureDetector(
-                    onTap: () => context.push('/tourism/${docs[i].id}'),
-                    child: Container(
-                      width: 160,
-                      margin: const EdgeInsets.only(right: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 8, offset: const Offset(0, 2))],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                            child: (d['imageUrl'] as String?)?.isNotEmpty == true
-                                ? CachedNetworkImage(
-                                    imageUrl: d['imageUrl'] as String,
-                                    height: 110, width: double.infinity, fit: BoxFit.cover,
-                                    placeholder: (_, __) => Container(height: 110, color: const Color(0xFFF4F6F8)),
-                                    errorWidget: (_, __, ___) => Container(
-                                      height: 110, color: const Color(0xFFF4F6F8),
-                                      child: const Icon(Icons.landscape_rounded, color: Color(0xFF9CA3AF), size: 36),
-                                    ),
-                                  )
-                                : Container(
-                                    height: 110, color: const Color(0xFFF4F6F8),
-                                    child: const Center(child: Text('🏞️', style: TextStyle(fontSize: 36)))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(d['name'] as String? ?? '',
-                                    maxLines: 1, overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xFF1F2937))),
-                                const SizedBox(height: 4),
-                                if (cat.isNotEmpty)
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: Color(colors[0]),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Text(cat,
-                                        style: TextStyle(fontSize: 9, color: Color(colors[1]), fontWeight: FontWeight.w600)),
-                                  ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            );
-          },
+            }).toList(),
+          ),
         ),
       ],
     );
@@ -1100,11 +1151,43 @@ class _TourismSection extends StatelessWidget {
 }
 
 // ─── Gallery Section ──────────────────────────────────────────────────────────
-class _GallerySection extends StatelessWidget {
+class _GallerySection extends StatefulWidget {
   const _GallerySection();
 
   @override
+  State<_GallerySection> createState() => _GallerySectionState();
+}
+
+class _GallerySectionState extends State<_GallerySection> {
+  List<String> _urls = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final snap = await FirebaseFirestore.instance
+          .collection(AppConstants.colGallery)
+          .limit(6)
+          .get();
+      final urls = snap.docs
+          .map((d) => (d.data()['imageUrl'] as String?) ?? '')
+          .where((u) => u.isNotEmpty)
+          .toList();
+      if (mounted) setState(() => _urls = urls);
+    } catch (_) {}
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_urls.isEmpty) return const SizedBox.shrink();
+
+    final screenW = MediaQuery.of(context).size.width;
+    final itemSize = (screenW - 24 - 12) / 3; // 3 columns, 12px padding each side, 6px gap
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1113,48 +1196,28 @@ class _GallerySection extends StatelessWidget {
           actionLabel: 'সব দেখুন',
           onAction: () => context.push('/gallery'),
         ),
-        StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection(AppConstants.colGallery)
-              .limit(6)
-              .snapshots(),
-          builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.waiting) {
-              return const _LoadingCards(count: 1, height: 120);
-            }
-            final docs = snap.data?.docs ?? [];
-            if (docs.isEmpty) return const SizedBox.shrink();
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, crossAxisSpacing: 6, mainAxisSpacing: 6,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: _urls.map((url) => ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: SizedBox(
+                width: itemSize,
+                height: itemSize,
+                child: CachedNetworkImage(
+                  imageUrl: url,
+                  fit: BoxFit.cover,
+                  placeholder: (_, __) => Container(color: const Color(0xFFF4F6F8)),
+                  errorWidget: (_, __, ___) => Container(
+                    color: const Color(0xFFF4F6F8),
+                    child: const Icon(Icons.image_rounded, color: Color(0xFF9CA3AF)),
+                  ),
                 ),
-                itemCount: docs.length,
-                itemBuilder: (_, i) {
-                  final d = docs[i].data() as Map<String, dynamic>;
-                  final url = d['imageUrl'] as String? ?? '';
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: url.isNotEmpty
-                        ? CachedNetworkImage(
-                            imageUrl: url, fit: BoxFit.cover,
-                            placeholder: (_, __) => Container(color: const Color(0xFFF4F6F8)),
-                            errorWidget: (_, __, ___) => Container(
-                              color: const Color(0xFFF4F6F8),
-                              child: const Icon(Icons.image_rounded, color: Color(0xFF9CA3AF)),
-                            ),
-                          )
-                        : Container(
-                            color: const Color(0xFFF4F6F8),
-                            child: const Icon(Icons.image_rounded, color: Color(0xFF9CA3AF))),
-                  );
-                },
               ),
-            );
-          },
+            )).toList(),
+          ),
         ),
       ],
     );
@@ -1592,7 +1655,12 @@ class _CtaBanner extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () => context.push('/register-donor'),
+                onTap: () async {
+                  final uri = Uri.parse('https://madertangail.online/register-business');
+                  if (await canLaunchUrl(uri)) {
+                    launchUrl(uri, mode: LaunchMode.externalApplication);
+                  }
+                },
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   decoration: BoxDecoration(

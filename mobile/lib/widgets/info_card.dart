@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import '../config/app_theme.dart';
-import 'call_button.dart';
+import 'phone_chip.dart';
 import 'verified_badge.dart';
 
-/// A reusable card matching the HospitalCard style, used for any service entry.
 class InfoCard extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
@@ -24,8 +23,24 @@ class InfoCard extends StatelessWidget {
     this.isVerified = false,
   });
 
+  /// Split a phone string that may contain comma/slash-separated numbers
+  List<String> _parsePhones() {
+    final result = <String>[];
+    for (final raw in phones) {
+      // Split by comma, slash, or semicolon
+      final parts = raw.split(RegExp(r'[,/;]+'));
+      for (final p in parts) {
+        final trimmed = p.trim();
+        if (trimmed.isNotEmpty) result.add(trimmed);
+      }
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final parsedPhones = _parsePhones();
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
@@ -43,15 +58,15 @@ class InfoCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Icon circle
+          // Icon
           Container(
-            width: 56,
-            height: 56,
+            width: 52,
+            height: 52,
             decoration: BoxDecoration(
               color: iconColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: iconColor, size: 28),
+            child: Icon(icon, color: iconColor, size: 26),
           ),
           const SizedBox(width: 12),
           // Content
@@ -59,15 +74,16 @@ class InfoCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Title
                 Row(
                   children: [
                     Expanded(
                       child: Text(
                         title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(fontSize: 15),
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF1F2937)),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -75,50 +91,59 @@ class InfoCard extends StatelessWidget {
                     if (isVerified) const VerifiedBadge(),
                   ],
                 ),
-                if (badge != null) ...[
+
+                // Badge
+                if (badge != null && badge!.isNotEmpty) ...[
                   const SizedBox(height: 4),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
                       color: AppTheme.backgroundColor,
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    child: Text(
-                      badge!,
-                      style: const TextStyle(
-                          fontSize: 11, color: AppTheme.textSecondary),
-                    ),
+                    child: Text(badge!,
+                        style: const TextStyle(
+                            fontSize: 11,
+                            color: AppTheme.textSecondary)),
                   ),
                 ],
+
+                // Address
                 if (subtitle != null && subtitle!.isNotEmpty) ...[
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 5),
                   Row(
                     children: [
                       const Icon(Icons.location_on_rounded,
-                          size: 13, color: AppTheme.textSecondary),
+                          size: 12, color: AppTheme.textSecondary),
                       const SizedBox(width: 3),
                       Expanded(
                         child: Text(
                           subtitle!,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(color: AppTheme.textSecondary),
-                          maxLines: 1,
+                          style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.textSecondary),
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
                   ),
                 ],
-                if (phones.isNotEmpty) ...[
+
+                // Phones — Wrap so multiple numbers wrap to next line
+                if (parsedPhones.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Wrap(
-                    spacing: 8,
-                    runSpacing: 4,
-                    children: phones
-                        .map((p) => CallButton(phone: p, label: p))
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: parsedPhones
+                        .take(3) // max 3 numbers
+                        .map((p) => PhoneChip(
+                              phone: p,
+                              color: iconColor,
+                              bgColor: iconColor.withOpacity(0.08),
+                            ))
                         .toList(),
                   ),
                 ],

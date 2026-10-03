@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'config/app_theme.dart';
 import 'config/router.dart';
@@ -38,6 +39,16 @@ class TangailApp extends ConsumerWidget {
       title: 'আমাদের টাঙ্গাইল',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
+      locale: const Locale('bn', 'BD'),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('bn', 'BD'),
+        Locale('en', 'US'),
+      ],
       routerConfig: router,
       builder: (context, child) {
         return MediaQuery(
