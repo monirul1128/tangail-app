@@ -185,19 +185,20 @@ class HomeScreen extends ConsumerWidget {
         backgroundColor: const Color(0xFFF4F6F8),
         body: ListView(
           padding: EdgeInsets.zero,
+          cacheExtent: 2000,
           children: const [
             _HeroBanner(),
             _SearchBar(),
             _QuickPills(),
             SizedBox(height: 4),
-            _ServiceCategoriesSection(),
-            _UpazilaSection(),
-            _BloodGroupSection(),
-            _NoticesSection(),
-            _NotablePersonsSection(),
-            _TourismSection(),
-            _GallerySection(),
-            _TangailMapSection(),
+            RepaintBoundary(child: _ServiceCategoriesSection()),
+            RepaintBoundary(child: _UpazilaSection()),
+            RepaintBoundary(child: _BloodGroupSection()),
+            RepaintBoundary(child: _NoticesSection()),
+            RepaintBoundary(child: _NotablePersonsSection()),
+            RepaintBoundary(child: _TourismSection()),
+            RepaintBoundary(child: _GallerySection()),
+            RepaintBoundary(child: _TangailMapSection()),
             _CtaBanner(),
             _AppFooter(),
           ],
@@ -575,40 +576,70 @@ class _ServiceCategoriesSection extends StatelessWidget {
                     const SizedBox(height: 8),
                     // Items grid
                     // Items — Wrap to avoid scroll conflict
-                    LayoutBuilder(
-                      builder: (context, constraints) {
-                        final itemW = (constraints.maxWidth - 18) / 4;
-                        return Wrap(
-                          spacing: 6,
-                          runSpacing: 6,
-                          children: List.generate(items.length, (i) {
-                            final item = items[i] as Map;
-                            return GestureDetector(
-                              onTap: () => context.push(item['route'] as String),
-                              child: SizedBox(
-                                width: itemW,
-                                height: itemW,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                    boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 6, offset: const Offset(0, 2))],
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(item['emoji'] as String, style: const TextStyle(fontSize: 20)),
-                                      const SizedBox(height: 3),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                                        child: Text(item['label'] as String,
-                                            textAlign: TextAlign.center,
-                                            maxLines: 2,
-                                            style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w600, color: Color(0xFF4B5563), height: 1.2)),
+                    Builder(
+                      builder: (context) {
+                        final screenW = MediaQuery.of(context).size.width;
+                        // container padding: 12 each side = 24, category padding: 10 each side = 20, spacing: 6*3 = 18
+                        final itemW = (screenW - 24 - 20 - 18) / 4;
+                        final itemCount = items.length;
+                        final rows = (itemCount / 4).ceil();
+                        return Column(
+                          children: List.generate(rows, (row) {
+                            final start = row * 4;
+                            final end = (start + 4).clamp(0, itemCount);
+                            final rowItems = items.sublist(start, end);
+                            final isLastRow = row == rows - 1;
+                            final lastRowCount = rowItems.length;
+                            // Full width for each item — last row items same size
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: row < rows - 1 ? 6 : 0),
+                              child: Row(
+                                children: List.generate(4, (col) {
+                                  if (col < lastRowCount || !isLastRow) {
+                                    final item = col < rowItems.length ? rowItems[col] as Map : null;
+                                    if (item == null) return Expanded(child: SizedBox(width: itemW, height: itemW));
+                                    return Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(right: col < 3 ? 6 : 0),
+                                        child: GestureDetector(
+                                          onTap: () => context.push(item['route'] as String),
+                                          child: AspectRatio(
+                                            aspectRatio: 1,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(12),
+                                                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 6, offset: const Offset(0, 2))],
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Text(item['emoji'] as String, style: const TextStyle(fontSize: 20)),
+                                                  const SizedBox(height: 3),
+                                                  Padding(
+                                                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                                                    child: Text(item['label'] as String,
+                                                        textAlign: TextAlign.center,
+                                                        maxLines: 2,
+                                                        style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w600, color: Color(0xFF4B5563), height: 1.2)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ),
+                                    );
+                                  } else {
+                                    // Empty slot — transparent filler
+                                    return Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(right: col < 3 ? 6 : 0),
+                                        child: const AspectRatio(aspectRatio: 1, child: SizedBox.shrink()),
+                                      ),
+                                    );
+                                  }
+                                }),
                               ),
                             );
                           }),
@@ -1186,7 +1217,10 @@ class _GallerySectionState extends State<_GallerySection> {
     if (_urls.isEmpty) return const SizedBox.shrink();
 
     final screenW = MediaQuery.of(context).size.width;
-    final itemSize = (screenW - 24 - 12) / 3; // 3 columns, 12px padding each side, 6px gap
+    final itemSize = (screenW - 24 - 12) / 3;
+    // Pre-calculate total height so ListView never needs to re-measure
+    final rows = (_urls.length / 3).ceil();
+    final totalH = rows * itemSize + (rows - 1) * 6.0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1198,25 +1232,47 @@ class _GallerySectionState extends State<_GallerySection> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Wrap(
-            spacing: 6,
-            runSpacing: 6,
-            children: _urls.map((url) => ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: SizedBox(
-                width: itemSize,
-                height: itemSize,
-                child: CachedNetworkImage(
-                  imageUrl: url,
-                  fit: BoxFit.cover,
-                  placeholder: (_, __) => Container(color: const Color(0xFFF4F6F8)),
-                  errorWidget: (_, __, ___) => Container(
-                    color: const Color(0xFFF4F6F8),
-                    child: const Icon(Icons.image_rounded, color: Color(0xFF9CA3AF)),
+          // Fixed height container — no layout shifts during scroll
+          child: SizedBox(
+            height: totalH,
+            child: Column(
+              children: List.generate(rows, (row) {
+                final start = row * 3;
+                final end = (start + 3).clamp(0, _urls.length);
+                final rowUrls = _urls.sublist(start, end);
+                return Padding(
+                  padding: EdgeInsets.only(bottom: row < rows - 1 ? 6 : 0),
+                  child: Row(
+                    children: List.generate(rowUrls.length, (col) {
+                      return Padding(
+                        padding: EdgeInsets.only(right: col < rowUrls.length - 1 ? 6 : 0),
+                        child: RepaintBoundary(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: SizedBox(
+                              width: itemSize,
+                              height: itemSize,
+                              child: CachedNetworkImage(
+                                imageUrl: rowUrls[col],
+                                fit: BoxFit.cover,
+                                fadeInDuration: const Duration(milliseconds: 200),
+                                placeholder: (_, __) => Container(
+                                    color: const Color(0xFFE5E7EB)),
+                                errorWidget: (_, __, ___) => Container(
+                                  color: const Color(0xFFF4F6F8),
+                                  child: const Icon(Icons.image_rounded,
+                                      color: Color(0xFF9CA3AF)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
                   ),
-                ),
-              ),
-            )).toList(),
+                );
+              }),
+            ),
           ),
         ),
       ],
@@ -1511,11 +1567,9 @@ class _AppFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // bottom nav bar height + safe area
-    final bottomPad = MediaQuery.of(context).padding.bottom + 80;
     return Container(
       color: const Color(0xFF1F2937),
-      padding: EdgeInsets.fromLTRB(20, 28, 20, bottomPad),
+      padding: const EdgeInsets.fromLTRB(20, 28, 20, 100),
       child: Column(
         children: [
           // Logo + name
@@ -1656,7 +1710,7 @@ class _CtaBanner extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () async {
-                  final uri = Uri.parse('https://madertangail.online/register-business');
+                  final uri = Uri.parse('https://amadertangail.online/register-business');
                   if (await canLaunchUrl(uri)) {
                     launchUrl(uri, mode: LaunchMode.externalApplication);
                   }
